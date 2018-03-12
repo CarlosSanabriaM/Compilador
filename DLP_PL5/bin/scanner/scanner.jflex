@@ -2,6 +2,7 @@
 
 package scanner;
 import parser.Parser;
+import ast.errors.ErrorType;
 
 %%
 // ************  Opciones ********************
@@ -142,7 +143,9 @@ Or = "||"
 
 		  
 // * Cualquier otro carácter
-.			{ System.err.println ("Lexical error at line " 	+ this.getLine() + " and column "+getColumn()+":\n\tUnknow character \'"+ yycharat(0)+"\'."); }		
+.			{ //System.err.println ("Lexical error at line " 	+ this.getLine() + " and column "+getColumn()+":\n\tUnknow character \'"+ yycharat(0)+"\'."); 
+				new ErrorType(this.getLine(), this.getColumn(), "Lexical error: Unknow character \'"+ yycharat(0)+"\'."); 
+			}		
 				
 			
 			

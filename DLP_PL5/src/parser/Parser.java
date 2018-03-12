@@ -664,14 +664,17 @@ private int yylex () {
 		token=scanner.yylex(); 	
 		this.yylval = scanner.getYylval();
     } catch(Throwable e) {
-	    System.err.println ("Lexical error at line " + scanner.getLine() + " and column "+scanner.getColumn()+":\n\t"+e); 
+	    // System.err.println ("Lexical error at line " + scanner.getLine() + " and column "+scanner.getColumn()+":\n\t"+e);
+	    // Esto es cuando se produce un error en el lexico. Cuando casca, no cuando detecta un error lexico.
+	    new ErrorType(scanner.getLine(), scanner.getColumn(), "Lexical error: " + e); 
     }
     return token;
 }
 
 // * Manejo de Errores Sintácticos
 public void yyerror (String error) {
-    System.err.println ("Syntactical error at line " + scanner.getLine() + " and column "+scanner.getColumn()+":\n\t"+error);
+    // System.err.println ("Syntactical error at line " + scanner.getLine() + " and column "+scanner.getColumn()+":\n\t"+error);
+    new ErrorType(scanner.getLine(), scanner.getColumn(), "Syntactical error: " + error);
 }
 
 // * Constructor del Sintáctico
@@ -693,7 +696,7 @@ private List<Statement> asStatementList(Statement statement){
 	return list;
 }
 
-//#line 633 "Parser.java"
+//#line 636 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -1325,7 +1328,7 @@ case 83:
 //#line 371 "../../src/parser/parser.y"
 {yyval = new Variable(scanner.getLine(), scanner.getColumn(), (String) val_peek(0));}
 break;
-//#line 1260 "Parser.java"
+//#line 1263 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
