@@ -61,8 +61,8 @@ public abstract class AbstractVisitor implements Visitor {
 	// Definitions
 	@Override
 	public Object visit(FunDefinition funDefinition, Object param) {
+		funDefinition.getType().accept(this, param);
 		funDefinition.statements.forEach( (stm) -> stm.accept(this, param) );
-		funDefinition.getType().accept(this, param);	
 
 		return null;
 	}
