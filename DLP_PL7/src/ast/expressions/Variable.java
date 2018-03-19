@@ -1,10 +1,12 @@
 package ast.expressions;
 
+import ast.definitions.Definition;
 import visitors.Visitor;
 
 public class Variable extends AbstractExpression {
 
 	public String name;
+	public Definition definition;
 
 	public Variable(int line, int column, String name) {
 		super(line, column);
