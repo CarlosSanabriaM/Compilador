@@ -7,7 +7,7 @@ real, real:double; 	 # Error semántico detectado en el sintáctico
 
 def prueba(integer: int):void{}
 
-def p(a:int):void {
+df p(a:int):void {	 # Error sintáctico
   a:char;             # Error
   b: double;
   b: char;
