@@ -15,8 +15,12 @@ public class IntrospectorDemo {
 
 
 class RootNode {
+	@SuppressWarnings("unused")
 	private Node childNode = new Node("Child1");
+	
 	private List<String> stringChildren = new ArrayList<String>();
+	
+	@SuppressWarnings("unused")
 	private int integerChild;
 	
 	RootNode() {

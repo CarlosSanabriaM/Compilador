@@ -77,6 +77,6 @@ public interface Visitor {
 	Object visit(VoidType voidType, Object param);
 	
 	// Error type
-	Object visit(ErrorType errorType, Object param); //TODO - quitar?
+	Object visit(ErrorType errorType, Object param);
 	
 }

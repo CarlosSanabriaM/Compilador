@@ -1,0 +1,24 @@
+integer:int;
+character:char;
+real, integer:double; # Error 
+real, real:double; # Error 
+
+def prueba(integer: int):void{}
+
+def p(a:int):void {
+  a:char;             # Error
+  b: double;
+  b: char;
+}
+
+def func(): void{ }
+
+def func(real: char): void{
+	integer:int;
+}
+
+def main():void {
+  character:double;
+  input integer, i;   # Error 
+  f();                # Error 
+}

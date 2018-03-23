@@ -7,6 +7,7 @@ import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorTree;
 import parser.Parser;
 import scanner.Scanner;
+import visitors.IdentificationVisitor;
 import visitors.TypeCheckingVisitor;
 
 public class Main {
@@ -34,6 +35,7 @@ public class Main {
 		// * Check errors 
 		if(!checkErrors()) {
 			// * Visitors
+			parser.getAST().accept(new IdentificationVisitor(), null);
 			parser.getAST().accept(new TypeCheckingVisitor(), null);
 			
 			// * Check errors again 
@@ -59,28 +61,5 @@ public class Main {
 		} 
 		else return false;
 	}
-	
-	//TODO - quitar!
-//	// * Check errors 
-//	if(EH.getEH().hasErrors()){
-//		// * Show errors
-//		EH.getEH().showErrors(System.err);
-//	}
-//	else{		
-//		// * Visitors
-//		parser.getAST().accept(new TypeCheckingVisitor(), null);
-//		
-//		// * Check errors again 
-//		if(EH.getEH().hasErrors()){
-//			// * Show errors
-//			EH.getEH().showErrors(System.err);
-//		}
-//		else {
-//			// * Show AST
-//			IntrospectorModel model=new IntrospectorModel("Program",parser.getAST());
-//			new IntrospectorTree("Introspector", model);
-//		}
-//	
-//	}
 
 }

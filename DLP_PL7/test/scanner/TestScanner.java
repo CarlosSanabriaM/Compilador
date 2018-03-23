@@ -8,6 +8,7 @@ import parser.Parser;
 
 public class TestScanner {
 
+	@SuppressWarnings("unused")
 	public static void main(String args[]) throws IOException {
 	    String fileName = "input.txt";
 		FileReader fr = null;
