@@ -25,4 +25,23 @@ public class RealType extends AbstractType {
 		return v.visit(this, param);
 	} 
 	
+	// Type
+	@Override
+	public boolean isBuiltIn() {
+		return true;
+	}
+
+	@Override
+	public Type arithmetic(Type type) {
+		if(type instanceof ErrorType ||
+				type instanceof RealType)
+			return type;
+				
+		if(type instanceof IntType || 
+				type instanceof CharType)
+			return this;
+		
+		return null;
+	}
+	
 }

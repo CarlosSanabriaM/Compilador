@@ -13,9 +13,14 @@ import ast.expressions.UnaryMinus;
 import ast.expressions.UnaryNot;
 import ast.expressions.Variable;
 import ast.statements.Assignment;
+import ast.statements.IfStatement;
 import ast.statements.Read;
+import ast.statements.Return;
+import ast.statements.While;
+import ast.statements.Write;
 import ast.statementsAndExpressions.Invocation;
 import ast.types.CharType;
+import ast.types.ErrorType;
 import ast.types.IntType;
 import ast.types.RealType;
 
@@ -29,17 +34,62 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		
 		predicate(assignment.left.getLValue(), assignment, 
 				"Semantical error: The left value of an assignment must be an lValue expression.");
-		
+		//TODO
 		return null;
 	}
 
+	@Override
+	public Object visit(IfStatement ifStatement, Object param) {
+		ifStatement.condition.accept(this, param);
+		ifStatement.ifBody.forEach( (stm) -> stm.accept(this, param));
+		ifStatement.elseBody.forEach( (stm) -> stm.accept(this, param));
+		
+		//predicate (ifStatement.condition.getType().isLogical())
+		if(! ifStatement.condition.getType().isLogical()) {
+			ifStatement.condition.setType(
+					new ErrorType(ifStatement.condition, 
+							"The if condition '"+ ifStatement.condition +"' is not logical."));
+		}
+				
+		return null;
+	}
+	
 	@Override
 	public Object visit(Read read, Object param) {
 		read.expression.accept(this, param);
 
 		predicate(read.expression.getLValue(), read, 
 				"Semantical error: Read statements must receive an lValue expression.");
+		//TODO
+		return null;
+	}
+	
+	@Override
+	public Object visit(Return _return, Object param) {
+		_return.expression.accept(this, param);
+		//TODO
+		return null;
+	}
+
+	@Override
+	public Object visit(While _while, Object param) {
+		_while.condition.accept(this, param);
+		_while.body.forEach( (stm) -> stm.accept(this, param) );
+
+		//predicate (_while.condition.getType().isLogical())
+		if(! _while.condition.getType().isLogical()) {
+			_while.condition.setType(
+					new ErrorType(_while.condition, 
+							"The while condition '"+ _while.condition +"' is not logical."));
+		}
 		
+		return null;
+	}
+
+	@Override
+	public Object visit(Write write, Object param) {
+		write.expression.accept(this, param);
+		//TODO
 		return null;
 	}
 	
@@ -50,6 +100,13 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		arithmetic.rightOp.accept(this, param);
 		
 		arithmetic.setLValue(false);
+		
+		//predicate (arithmetic.leftOp.getType().arithmetic(arithmetic.rightOp.getType()) != null)
+		arithmetic.setType( arithmetic.leftOp.getType().arithmetic( arithmetic.rightOp.getType() ) );
+		if(arithmetic.getType() == null)
+			arithmetic.setType( new ErrorType(arithmetic, 
+					"At least one of the types of this expressions '" + arithmetic.leftOp +"', '"
+							+ arithmetic.rightOp +"' can't be used in a arithmetic expression.") );
 		
 		return null;
 	}
