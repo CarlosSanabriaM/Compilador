@@ -4,14 +4,12 @@ import ast.ASTNode;
 import errorHandler.EH;
 import visitors.Visitor;
 
-public class ErrorType implements Type {
+public class ErrorType extends AbstractType {
 
-	private int line, column;
 	public String message;
 	
 	public ErrorType(int line, int column, String message) {
-		this.line = line;
-		this.column = column;
+		super(line, column);
 		this.message = message;
 		
 		EH.getEH().addError(this);
@@ -22,18 +20,8 @@ public class ErrorType implements Type {
 	}
 
 	@Override
-	public int getLine() {
-		return this.line;
-	}
-
-	@Override
-	public int getColumn() {
-		return this.column;
-	}
-	
-	@Override
 	public String toString() {
-		return "Error at line " + line + " and column "+ column +":\n\t"+ message;
+		return "Error at line " + getLine() + " and column "+ getColumn() +":\n\t"+ message;
 	}
 
 	// Visitor
