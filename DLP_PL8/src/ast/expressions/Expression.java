@@ -1,6 +1,7 @@
 package ast.expressions;
 
 import ast.ASTNode;
+import ast.types.Type;
 
 public interface Expression extends ASTNode{
 	
@@ -15,5 +16,9 @@ public interface Expression extends ASTNode{
 	 * or can be used in a Read statement
 	 */
 	boolean getLValue();
+	
+	void setType(Type type);
+	
+	Type getType();
 	
 }
