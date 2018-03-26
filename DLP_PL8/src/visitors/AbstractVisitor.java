@@ -245,7 +245,7 @@ public abstract class AbstractVisitor implements Visitor {
 
 	@Override
 	public Object visit(RecordField recordField, Object param) {
-		recordField.type.accept(this, param);
+		recordField.getType().accept(this, param);
 
 		return null;
 	}

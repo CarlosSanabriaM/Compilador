@@ -125,6 +125,12 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		
 		cast.setLValue(false);
 		
+		// predicate (cast.expression.getType().canBeCast(cast.castType) != null)
+		cast.expression.setType(cast.expression.getType().canBeCast(cast.castType));
+		if(cast.expression.getType() == null)
+			cast.expression.setType( new ErrorType(cast, 
+					"The expression '"+ cast.expression +"' can't be casted to the type '"+ cast.castType +"'.") );
+		
 		return null;
 	}
 
@@ -159,6 +165,13 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		
 		fieldAccess.setLValue(true);
 		
+		// predicate (fieldAccess.leftOp.getType().dot(fieldAccess.name) != null)
+		fieldAccess.setType(fieldAccess.leftOp.getType().dot(fieldAccess.name));
+		if(fieldAccess.getType() == null)
+			fieldAccess.setType( new ErrorType(fieldAccess, 
+					"The expression '"+ fieldAccess.leftOp +"' isn't a struct, "
+							+ "or is a struct but the field '"+ fieldAccess.name +"' isn't defined inside it.") );
+		
 		return null;
 	}
 
@@ -169,6 +182,14 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		
 		indexing.setLValue(true);
 		
+		// predicate (indexing.leftOp.getType().squareBrackets(indexing.rightOp.getType()) != null)
+		indexing.setType(indexing.leftOp.getType().squareBrackets(indexing.rightOp.getType()));
+		if(indexing.getType() == null)
+			indexing.setType( new ErrorType(indexing, 
+					"The expression '"+ indexing.leftOp +"' isn't an array, "
+							+ "or is an array but the expression '"+ indexing.rightOp +"' "
+									+ "isn't of a valid type for accesing the array.") );
+
 		return null;
 	}
 

@@ -22,6 +22,19 @@ public class ArrayType extends AbstractType {
 	@Override
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
+	}
+
+	//Type
+	@Override
+	public Type squareBrackets(Type type) {
+		if(type instanceof ErrorType)
+			return type;
+		
+		if(type instanceof IntType ||
+				type instanceof CharType)
+			return of;
+		
+		return null;
 	} 
 	
 }

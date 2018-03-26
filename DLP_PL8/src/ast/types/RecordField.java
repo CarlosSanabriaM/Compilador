@@ -8,7 +8,7 @@ public class RecordField implements ASTNode {
 
 	private int line, column;
 	
-	public Type type;
+	private Type type;
 	public String name;
 	public int offset;
 	
@@ -39,6 +39,14 @@ public class RecordField implements ASTNode {
 	@Override
 	public String toString() {
 		return name + ": " + type;
+	}
+	
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
 	}
 
 	// equals y hashCode por nombre del campo

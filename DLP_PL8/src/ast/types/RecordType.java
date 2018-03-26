@@ -27,6 +27,17 @@ public class RecordType extends AbstractType {
 	@Override
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
+	}
+
+	// Type
+	@Override
+	public Type dot(String fieldName) {
+		// Si hay algún campo con ese nombre, retorno su tipo
+		for (RecordField field : fields) {
+			if(field.name.equals(fieldName))
+				return field.getType();
+		}
+		return null;
 	} 
-	
+		
 }
