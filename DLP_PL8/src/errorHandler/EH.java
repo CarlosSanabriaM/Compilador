@@ -1,8 +1,10 @@
-package ast.errors;
+package errorHandler;
 
 import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
+
+import ast.types.ErrorType;
 
 public class EH {
 	

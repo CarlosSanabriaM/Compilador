@@ -1,7 +1,7 @@
-package ast.errors;
+package ast.types;
 
 import ast.ASTNode;
-import ast.types.Type;
+import errorHandler.EH;
 import visitors.Visitor;
 
 public class ErrorType implements Type {

@@ -13,7 +13,6 @@ import ast.expressions.*;
 import ast.statements.*;
 import ast.statementsAndExpressions.*;
 import ast.types.*;
-import ast.errors.*;
 %}
 
 // * Declaraciones Yacc

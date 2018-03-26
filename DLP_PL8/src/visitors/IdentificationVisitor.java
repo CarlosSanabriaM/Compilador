@@ -3,8 +3,8 @@ package visitors;
 import ast.definitions.Definition;
 import ast.definitions.FunDefinition;
 import ast.definitions.VarDefinition;
-import ast.errors.ErrorType;
 import ast.expressions.Variable;
+import ast.types.ErrorType;
 import symboltable.SymbolTable;
 
 public class IdentificationVisitor extends AbstractVisitor {

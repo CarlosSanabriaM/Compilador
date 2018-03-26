@@ -2,7 +2,7 @@
 
 package scanner;
 import parser.Parser;
-import ast.errors.ErrorType;
+import ast.types.ErrorType;
 
 %%
 // ************  Opciones ********************

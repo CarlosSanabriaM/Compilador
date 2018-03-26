@@ -2,7 +2,7 @@ package main;
 import java.io.FileReader;
 import java.io.IOException;
 
-import ast.errors.EH;
+import errorHandler.EH;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorTree;
 import parser.Parser;
