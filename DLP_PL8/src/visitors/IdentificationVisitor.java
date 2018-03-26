@@ -28,7 +28,7 @@ public class IdentificationVisitor extends AbstractVisitor {
 
 	@Override
 	public Object visit(VarDefinition varDefinition, Object param) {
-		varDefinition.getType().accept(this, param); //TODO - aqui o debajo??
+		varDefinition.getType().accept(this, param);
 		
 		boolean insertOk = symbolTable.insert(varDefinition);
 		predicate(insertOk, varDefinition, 

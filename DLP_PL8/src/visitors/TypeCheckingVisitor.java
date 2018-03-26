@@ -15,6 +15,9 @@ import ast.expressions.Variable;
 import ast.statements.Assignment;
 import ast.statements.Read;
 import ast.statementsAndExpressions.Invocation;
+import ast.types.CharType;
+import ast.types.IntType;
+import ast.types.RealType;
 
 public class TypeCheckingVisitor extends AbstractVisitor {
 	
@@ -64,6 +67,7 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(CharLiteral charLiteral, Object param) {
 		charLiteral.setLValue(false);
+		charLiteral.setType(CharType.getInstance());
 		
 		return null;
 	}
@@ -100,6 +104,7 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(IntLiteral intLiteral, Object param) {
 		intLiteral.setLValue(false);
+		intLiteral.setType(IntType.getInstance());
 		
 		return null;
 	}
@@ -117,6 +122,7 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(RealLiteral realLiteral, Object param) {
 		realLiteral.setLValue(false);
+		realLiteral.setType(RealType.getInstance());
 		
 		return null;
 	}
@@ -142,6 +148,7 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(Variable variable, Object param) {
 		variable.setLValue(true);
+		variable.setType(variable.definition.getType());
 		
 		return null;
 	}
