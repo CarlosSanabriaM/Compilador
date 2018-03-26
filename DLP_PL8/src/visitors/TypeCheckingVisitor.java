@@ -136,6 +136,13 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		
 		comparison.setLValue(false);
 		
+		// predicate (comparison.leftOp.getType().comparison(comparison.rightOp.getType()) != null)
+		comparison.setType( comparison.leftOp.getType().comparison(comparison.rightOp.getType()) );
+		if(comparison.getType() == null)
+			comparison.setType( new ErrorType(comparison, 
+					"At least one of the types of this expressions '" + comparison.leftOp +"', '"
+							+ comparison.rightOp +"' can't be used in a comparison expression.") );
+		
 		return null;
 	}
 
@@ -189,6 +196,12 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		unaryMinus.expression.accept(this, param);
 		
 		unaryMinus.setLValue(false);
+		
+		// predicate (unaryMinus.expression.getType().arithmetic() != null)
+		unaryMinus.setType(unaryMinus.expression.getType().arithmetic());
+		if(unaryMinus.getType() == null)
+			unaryMinus.setType( new ErrorType(unaryMinus.expression, 
+					"The type of this expression '" + unaryMinus.expression + "' can't be used in a Unary Minus expression.") );
 		
 		return null;
 	}

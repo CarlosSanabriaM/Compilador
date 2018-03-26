@@ -49,4 +49,20 @@ public class IntType extends AbstractType {
 		return null;
 	}
 	
+	@Override
+	public Type arithmetic() {
+		return this;
+	}
+
+	@Override
+	public Type comparison(Type type) {
+		if(type instanceof ErrorType)
+			return type;
+		
+		if(type.isBuiltIn())
+			return IntType.getInstance();
+
+		return null;
+	}
+
 }
