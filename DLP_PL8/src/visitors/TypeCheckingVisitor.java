@@ -34,7 +34,14 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		
 		predicate(assignment.left.getLValue(), assignment, 
 				"Semantical error: The left value of an assignment must be an lValue expression.");
-		//TODO
+		
+		// predicate ()
+		assignment.left.setType( assignment.right.getType().promotesTo(assignment.left.getType()) );
+		if(assignment.left.getType() == null)
+			assignment.left.setType( new ErrorType(assignment, 
+					"The expression '"+ assignment.right +"' can't be assisgned to '"+ assignment.left +
+					"' because their types are not compatible.") );
+		
 		return null;
 	}
 
