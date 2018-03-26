@@ -3,6 +3,7 @@ package visitors;
 import ast.definitions.Definition;
 import ast.definitions.FunDefinition;
 import ast.definitions.VarDefinition;
+import ast.errors.ErrorType;
 import ast.expressions.Variable;
 import symboltable.SymbolTable;
 
@@ -40,10 +41,13 @@ public class IdentificationVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(Variable variable, Object param) {
 		Definition definition = symbolTable.find(variable.name);
-		predicate(definition != null, variable, 
-				"Semantical error: '"+ variable.name +"' has not been defined before.");
-		
-		variable.definition = definition;
+		// predicate (definition != null)
+		if(definition != null)
+			variable.definition = definition;
+		else {
+			variable.definition = new VarDefinition(variable.getLine(), variable.getColumn(), variable.name,
+					new ErrorType(variable, "Semantical error: '" + variable.name + "' has not been defined before."));
+		}
 		
 		return null;
 	}
