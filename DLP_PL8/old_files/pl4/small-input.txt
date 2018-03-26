@@ -1,0 +1,175 @@
+"""
+4 + 2 * 5 / 4 - 2 / 5 + 1E-1 / '\126' * _var120
+(4 + 5 / 3) * [4 +2]
+var.campo.campo + var[(4+2)*4] / (4+2*v[2])[4]
+-(int) (5.6 +5) + (double) 4 * 6
+-4 + -(-var.campo[-1][100])
+campo.var[12]+(2)
+!campo.var[12]+(2) % 7 /43 + 23[!3]
+a>b <= 4 == 23 != 3332 >= 32
+a>b <= 4 == 23 != 3332 >= 32 && boleana || asd || (as && (a||a))
+a || v && asd b
+a+21 = 123+23
+a: int;
+b,c:double;
+a, asd, f, as: char;
+"""
+
+# Variable and function definitions
+i, j, n: int;
+c: char;
+
+# Empty function
+def p(): void { }
+
+def p(): void { 
+	real: double;
+	real: int;
+	s:struct{a:double;};
+}
+
+def p(): void { 
+	print a;
+	print b;
+	print 3332 >= 32 && boleana || asd || (as && (a||a));
+}
+
+def f(n: int,r: double): int {
+  	real: double;
+  	c1, c2: char;  
+	c1 = (char)n;
+  	real = c1 + n + r;
+  	p(); # Invocation as a statement
+  	return (int)c1;
+}
+
+# Variable and function definitions
+i, j, n: int;
+c: char;
+
+def p(): void {
+	#Definiciones
+	real: double;
+	a,b,real: double;
+	
+	a:[3]int ;
+	vector: [10][5][100]double; 
+	
+	pair: struct {
+    		integer: int;
+    		character: char;
+  	};
+  	
+  	pair: struct {
+    		integer: int;
+    		character: char;
+    		vector: [10][5][100]double;
+    		
+    		s2: struct {
+   			integer: int;
+   			vector: [10][5][100]double;
+    		};
+  	};
+  	
+  	pair: [1][2]struct {
+    		integer: int;
+    		character: char;
+  	};
+  	
+  	pair: [1][2]struct {
+    		character: char;
+    		vector: [10][5][100]double;
+    		
+    		s2: struct {
+   			integer: int;
+   			vector: [10][5][100]double;
+   			
+   			pair: [1][2]struct {
+		    		integer: int;
+		    		character: char;
+		  	};
+    		};
+  	}; 
+	
+	a,b,c:int;
+	
+	
+	
+	
+	# Sentencias
+	print a;
+	input b;
+	
+	a=b+5;
+	(char)a = b+5;
+	
+	(char)a = (b+5)*6 + a[1];
+	a[1][2]=123 +21;
+	a= -a;
+	a[1][2].campo=123 +21;
+	
+	return hola_123;
+	
+	p(); # Invocation as a statement
+	funcion(a,v,asd,s);
+	
+	a = v + p();
+	a = v + p() + as;
+	a = v + p() + p(a,a);
+	
+	if a > b + 5:
+		print a;
+		
+	if a > b + 5:{
+		#Deberia de poder ser vacio, hay que dejar que statements sea lambda, pero para eso aun tengo que revisar como hacerlo
+		print b;
+	}
+	
+	#---------------
+	
+	if a > b + 5 && v || f(a,d):
+		print a;
+	else
+		print b;
+		
+	if (a > b + 5):{
+		print a;
+	}
+	else
+		print b;
+		
+	#---------------
+		
+	if a > b + 5:
+		print a;
+	else{
+		print b;
+	}
+
+	if (a > b + 5):{
+		print a;
+	}
+	else{
+		print b;
+	}
+	
+	while booleana:
+		input a;
+		
+	while booleana:{
+		input a;
+		input v;
+	}
+	
+}
+
+def main(): void{
+	a:double;
+	input a;
+	input v;
+	
+	f(a+32/(double)v[7].campo , 33);
+	a = funcion(var.campo.campo + var[(4+2)*4] / (4+2*v[2])[4]);
+	
+}
+
