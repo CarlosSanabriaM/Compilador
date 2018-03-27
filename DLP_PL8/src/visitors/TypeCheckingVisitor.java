@@ -43,7 +43,7 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		assignment.left.setType( assignment.right.getType().promotesTo(assignment.left.getType()) );
 		if(assignment.left.getType() == null)
 			assignment.left.setType( new ErrorType(assignment, 
-					"The expression '"+ assignment.right +"' can't be assisgned to '"+ assignment.left +
+					"Semantical error: The expression '"+ assignment.right +"' can't be assisgned to '"+ assignment.left +
 					"' because their types are not compatible.") );
 		
 		return null;
@@ -54,11 +54,10 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		ifStatement.condition.accept(this, param);
 		
 		//predicate (ifStatement.condition.getType().isLogical())
-		if(! ifStatement.condition.getType().isLogical()) {
+		if(! ifStatement.condition.getType().isLogical() && ! (ifStatement.condition.getType() instanceof ErrorType) )	// TODO???
 			ifStatement.condition.setType(
 					new ErrorType(ifStatement.condition, 
-							"The if condition '"+ ifStatement.condition +"' is not logical."));
-		}
+							"Semantical error: The if condition '"+ ifStatement.condition +"' is not logical."));
 		
 		ifStatement.ifBody.forEach( (stm) -> stm.accept(this, param));
 		ifStatement.elseBody.forEach( (stm) -> stm.accept(this, param));
@@ -80,11 +79,11 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 	public Object visit(Return _return, Object param) {
 		_return.expression.accept(this, param);
 
-		// Solo se pueden retornar tipos simples
-		// predicate (_return.expression.getType().isBuiltIn())
-		if(! _return.expression.getType().isBuiltIn())
+		// Solo se pueden retornar tipos simples CAMBIAR TODO
+		// predicate (_return.expression.getType().isBuiltIn()) 
+		if(! _return.expression.getType().isBuiltIn() && ! (_return.expression.getType() instanceof ErrorType) )	// TODO???
 			_return.expression.setType( new ErrorType(_return.expression, 
-					"The return expression '"+ _return.expression +"' is not valid. "
+					"Semantical error: The return expression '"+ _return.expression +"' is not valid. "
 							+ "It must be a simple type (char, int or real).") );	
 		
 		return null;
@@ -95,10 +94,9 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		_while.condition.accept(this, param);
 
 		//predicate (_while.condition.getType().isLogical())
-		if(! _while.condition.getType().isLogical()) {
+		if(! _while.condition.getType().isLogical() && ! (_while.condition.getType() instanceof ErrorType) )
 			_while.condition.setType( new ErrorType(_while.condition, 
-					"The while condition '"+ _while.condition +"' is not logical."));
-		}
+					"Semantical error: The while condition '"+ _while.condition +"' is not logical."));
 		
 		_while.body.forEach( (stm) -> stm.accept(this, param) );
 		
@@ -110,9 +108,9 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		write.expression.accept(this, param);
 		
 		// predicate (write.expression.getType().isBuiltIn())
-		if(! write.expression.getType().isBuiltIn())	// TODO???
+		if(! write.expression.getType().isBuiltIn() && ! (write.expression.getType() instanceof ErrorType) )	// TODO???
 			write.expression.setType( new ErrorType(write.expression, 
-					"The write expression '"+ write.expression +"' is not valid. "
+					"Semantical error: The write expression '"+ write.expression +"' is not valid. "
 						+ "It must be a simple type (char, int or real).") );	
 		
 		return null;
@@ -130,7 +128,7 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		arithmetic.setType( arithmetic.leftOp.getType().arithmetic( arithmetic.rightOp.getType() ) );
 		if(arithmetic.getType() == null)
 			arithmetic.setType( new ErrorType(arithmetic, 
-					"At least one of the types of this expressions '" + arithmetic.leftOp +"', '"
+					"Semantical error: At least one of the types of this expressions '" + arithmetic.leftOp +"', '"
 							+ arithmetic.rightOp +"' can't be used in a arithmetic expression.") );
 		
 		return null;
@@ -147,7 +145,8 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		cast.expression.setType(cast.expression.getType().canBeCast(cast.castType));
 		if(cast.expression.getType() == null)
 			cast.expression.setType( new ErrorType(cast, 
-					"The expression '"+ cast.expression +"' can't be casted to the type '"+ cast.castType +"'.") );
+					"Semantical error: The expression '"+ cast.expression +"' "
+							+ "can't be casted to the type '"+ cast.castType +"'.") );
 		
 		return null;
 	}
@@ -171,7 +170,7 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		comparison.setType( comparison.leftOp.getType().comparison(comparison.rightOp.getType()) );
 		if(comparison.getType() == null)
 			comparison.setType( new ErrorType(comparison, 
-					"At least one of the types of this expressions '" + comparison.leftOp +"', '"
+					"Semantical error: At least one of the types of this expressions '" + comparison.leftOp +"', '"
 							+ comparison.rightOp +"' can't be used in a comparison expression.") );
 		
 		return null;
@@ -187,7 +186,7 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		fieldAccess.setType(fieldAccess.leftOp.getType().dot(fieldAccess.name));
 		if(fieldAccess.getType() == null)
 			fieldAccess.setType( new ErrorType(fieldAccess, 
-					"The expression '"+ fieldAccess.leftOp +"' isn't a struct, "
+					"Semantical error: The expression '"+ fieldAccess.leftOp +"' isn't a struct, "
 							+ "or is a struct but the field '"+ fieldAccess.name +"' isn't defined inside it.") );
 		
 		return null;
@@ -204,7 +203,7 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		indexing.setType(indexing.leftOp.getType().squareBrackets(indexing.rightOp.getType()));
 		if(indexing.getType() == null)
 			indexing.setType( new ErrorType(indexing, 
-					"The expression '"+ indexing.leftOp +"' isn't an array, "
+					"Semantical error: The expression '"+ indexing.leftOp +"' isn't an array, "
 							+ "or is an array but the expression '"+ indexing.rightOp +"' "
 									+ "isn't of a valid type for accesing the array.") );
 
@@ -230,7 +229,7 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		logical.setType( logical.leftOp.getType().logical( logical.rightOp.getType() ) );
 		if(logical.getType() == null)
 			logical.setType( new ErrorType(logical, 
-					"At least one of the types of this expressions '" + logical.leftOp +"', '"
+					"Semantical error: At least one of the types of this expressions '" + logical.leftOp +"', '"
 							+ logical.rightOp +"' can't be used in a logical expression.") );
 		
 		return null;
@@ -254,7 +253,7 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		unaryMinus.setType(unaryMinus.expression.getType().arithmetic());
 		if(unaryMinus.getType() == null)
 			unaryMinus.setType( new ErrorType(unaryMinus.expression, 
-					"The type of this expression '" + unaryMinus.expression + "' "
+					"Semantical error: The type of this expression '" + unaryMinus.expression + "' "
 							+ "can't be used in a Unary Minus expression.") );
 		
 		return null;
@@ -270,7 +269,7 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		unaryNot.setType(unaryNot.expression.getType().logical());
 		if(unaryNot.getType() == null)
 			unaryNot.setType( new ErrorType(unaryNot.expression, 
-					"The type of this expression '" + unaryNot.expression + "' "
+					"Semantical error: The type of this expression '" + unaryNot.expression + "' "
 							+ "can't be used in a Unary Not expression (is not logical).") );
 		
 		return null;
@@ -299,7 +298,7 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		invocation.setType(invocation.function.getType().parenthesis(argumentTypes));
 		if(invocation.getType() == null)
 			invocation.setType( new ErrorType(invocation.function, 
-					"The invocation of the function '" + invocation.function + "' "
+					"Semantical error: The invocation of the function '" + invocation.function + "' "
 							+ "is not valid. The number of arguments or the type of those arguments isn't right.") );
 		
 		return null;
