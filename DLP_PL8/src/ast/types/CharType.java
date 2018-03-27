@@ -32,6 +32,11 @@ public class CharType extends AbstractType {
 	}
 
 	@Override
+	public boolean isLogical() { // TODO - quitar??
+		return true;
+	}
+
+	@Override
 	public Type arithmetic(Type type) {
 		if(type instanceof ErrorType ||
 				type.isBuiltIn())
@@ -77,6 +82,14 @@ public class CharType extends AbstractType {
 	@Override
 	public Type logical() {
 		return IntType.getInstance();
+	}
+
+	@Override
+	public Type logical(Type type) {
+		if(type.isLogical())
+			return IntType.getInstance();
+		
+		return null;
 	}
 	
 }

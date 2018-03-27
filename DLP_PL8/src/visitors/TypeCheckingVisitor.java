@@ -48,8 +48,6 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(IfStatement ifStatement, Object param) {
 		ifStatement.condition.accept(this, param);
-		ifStatement.ifBody.forEach( (stm) -> stm.accept(this, param));
-		ifStatement.elseBody.forEach( (stm) -> stm.accept(this, param));
 		
 		//predicate (ifStatement.condition.getType().isLogical())
 		if(! ifStatement.condition.getType().isLogical()) {
@@ -57,6 +55,9 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 					new ErrorType(ifStatement.condition, 
 							"The if condition '"+ ifStatement.condition +"' is not logical."));
 		}
+		
+		ifStatement.ifBody.forEach( (stm) -> stm.accept(this, param));
+		ifStatement.elseBody.forEach( (stm) -> stm.accept(this, param));
 				
 		return null;
 	}
@@ -81,7 +82,6 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(While _while, Object param) {
 		_while.condition.accept(this, param);
-		_while.body.forEach( (stm) -> stm.accept(this, param) );
 
 		//predicate (_while.condition.getType().isLogical())
 		if(! _while.condition.getType().isLogical()) {
@@ -89,6 +89,8 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 					new ErrorType(_while.condition, 
 							"The while condition '"+ _while.condition +"' is not logical."));
 		}
+		
+		_while.body.forEach( (stm) -> stm.accept(this, param) );
 		
 		return null;
 	}
@@ -207,7 +209,14 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		logical.rightOp.accept(this, param);
 		
 		logical.setLValue(false);
-		//TODO 
+
+		//predicate (logical.leftOp.getType().logical(logical.rightOp.getType()) != null)
+		logical.setType( logical.leftOp.getType().logical( logical.rightOp.getType() ) );
+		if(logical.getType() == null)
+			logical.setType( new ErrorType(logical, 
+					"At least one of the types of this expressions '" + logical.leftOp +"', '"
+							+ logical.rightOp +"' can't be used in a logical expression.") );
+		
 		return null;
 	}
 

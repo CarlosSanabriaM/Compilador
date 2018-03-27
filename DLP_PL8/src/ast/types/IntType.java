@@ -89,4 +89,12 @@ public class IntType extends AbstractType {
 		return this;
 	}
 	
+	@Override
+	public Type logical(Type type) {
+		if(type.isLogical())
+			return this;
+		
+		return null;
+	}
+	
 }
