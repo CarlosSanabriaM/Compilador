@@ -1,5 +1,8 @@
 package visitors;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import ast.expressions.Arithmetic;
 import ast.expressions.Cast;
 import ast.expressions.CharLiteral;
@@ -23,6 +26,7 @@ import ast.types.CharType;
 import ast.types.ErrorType;
 import ast.types.IntType;
 import ast.types.RealType;
+import ast.types.Type;
 
 public class TypeCheckingVisitor extends AbstractVisitor {
 	
@@ -35,7 +39,7 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		predicate(assignment.left.getLValue(), assignment, 
 				"Semantical error: The left value of an assignment must be an lValue expression.");
 		
-		// predicate ()
+		// predicate (assignment.right.getType().promotesTo(assignment.left.getType()) != null)
 		assignment.left.setType( assignment.right.getType().promotesTo(assignment.left.getType()) );
 		if(assignment.left.getType() == null)
 			assignment.left.setType( new ErrorType(assignment, 
@@ -68,14 +72,21 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 
 		predicate(read.expression.getLValue(), read, 
 				"Semantical error: Read statements must receive an lValue expression.");
-		//TODO
+		
 		return null;
 	}
 	
 	@Override
 	public Object visit(Return _return, Object param) {
 		_return.expression.accept(this, param);
-		//TODO
+
+		// Solo se pueden retornar tipos simples
+		// predicate (_return.expression.getType().isBuiltIn())
+		if(! _return.expression.getType().isBuiltIn())
+			_return.expression.setType( new ErrorType(_return.expression, 
+					"The return expression '"+ _return.expression +"' is not valid. "
+							+ "It must be a simple type (char, int or real).") );	
+		
 		return null;
 	}
 
@@ -85,9 +96,8 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 
 		//predicate (_while.condition.getType().isLogical())
 		if(! _while.condition.getType().isLogical()) {
-			_while.condition.setType(
-					new ErrorType(_while.condition, 
-							"The while condition '"+ _while.condition +"' is not logical."));
+			_while.condition.setType( new ErrorType(_while.condition, 
+					"The while condition '"+ _while.condition +"' is not logical."));
 		}
 		
 		_while.body.forEach( (stm) -> stm.accept(this, param) );
@@ -98,7 +108,13 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(Write write, Object param) {
 		write.expression.accept(this, param);
-		//TODO
+		
+		// predicate (write.expression.getType().isBuiltIn())
+		if(! write.expression.getType().isBuiltIn())	// TODO???
+			write.expression.setType( new ErrorType(write.expression, 
+					"The write expression '"+ write.expression +"' is not valid. "
+						+ "It must be a simple type (char, int or real).") );	
+		
 		return null;
 	}
 	
@@ -275,7 +291,17 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		invocation.arguments.forEach( (arg) -> arg.accept(this, param) );
 		
 		invocation.setLValue(false);
-		//TODO 
+
+		// predicate (invocation.function.getType().parenthesis(argumentTypes) != null)
+		List<Type> argumentTypes = new LinkedList<>();
+		invocation.arguments.forEach( (arg) -> argumentTypes.add(arg.getType()) );
+		
+		invocation.setType(invocation.function.getType().parenthesis(argumentTypes));
+		if(invocation.getType() == null)
+			invocation.setType( new ErrorType(invocation.function, 
+					"The invocation of the function '" + invocation.function + "' "
+							+ "is not valid. The number of arguments or the type of those arguments isn't right.") );
+		
 		return null;
 	}
 

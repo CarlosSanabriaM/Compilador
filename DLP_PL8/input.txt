@@ -12,10 +12,18 @@ def f(a:int, c:double):int {
   i = a;
   return n;
 }
+
+def h():void{
+	return record;
+}
+
 # Main program
 def main():void {
   i:int;
   r:double;
-  print i, f(n,r), record.intField, record.realField;
+  print record;
+  print a;
+  print 5.4 + 4;
+  #print i, f(n,r), record.intField, record.realField;
 }
 

@@ -39,6 +39,30 @@ public class FunctionType extends AbstractType {
 	@Override
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
+	}
+
+	//Type
+	@Override
+	public Type parenthesis(List<Type> types) {
+		// Comprobamos que coincida el número de los parámetros
+		if(types.size() != param.size())
+			return null;
+		
+		// Comprobamos uno a uno que el tipo del parámetro que me pasan 
+		// promocione al tipo del parametro declarado
+		Iterator<VarDefinition> itrParam = param.iterator();
+		Iterator<Type> itrTypes = types.iterator();
+		
+		while(itrParam.hasNext() && itrTypes.hasNext()) { // Son del mismo tamaño, da igual comprobar solo uno o ambos
+		   Type declaredParamType = itrParam.next().getType();
+		   Type passedParamType = itrTypes.next();
+		   
+		   if(passedParamType.promotesTo(declaredParamType) == null)
+			   return null;
+		}
+		
+		// Si todo es correcto, devuelvo el tipo de retorno
+		return returnType;
 	} 
 	
 }
