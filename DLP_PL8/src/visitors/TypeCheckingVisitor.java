@@ -207,7 +207,7 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		logical.rightOp.accept(this, param);
 		
 		logical.setLValue(false);
-
+		//TODO 
 		return null;
 	}
 
@@ -229,7 +229,8 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		unaryMinus.setType(unaryMinus.expression.getType().arithmetic());
 		if(unaryMinus.getType() == null)
 			unaryMinus.setType( new ErrorType(unaryMinus.expression, 
-					"The type of this expression '" + unaryMinus.expression + "' can't be used in a Unary Minus expression.") );
+					"The type of this expression '" + unaryMinus.expression + "' "
+							+ "can't be used in a Unary Minus expression.") );
 		
 		return null;
 	}
@@ -239,6 +240,13 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		unaryNot.expression.accept(this, param);
 		
 		unaryNot.setLValue(false);
+		
+		//predicate (unaryNot.expression.getType().logical() != null)
+		unaryNot.setType(unaryNot.expression.getType().logical());
+		if(unaryNot.getType() == null)
+			unaryNot.setType( new ErrorType(unaryNot.expression, 
+					"The type of this expression '" + unaryNot.expression + "' "
+							+ "can't be used in a Unary Not expression (is not logical).") );
 		
 		return null;
 	}
@@ -258,7 +266,7 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		invocation.arguments.forEach( (arg) -> arg.accept(this, param) );
 		
 		invocation.setLValue(false);
-		
+		//TODO 
 		return null;
 	}
 
