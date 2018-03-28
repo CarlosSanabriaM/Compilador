@@ -3,6 +3,7 @@ package visitors;
 import java.util.LinkedList;
 import java.util.List;
 
+import ast.definitions.FunDefinition;
 import ast.expressions.Arithmetic;
 import ast.expressions.Cast;
 import ast.expressions.CharLiteral;
@@ -24,12 +25,24 @@ import ast.statements.Write;
 import ast.statementsAndExpressions.Invocation;
 import ast.types.CharType;
 import ast.types.ErrorType;
+import ast.types.FunctionType;
 import ast.types.IntType;
 import ast.types.RealType;
 import ast.types.Type;
+import ast.types.VoidType;
 
 public class TypeCheckingVisitor extends AbstractVisitor {
 	
+	// Definitions
+	@Override
+	public Object visit(FunDefinition funDefinition, Object param) {
+		funDefinition.getType().accept(this, param);
+		// A las sentencias de la función le pasamos como parámetro la propia definición de la función.
+		funDefinition.statements.forEach( (stm) -> stm.accept(this, funDefinition) );
+
+		return null;
+	}
+
 	// Statements
 	@Override
 	public Object visit(Assignment assignment, Object param) {
@@ -78,13 +91,24 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(Return _return, Object param) {
 		_return.expression.accept(this, param);
-
-		// Solo se pueden retornar tipos simples CAMBIAR TODO
-		// predicate (_return.expression.getType().isBuiltIn()) 
-		if(! _return.expression.getType().isBuiltIn() && ! (_return.expression.getType() instanceof ErrorType) )	// TODO???
+		
+		Type functionReturnType = ((FunctionType) ((FunDefinition) param).getType()).returnType;
+		
+		// Las funciones void no pueden retornar valor.
+		if(functionReturnType instanceof VoidType)
 			_return.expression.setType( new ErrorType(_return.expression, 
-					"Semantical error: The return expression '"+ _return.expression +"' is not valid. "
-							+ "It must be a simple type (char, int or real).") );	
+					"Semantical error: Void functions can't return any value.") );	
+		
+		// El tipo del return ha de coincidir con el tipo de retorno declarado en la definición de la función
+		else{
+			_return.expression.setType( _return.expression.getType().promotesTo(functionReturnType) );
+			
+			if(_return.expression.getType() == null)
+				_return.expression.setType( new ErrorType(_return.expression, 
+						"Semantical error: The return expression '"+ _return.expression +"' is not valid. "
+								+ "It ins't compatible with the return type declared in the function definition: '"
+								+ functionReturnType +"'.") );
+		}
 		
 		return null;
 	}
