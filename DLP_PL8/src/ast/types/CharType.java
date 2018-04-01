@@ -39,7 +39,7 @@ public class CharType extends AbstractType {
 	@Override
 	public Type arithmetic(Type type) {
 		if(type instanceof ErrorType ||
-				type.isBuiltIn())
+				type.isBuiltIn())   		// XXX - 'a' + 'a' --> CharType, segun como está hecho. Java lo hace así!
 			return type;
 		
 		return null;

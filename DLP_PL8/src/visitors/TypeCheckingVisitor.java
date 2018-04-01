@@ -167,9 +167,9 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		cast.setLValue(false);
 		
 		// predicate (cast.expression.getType().canBeCast(cast.castType) != null)
-		cast.expression.setType(cast.expression.getType().canBeCast(cast.castType));
-		if(cast.expression.getType() == null)
-			cast.expression.setType( new ErrorType(cast, 
+		cast.setType(cast.expression.getType().canBeCast(cast.castType));
+		if(cast.getType() == null)
+			cast.setType( new ErrorType(cast, 
 					"Semantical error: The expression '"+ cast.expression +"' "
 							+ "can't be casted to the type '"+ cast.castType +"'.") );
 		

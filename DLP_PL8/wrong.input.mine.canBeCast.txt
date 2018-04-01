@@ -1,0 +1,62 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+# Arrays
+v_c: [10]char;
+v_i: [10]int;
+v_r: [10]double;
+
+# Structs
+s: struct{
+	charField: char;
+	intField:  int;
+  	realField: double;
+};
+
+# Functions
+def f_void(): void{}
+
+def f_char(): char{}
+def f_int():  int{}
+def f_real(): double{}
+
+def checkPromotesTo(): void{
+	r = (double) 'c';	
+	r = (double) 1;	
+	r = (double) 1.5;
+	
+	i = (int) 'c';	
+	i = (int) 1;	
+	i = (int) 1.5;
+	
+	c = (char) 'c';			
+	c = (char) 1;
+	c = (char) 1.5;
+
+"""	
+	r = v_c;		# Error
+	r = v_i;		# Error
+	r = v_r;		# Error
+	r = s;		# Error
+
+	s = 'a';		# Error
+	s = 1;		# Error
+	s = 1.5;		# Error
+
+	v_i = 'a';	# Error
+	v_i = 1;		# Error
+	v_i = 1.5;	# Error
+	
+	s = s;		# ?????
+	v_c = v_c;	# ?????
+	v_i = v_i;	# ?????
+	v_r = v_r;	# ?????
+"""	
+}	
+
+# Main function
+def main():void {
+  
+}
