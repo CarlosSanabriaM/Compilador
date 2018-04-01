@@ -22,7 +22,7 @@ def f_char(): char{}
 def f_int():  int{}
 def f_real(): double{}
 
-def checkPromotesTo(): void{
+def checkCanBeCast(): void{
 	r = (double) 'c';	
 	r = (double) 1;	
 	r = (double) 1.5;
@@ -34,26 +34,27 @@ def checkPromotesTo(): void{
 	c = (char) 'c';			
 	c = (char) 1;
 	c = (char) 1.5;
-
-"""	
-	r = v_c;		# Error
-	r = v_i;		# Error
-	r = v_r;		# Error
-	r = s;		# Error
-
-	s = 'a';		# Error
-	s = 1;		# Error
-	s = 1.5;		# Error
-
-	v_i = 'a';	# Error
-	v_i = 1;		# Error
-	v_i = 1.5;	# Error
 	
-	s = s;		# ?????
-	v_c = v_c;	# ?????
-	v_i = v_i;	# ?????
-	v_r = v_r;	# ?????
-"""	
+	r = (double) f_real();
+	r = (double) f_int();
+	r = (double) f_char();
+	
+	# Errors
+	r = (char) s;	# Error
+	r = (double) s;	# Error
+	r = (int) s;		# Error
+
+	r = (char) v_i;		# Error
+	r = (double) v_i;	# Error
+	r = (int) v_i;		# Error
+	
+#	r = (v_i) v_i;		# Error sintactico
+#	r = (v_r) v_i;		# Error sintactico
+#	r = (v_c) v_i;		# Error	sintactico
+
+	r = (double) f_void(); # Error
+
+	c = (double) f_char(); # Error de asignacion
 }	
 
 # Main function
