@@ -1,10 +1,12 @@
 # Global variables
 i,n:int;
 c:char;
+
 record:struct {
   intField:int;
   realField:double;
 };
+
 # Functions
 def f(a:int, c:double):int {
   real:double;
@@ -12,10 +14,17 @@ def f(a:int, c:double):int {
   i = a;
   return n;
 }
+
+def h():void{
+	return record;		# Error 2 (h is void)
+}
+
 # Main program
 def main():void {
   i:int;
   r:double;
-  print i, f(n,r), record.intField, record.realField;
+  print record;			# Error 3 (record isnt a simple type)
+  print a;				# Error 1 (a isnt defined)
+  print 5.4 + 4;
+  #print i, f(n,r), record.intField, record.realField;
 }
-

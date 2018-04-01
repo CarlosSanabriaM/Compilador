@@ -37,8 +37,8 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(FunDefinition funDefinition, Object param) {
 		funDefinition.getType().accept(this, param);
-		// A las sentencias de la función le pasamos como parámetro la propia definición de la función.
-		funDefinition.statements.forEach( (stm) -> stm.accept(this, funDefinition) );
+		// A las sentencias de la función, le pasamos como parámetro la propia definición de la función.
+		funDefinition.statements.forEach( (stm) -> stm.accept(this, funDefinition) );							//TODO - pasar la funDefinition o directamente su returnType?
 
 		return null;
 	}
@@ -57,7 +57,8 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		if(assignment.left.getType() == null)
 			assignment.left.setType( new ErrorType(assignment, 
 					"Semantical error: The expression '"+ assignment.right +"' can't be assisgned to '"+ assignment.left +
-					"' because their types are not compatible.") );
+					"' because their types are not compatible "
+					+ "(the right type doesn't promote to the left type).") );
 		
 		return null;
 	}
@@ -67,7 +68,7 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		ifStatement.condition.accept(this, param);
 		
 		//predicate (ifStatement.condition.getType().isLogical())
-		if(! ifStatement.condition.getType().isLogical() && ! (ifStatement.condition.getType() instanceof ErrorType) )	// TODO???
+		if(! ifStatement.condition.getType().isLogical() && ! (ifStatement.condition.getType() instanceof ErrorType) )	// TODO Comprobamos aqui que no es Error Type para no crear otro Error ???
 			ifStatement.condition.setType(
 					new ErrorType(ifStatement.condition, 
 							"Semantical error: The if condition '"+ ifStatement.condition +"' is not logical."));
@@ -92,7 +93,7 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 	public Object visit(Return _return, Object param) {
 		_return.expression.accept(this, param);
 		
-		Type functionReturnType = ((FunctionType) ((FunDefinition) param).getType()).returnType;
+		Type functionReturnType = ( (FunctionType) ((FunDefinition) param).getType() ).returnType;
 		
 		// Las funciones void no pueden retornar valor.
 		if(functionReturnType instanceof VoidType)
@@ -106,8 +107,8 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 			if(_return.expression.getType() == null)
 				_return.expression.setType( new ErrorType(_return.expression, 
 						"Semantical error: The return expression '"+ _return.expression +"' is not valid. "
-								+ "It ins't compatible with the return type declared in the function definition: '"
-								+ functionReturnType +"'.") );
+								+ "Its type ins't compatible with the return type "
+										+ "declared in the function definition: '" + functionReturnType +"'.") );
 		}
 		
 		return null;
@@ -132,10 +133,10 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		write.expression.accept(this, param);
 		
 		// predicate (write.expression.getType().isBuiltIn())
-		if(! write.expression.getType().isBuiltIn() && ! (write.expression.getType() instanceof ErrorType) )	// TODO???
+		if(! write.expression.getType().isBuiltIn() && ! (write.expression.getType() instanceof ErrorType) )	// TODO Comprobamos aqui que no es Error Type para no crear otro Error ???
 			write.expression.setType( new ErrorType(write.expression, 
 					"Semantical error: The write expression '"+ write.expression +"' is not valid. "
-						+ "It must be a simple type (char, int or real).") );	
+						+ "Its type must be a simple type (char, int or real).") );	
 		
 		return null;
 	}

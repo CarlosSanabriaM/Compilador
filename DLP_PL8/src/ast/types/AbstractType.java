@@ -56,6 +56,23 @@ public abstract class AbstractType implements Type {
 		return null;
 	}
 
+	// TODO - dejar esto aquí y NO sobrescribirlos en IntType y CharType por si sale un nuevo tipo booleano???
+//	@Override
+//	public Type logical(Type type) {
+//		if(this.isLogical() && type.isLogical())
+//			return IntType.getInstance();
+//		
+//		return null;
+//	}
+//	
+//	@Override
+//	public Type logical() {
+//		if(this.isLogical())
+//			return IntType.getInstance();
+//		
+//		return null;
+//	}
+
 	@Override
 	public Type promotesTo(Type type) {
 		return null;

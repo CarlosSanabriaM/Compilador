@@ -1,0 +1,11 @@
+
+v:[10]int ;
+
+def f(): void{}
+
+def main():void {
+  i:int;
+  
+  if f(4.5) && 4:
+  	input i;
+}

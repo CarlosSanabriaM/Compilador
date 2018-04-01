@@ -1,5 +1,7 @@
 package ast.types;
 
+import java.util.List;
+
 import ast.ASTNode;
 import errorHandler.EH;
 import visitors.Visitor;
@@ -28,6 +30,57 @@ public class ErrorType extends AbstractType {
 	@Override
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
+	}
+
+	// Type TODO - sobrescribir para que retornen this??
+	@Override
+	public Type arithmetic(Type type) {
+		return this;
+	}
+
+	@Override
+	public Type arithmetic() {
+		return this;
+	}
+
+	@Override
+	public Type comparison(Type type) {
+		return this;
+	}
+
+	@Override
+	public Type logical(Type type) {
+		return this;
+	}
+
+	@Override
+	public Type logical() {
+		return this;
+	}
+
+	@Override
+	public Type promotesTo(Type type) {
+		return this;
+	}
+
+	@Override
+	public Type canBeCast(Type type) {
+		return this;
+	}
+
+	@Override
+	public Type dot(String fieldName) {
+		return this;
+	}
+
+	@Override
+	public Type squareBrackets(Type type) {
+		return this;
+	}
+
+	@Override
+	public Type parenthesis(List<Type> types) {
+		return this;
 	} 
-	
+
 }

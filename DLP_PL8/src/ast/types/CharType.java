@@ -32,7 +32,7 @@ public class CharType extends AbstractType {
 	}
 
 	@Override
-	public boolean isLogical() { // TODO - quitar??
+	public boolean isLogical() { // TODO - Un char puede usarse como expresion booleana??
 		return true;
 	}
 
@@ -72,7 +72,7 @@ public class CharType extends AbstractType {
 
 	@Override
 	public Type canBeCast(Type type) {
-		if(type instanceof ErrorType ||
+		if(type instanceof ErrorType || // TODO - (char) char se puede??
 				type.isBuiltIn())
 			return type;
 		

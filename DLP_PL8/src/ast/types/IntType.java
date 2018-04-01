@@ -78,7 +78,7 @@ public class IntType extends AbstractType {
 	@Override
 	public Type canBeCast(Type type) {
 		if(type instanceof ErrorType ||
-				type.isBuiltIn())
+				type.isBuiltIn())		// TODO - (int) int se puede??
 			return type;
 		
 		return null;

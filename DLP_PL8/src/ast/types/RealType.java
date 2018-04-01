@@ -71,9 +71,9 @@ public class RealType extends AbstractType {
 	
 	@Override
 	public Type canBeCast(Type type) {
-		if(type instanceof ErrorType || //XXX - Cast to char is permitted???
-				type.isBuiltIn())
-			return type;
+		if(type instanceof ErrorType || 
+				type.isBuiltIn())		//XXX - Cast from real to char is permitted??? 
+			return type;					// TODO - (real) real se puede??
 		
 		return null;
 	}
