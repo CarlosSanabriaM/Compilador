@@ -72,13 +72,15 @@ public class IntType extends AbstractType {
 				type instanceof IntType)
 			return type;
 		
+		// Int NO promociona a Char (Java si lo permite)
+		
 		return null;
 	}
 	
 	@Override
 	public Type canBeCast(Type type) {
 		if(type instanceof ErrorType ||
-				type.isBuiltIn())		// TODO - (int) int se puede??
+				type.isBuiltIn())
 			return type;
 		
 		return null;

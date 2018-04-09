@@ -32,7 +32,7 @@ public class ErrorType extends AbstractType {
 		return v.visit(this, param);
 	}
 
-	// Type TODO - sobrescribir para que retornen this??
+	// Type
 	@Override
 	public Type arithmetic(Type type) {
 		return this;

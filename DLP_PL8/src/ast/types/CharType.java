@@ -32,15 +32,20 @@ public class CharType extends AbstractType {
 	}
 
 	@Override
-	public boolean isLogical() { // TODO - Un char puede usarse como expresion booleana??
+	public boolean isLogical() {
 		return true;
 	}
 
 	@Override
 	public Type arithmetic(Type type) {
 		if(type instanceof ErrorType ||
-				type.isBuiltIn())   		// XXX - 'a' + 'a' --> CharType, segun como está hecho. Java lo hace así!
+				type instanceof RealType ||
+				type instanceof IntType ) 
 			return type;
+		
+		// El resultado de 'a' + 'a' es un entero 
+		if(type instanceof CharType)
+			return IntType.getInstance();
 		
 		return null;
 	}
@@ -72,7 +77,7 @@ public class CharType extends AbstractType {
 
 	@Override
 	public Type canBeCast(Type type) {
-		if(type instanceof ErrorType || // TODO - (char) char se puede??
+		if(type instanceof ErrorType ||
 				type.isBuiltIn())
 			return type;
 		
