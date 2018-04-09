@@ -39,5 +39,14 @@ public class RecordType extends AbstractType {
 		}
 		return null;
 	} 
-		
+
+	@Override
+	public int numBytes() {
+		int numBytes = 0;
+		for (RecordField field : fields) 
+			numBytes += field.getType().numBytes();
+			
+		return numBytes;
+	}
+	
 }

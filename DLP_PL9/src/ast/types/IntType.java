@@ -98,5 +98,10 @@ public class IntType extends AbstractType {
 		
 		return null;
 	}
+
+	@Override
+	public int numBytes() {
+		return 2;
+	}
 	
 }

@@ -80,5 +80,5 @@ public class RecordField implements ASTNode {
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	} 
-	
+	//XXX numBytes()???
 }

@@ -96,5 +96,10 @@ public class CharType extends AbstractType {
 		
 		return null;
 	}
+
+	@Override
+	public int numBytes() {
+		return 1;
+	}
 	
 }

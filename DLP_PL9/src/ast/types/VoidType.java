@@ -24,5 +24,10 @@ public class VoidType extends AbstractType {
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
 	} 
+
+	@Override
+	public int numBytes() {
+		return 0; // XXX ??
+	}
 	
 }
