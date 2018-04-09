@@ -1,0 +1,60 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+# Arrays
+v_c: [10]char;
+v_i: [10]int;
+v_r: [10]double;
+
+# Structs
+s: struct{
+	charField: char;
+	intField:  int;
+  	realField: double;
+};
+
+# Functions
+def f_void(): void{}
+
+def f_char(): char{}
+def f_int():  int{}
+def f_real(): double{}
+
+def checkComparison(): void{
+	r = 4 > 4;
+	r = 4 > 'a';
+	r = 4 > 4.5;
+	
+	r = 'a' > 4;
+	r = 'a' > 'a'; 	# Devuelve un CharType
+	r = 'a' > 4.5;
+		
+	r = 4.5 > 4;
+	r = 4.5 > 'a';
+	r = 4.5 > 4.5;
+		
+	r = 4.5 > f_int();
+	r = 4.5 > f_char();
+	r = 4.5 > f_real();
+"""	
+	r = v_c > 4;		# Error (v_c is an array)
+	r = s > 4;		# Error (s is an struct)
+	
+	r = 4 > v_c;		# Error (v_c is an array)
+	r = 'a' > v_c;	# Error (v_c is an array)
+	r = 4.5 > v_c;	# Error (v_c is an array)
+	
+	r = 4 > s;		# Error (s is an struct)
+	r = 'a' > s;		# Error (s is an struct)
+	r = 4.5 > s;		# Error (s is an struct)
+	
+	r = 4.5 > f_void(); # Error (f_void is void)
+"""
+}
+
+# Main function
+def main():void {
+  
+}

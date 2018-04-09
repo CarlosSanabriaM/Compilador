@@ -1,0 +1,28 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+# Arrays
+v_c: [10]char;
+v_i: [10]int;
+v_r: [10]double;
+
+# Structs
+s: struct{
+	charField: char;
+	intField:  int;
+  	realField: double;
+};
+
+# Functions
+def f_void(): void{}
+
+def f_char(): char{}
+def f_int():  int{}
+def f_real(): double{}
+
+# Main function
+def main():void {
+  
+}

@@ -1,0 +1,61 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+# Arrays
+v_c: [10]char;
+v_i: [10]int;
+v_r: [10]double;
+
+# Structs
+s: struct{
+	charField: char;
+	intField:  int;
+  	realField: double;
+};
+
+# Functions
+def f(): char{}
+def g(c: char): char{}
+def h(c: char, i: int): int{}
+def j(c: char, i: int, r: double): double{}
+
+def checkParenthesis(): void{
+#	checkParenthesis(); # Error overflow Introspector ?????
+	
+	print f();	
+	print g('a');	
+	print h('a', 1);	
+	print j('a', 1, 1.5);
+	
+	print g('a');	
+	print h('a', 'a');	
+	print j('a', 'a', 'a');
+	
+	print j('a', 1, 1);
+	
+	# Errors
+	print f('a');				#Error
+	print f(1);					#Error
+	print f(1.5);				#Error
+	print f(1, 1);				#Error
+
+	print g();					#Error
+	print g(1);					#Error
+	print f(1.5);				#Error
+	print f(1.5, 1.5);			#Error
+		
+	print h();					#Error
+	print h('a');				#Error
+	print h(1);					#Error
+	print h(1, 1);				#Error
+	print h(1.5);				#Error
+	print h(1.5, 1.5);			#Error
+	print h('a','a','a');		#Error
+}
+
+# Main function
+def main():void {
+	
+}
