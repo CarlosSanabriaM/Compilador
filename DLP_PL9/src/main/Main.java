@@ -8,6 +8,7 @@ import introspector.view.IntrospectorTree;
 import parser.Parser;
 import scanner.Scanner;
 import visitors.IdentificationVisitor;
+import visitors.OffsetVisitor;
 import visitors.TypeCheckingVisitor;
 
 public class Main {
@@ -37,6 +38,7 @@ public class Main {
 			// * Visitors
 			parser.getAST().accept(new IdentificationVisitor(), null);
 			parser.getAST().accept(new TypeCheckingVisitor(), null);
+			parser.getAST().accept(new OffsetVisitor(), null);
 			
 			// * Check errors again 
 			if(!checkErrors()) {
