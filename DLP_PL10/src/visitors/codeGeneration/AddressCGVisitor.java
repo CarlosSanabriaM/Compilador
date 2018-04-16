@@ -1,5 +1,9 @@
 package visitors.codeGeneration;
 
+import ast.definitions.Scope;
+import ast.definitions.VarDefinition;
+import ast.expressions.Variable;
+import ast.types.IntType;
 import codeGeneration.CodeGenerator;
 
 /**
@@ -14,4 +18,20 @@ public class AddressCGVisitor extends AbstractCGVisitor {
 		this.cg = cg;
 	}
 
+	@Override
+	public Object visit(Variable variable, Object param) {
+		VarDefinition def = (VarDefinition) variable.definition;
+
+		// Si la variable es global, el offset es su dirección tal cual		
+		if(def.scope == Scope.GLOBAL)
+			cg.pusha(def.offset);		
+		else {
+			cg.pushbp();
+			cg.push(def.offset);
+			cg.add(IntType.getInstance()); //TODO - ???
+		}
+		
+		return null;
+	}
+	
 }

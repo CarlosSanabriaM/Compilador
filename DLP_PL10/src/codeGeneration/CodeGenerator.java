@@ -135,14 +135,18 @@ public class CodeGenerator {
 
 		printlnt("' * "+ type +" "+ name +" (offset "+ offset +")");
 	}
+	
+	public void add(Type type) {
+		printlnt("add" + type.suffix());	
+	}
 
 	public void arithmetic(Type type, String operator) {
 		switch (operator) {
 		case "+":
-			printlnt("add" + type.suffix());
+			add(type);
 			break;
 		case "-":
-			printlnt("sub" + type.suffix());
+			printlnt("sub" + type.suffix()); // TODO - sacar a metodos??? sub(Type), mul(Type), ... Add es el mas usado, el resto dudo que se usen por separado
 			break;
 		case "*":
 			printlnt("mul" + type.suffix());

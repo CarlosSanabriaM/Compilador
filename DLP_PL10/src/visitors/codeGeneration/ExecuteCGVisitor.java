@@ -11,7 +11,6 @@ import ast.statements.Read;
 import ast.statements.Statement;
 import ast.statements.Write;
 import ast.types.FunctionType;
-import ast.types.Type;
 import ast.types.VoidType;
 import codeGeneration.CodeGenerator;
 
