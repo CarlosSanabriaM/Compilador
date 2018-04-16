@@ -6,6 +6,7 @@ import ast.Program;
 import ast.definitions.Definition;
 import ast.definitions.FunDefinition;
 import ast.definitions.VarDefinition;
+import ast.statements.Assignment;
 import ast.statements.Read;
 import ast.statements.Write;
 import codeGeneration.CodeGenerator;
@@ -64,6 +65,20 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		read.expression.accept(addressCGVisitor, param); // ADDRESS[[expr]]
 		cg.in(read.expression.getType());
 		cg.store(read.expression.getType());
+		
+		return null;
+	}
+
+	@Override
+	public Object visit(Assignment assignment, Object param) {
+		assignment.left.accept(addressCGVisitor, param); 	// ADDRESS[[left]]
+		assignment.right.accept(valueCGVisitor, param); 	// VALUE[[right]]
+		
+		// En caso de que sea necesario transformar el tipo de la derecha
+		// al tipo de la izquierda, se añaden las conversiones necesarias
+		cg.convert(assignment.right.getType(), assignment.left.getType());
+		
+		cg.store(assignment.left.getType());
 		
 		return null;
 	}

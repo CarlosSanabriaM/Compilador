@@ -69,4 +69,49 @@ public class CodeGenerator {
 		println("store" + type.suffix());	
 	}
 	
+	public void b2i() {
+		println("b2i");	
+	}
+	
+	public void i2b() {
+		println("i2b");	
+	}
+	
+	public void i2f() {
+		println("i2f");	
+	}
+	
+	public void f2i() {
+		println("f2i");	
+	}
+
+	/**
+	 * In case its needed, this method adds the conversions
+	 * to transform 'type1' to 'type2'
+	 */
+	public void convert(Type type1, Type type2) {
+		char t1 = type1.suffix();
+		char t2 = type2.suffix();
+		
+		switch (t1) {
+		case 'b':
+			if(t2 == 'i') b2i();
+			else if(t2 == 'f'){
+				b2i(); i2f();
+			}
+			break;
+		case 'i':
+			if(t2 == 'b') i2b();
+			else if(t2 == 'f') i2f();
+			break;
+		case 'f':
+			if(t2 == 'i') f2i();
+			else if(t2 == 'b'){
+				f2i(); i2b();
+			}
+			break;
+		}
+		
+	}
+	
 }
