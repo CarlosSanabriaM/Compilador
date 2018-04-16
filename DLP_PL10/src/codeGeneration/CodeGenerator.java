@@ -197,6 +197,10 @@ public class CodeGenerator {
 		
 	}
 
+	public void not() {
+		printlnt("not");
+	}
+	
 	public void label(String name) {
 		println(name + ":");
 	}

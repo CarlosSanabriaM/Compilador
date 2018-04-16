@@ -1,0 +1,121 @@
+	' * CharType c (offset 0)
+	' * IntType i (offset 1)
+	' * RealType r (offset 3)
+call main
+halt
+main:
+	' * IntType a (offset -2)
+	' * IntType i (offset -4)
+	enter 4
+	pusha 0
+	pushb 97
+	storeb
+	pusha 0
+	loadb
+	outb
+	pushb 10
+	outb
+	push bp
+	pushi -2
+	addi
+	pushi 1
+	storei
+	push bp
+	pushi -4
+	addi
+	pushb 48
+	b2i
+	pushi 3
+	muli
+	storei
+	push bp
+	pushi -2
+	addi
+	loadi
+	outi
+	pushb 32
+	outb
+	push bp
+	pushi -4
+	addi
+	loadi
+	outi
+	pushb 10
+	outb
+	pusha 3
+	inf
+	storef
+	pushi 2
+	i2f
+	pusha 3
+	loadf
+	mulf
+	outf
+	pushb 10
+	outb
+	pushi 3
+	i2f
+	pushf 4.5
+	subf
+	outf
+	pushb 32
+	outb
+	pushb 48
+	b2i
+	i2f
+	pushf 48.0
+	divf
+	outf
+	pushb 32
+	outb
+	pushb 48
+	b2i
+	pushb 49
+	b2i
+	modi
+	outi
+	pushb 32
+	outb
+	pushb 48
+	b2i
+	pushb 49
+	b2i
+	addi
+	outi
+	pushb 10
+	outb
+	pushi 1
+	pushi 2
+	lti
+	outi
+	pushb 32
+	outb
+	pushi 4
+	pushi 3
+	gei
+	outi
+	pushb 32
+	outb
+	pushi 5
+	pushi 5
+	eqi
+	outi
+	pushb 32
+	outb
+	pushi 1
+	pushi 2
+	and
+	outi
+	pushb 32
+	outb
+	pushi 0
+	pushi 3
+	or
+	outi
+	pushb 32
+	outb
+	pushi 0
+	outi
+	pushb 10
+	outb
+	ret 0, 4, 0

@@ -7,6 +7,7 @@ import ast.expressions.Comparison;
 import ast.expressions.IntLiteral;
 import ast.expressions.Logical;
 import ast.expressions.RealLiteral;
+import ast.expressions.UnaryNot;
 import ast.expressions.Variable;
 import codeGeneration.CodeGenerator;
 
@@ -98,6 +99,14 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 		cast.expression.accept(this, param);	// VALUE[[expr]]
 		cg.convert(cast.expression.getType(), cast.castType);
 		
+		return null;
+	}
+
+	@Override
+	public Object visit(UnaryNot unaryNot, Object param) {
+		unaryNot.expression.accept(this, param);
+		cg.not();
+
 		return null;
 	}
 
