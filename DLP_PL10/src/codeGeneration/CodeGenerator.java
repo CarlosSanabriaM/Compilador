@@ -34,10 +34,6 @@ public class CodeGenerator {
 		println("\t" + str);
 	}
 	
-	public void comment(String str) {
-		printlnt("' * "+ str);
-	}
-	
 	public void directive(String str) {
 		println("\n#"+ str);
 	}
@@ -48,6 +44,18 @@ public class CodeGenerator {
 	
 	public void lineDirective(int line) {
 		directive("line " + line);
+	}
+	
+	public void comment(String str) {
+		printlnt("' * "+ str);
+	}
+	
+	public void varDefinitionComment(VarDefinition varDefinition) {
+		String type = varDefinition.getType().getClass().getSimpleName();
+		String name = varDefinition.getName();
+		int offset = varDefinition.offset;
+
+		comment(type +" "+ name +" (offset "+ offset +")");
 	}
 	
 	public void pusha(int address) {
@@ -84,14 +92,14 @@ public class CodeGenerator {
 		println("halt\n");
 	}
 
-	public void out(Type type) {
-		printlnt("out" + type.suffix());
-	}
-
 	public void in(Type type) {
 		printlnt("in" + type.suffix());
 	}
 
+	public void out(Type type) {
+		printlnt("out" + type.suffix());
+	}
+	
 	public void load(Type type) {
 		printlnt("load" + type.suffix());
 	}
@@ -143,14 +151,6 @@ public class CodeGenerator {
 			break;
 		}
 		
-	}
-
-	public void varDefinitionComment(VarDefinition varDefinition) {
-		String type = varDefinition.getType().getClass().getSimpleName();
-		String name = varDefinition.getName();
-		int offset = varDefinition.offset;
-
-		comment(type +" "+ name +" (offset "+ offset +")");
 	}
 	
 	public void add(Type type) {
