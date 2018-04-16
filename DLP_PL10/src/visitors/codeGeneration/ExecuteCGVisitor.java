@@ -23,6 +23,8 @@ import codeGeneration.CodeGenerator;
 public class ExecuteCGVisitor extends AbstractCGVisitor {
 	
 	private FileWriter fw;
+	private String inputFileName;
+	private String outputFileName;
 	
 	private CodeGenerator cg;
 	private ValueCGVisitor valueCGVisitor;
@@ -33,6 +35,9 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 	 * Es el encargado de crear los demás ExecuteVisitor.
 	 */
 	public ExecuteCGVisitor(String inputFileName, String outputFileName) {
+		this.inputFileName = inputFileName;
+		this.outputFileName = outputFileName;
+		
 		// Creamos el Writer para el fichero de salida
 		//FileWriter fw=null; TODO - fw es local o es atributo de la clase? Yo lo pondria como atributo, para al final del visit(Program) tener una referencia a el y poder cerrarlo.
 		try {
@@ -57,7 +62,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 			try {
 				fw.close();
 			} catch (IOException e) {
-				System.err.println("Error by closing the output file");
+				System.err.println("Error by closing the output file: \"" + outputFileName + "\".");
 			}
 		}
 	}
@@ -65,7 +70,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 	@Override
 	public Object visit(Program program, Object param) {
 		// Añadimos la directiva source con el nombre del fichero de entrada
-		
+		cg.sourceDirective(inputFileName);
 		
 		// Info de las variables globales
 		for (Definition def : program.definitions)
@@ -95,9 +100,13 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 	
 	@Override
 	public Object visit(FunDefinition funDefinition, Object param) {
+		cg.lineDirective(funDefinition.getLine());// TODO - da la linea mal
 		cg.label(funDefinition.getName());
 
+		// TODO - Info de los parametros? For de ellos o visit del FunctionType??		' * Parameters
+		
 		// Info de las variables locales
+		cg.comment("Local variables");
 		for (Statement stm : funDefinition.statements)
 			if(stm instanceof VarDefinition)
 				stm.accept(this, param); // EXECUTE[[stm]]
@@ -119,6 +128,9 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 
 	@Override
 	public Object visit(Write write, Object param) {
+		cg.lineDirective(write.getLine());	//TODO - la linea la da mal, la da en el ;. Debe ser cosa del lexico/sintactico
+		cg.comment("Write");
+		
 		write.expression.accept(valueCGVisitor, param); // VALUE[[expr]]
 		cg.out(write.expression.getType());
 		
@@ -127,6 +139,9 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 
 	@Override
 	public Object visit(Read read, Object param) {
+		cg.lineDirective(read.getLine());
+		cg.comment("Read");
+		
 		read.expression.accept(addressCGVisitor, param); // ADDRESS[[expr]]
 		cg.in(read.expression.getType());
 		cg.store(read.expression.getType());
@@ -136,6 +151,9 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 
 	@Override
 	public Object visit(Assignment assignment, Object param) {
+		cg.lineDirective(assignment.getLine());// TODO - cada statement en su visit pone esta linea?? Porque si se quiere hacer en el for, while e if dan la linea mal, a menos q se acceda a su cond.
+		cg.comment("Assignment");
+		
 		assignment.left.accept(addressCGVisitor, param); 	// ADDRESS[[left]]
 		assignment.right.accept(valueCGVisitor, param); 	// VALUE[[right]]
 		

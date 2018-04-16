@@ -39,11 +39,11 @@ public class CodeGenerator {
 	}
 	
 	public void directive(String str) {
-		println("#"+ str);
+		println("\n#"+ str);
 	}
 	
 	public void sourceDirective(String inputFileName) {
-		directive("source\t\""+ inputFileName + "\"");
+		directive("source\t\""+ inputFileName + "\"\n");
 	}
 	
 	public void lineDirective(int line) {
@@ -76,11 +76,12 @@ public class CodeGenerator {
 	}
 	
 	public void callMain() {
+		println("\n' Invocation to the main function");
 		println("call main");
 	}
 	
 	public void halt() {
-		println("halt");
+		println("halt\n");
 	}
 
 	public void out(Type type) {
@@ -218,7 +219,7 @@ public class CodeGenerator {
 	}
 	
 	public void label(String name) {
-		println(name + ":");
+		println("\n" + name + ":");
 	}
 
 	public void enter(int bytesLocalVariables) {
@@ -226,7 +227,7 @@ public class CodeGenerator {
 	}
 
 	public void ret(int bytesReturnType, int bytesLocalVariables, int bytesParameters) {
-		printlnt("ret " + bytesReturnType + ", " + bytesLocalVariables + ", " + bytesParameters);
+		printlnt("ret\t" + bytesReturnType + ", " + bytesLocalVariables + ", " + bytesParameters);
 	}
 	
 }
