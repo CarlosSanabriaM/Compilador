@@ -28,6 +28,9 @@ public class OffsetVisitor extends AbstractVisitor {
 		
 		functionType.returnType.accept(this, param);
 		
+		// Guardamos el numero de bytes de los parametros en el tipo de la función, para usarlo en ExecuteCGVisitor
+		functionType.bytesParameters = numTotalBytesParamsAtItsRight;
+		
 		return null;
 	}
 	
@@ -37,6 +40,9 @@ public class OffsetVisitor extends AbstractVisitor {
 		
 		funDefinition.getType().accept(this, param);
 		funDefinition.statements.forEach( (stm) -> stm.accept(this, param) );
+		
+		// Guardamos el numero de bytes de las vars. locales en la definición de la función, para usarlo en ExecuteCGVisitor
+		funDefinition.bytesLocalVariables = numTotalBytesLocalVars;
 
 		return null;
 	}

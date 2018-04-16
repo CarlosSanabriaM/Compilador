@@ -26,33 +26,41 @@ public class CodeGenerator {
 		}
 	}
 	
+	/**
+	 * Writes the given string to the file specified
+	 * in the FileWriter, adding a "\t".
+	 */
+	private void printlnt(String str) {
+		println("\t" + str);
+	}
+	
 	public void pusha(int address) {
-		println("pusha " + address);
+		printlnt("pusha " + address);
 	}
 	
 	public void pushbp() {
-		println("push bp"); //TODO - pusha bp??
+		printlnt("push bp"); //TODO - pusha bp??
 	}
 	
 	public void push(char value) {
 		// Convertimos el char a entero
-		println("pushb " + (int) value); // TODO - cast a int??
+		printlnt("pushb " + (int) value); // TODO - cast a int??
 	}
 	
 	public void push(int value) {
-		println("pushi " + value);
+		printlnt("pushi " + value);
 	}
 	
 	public void push(double value) {
-		println("pushf " + value);
+		printlnt("pushf " + value);
 	}
 	
 	public void call(String functionName) {
-		println("call " + functionName);
+		printlnt("call " + functionName);
 	}
 	
 	public void callMain() {
-		call("main");
+		println("call main");
 	}
 	
 	public void halt() {
@@ -60,35 +68,35 @@ public class CodeGenerator {
 	}
 
 	public void out(Type type) {
-		println("out" + type.suffix());
+		printlnt("out" + type.suffix());
 	}
 
 	public void in(Type type) {
-		println("in" + type.suffix());
+		printlnt("in" + type.suffix());
 	}
 
 	public void load(Type type) {
-		println("load" + type.suffix());
+		printlnt("load" + type.suffix());
 	}
 	
 	public void store(Type type) {
-		println("store" + type.suffix());	
+		printlnt("store" + type.suffix());	
 	}
 	
 	public void b2i() {
-		println("b2i");	
+		printlnt("b2i");	
 	}
 	
 	public void i2b() {
-		println("i2b");	
+		printlnt("i2b");	
 	}
 	
 	public void i2f() {
-		println("i2f");	
+		printlnt("i2f");	
 	}
 	
 	public void f2i() {
-		println("f2i");	
+		printlnt("f2i");	
 	}
 
 	/**
@@ -125,25 +133,25 @@ public class CodeGenerator {
 		String name = varDefinition.getName();
 		int offset = varDefinition.offset;
 
-		println("/t' * "+ type +" "+ name +" (offset "+ offset +")");
+		printlnt("' * "+ type +" "+ name +" (offset "+ offset +")");
 	}
 
 	public void arithmetic(Type type, String operator) {
 		switch (operator) {
 		case "+":
-			println("add" + type.suffix());
+			printlnt("add" + type.suffix());
 			break;
 		case "-":
-			println("sub" + type.suffix());
+			printlnt("sub" + type.suffix());
 			break;
 		case "*":
-			println("mul" + type.suffix());
+			printlnt("mul" + type.suffix());
 			break;
 		case "/":
-			println("div" + type.suffix());
+			printlnt("div" + type.suffix());
 			break;			
 		case "%":
-			println("mod" + type.suffix());
+			printlnt("mod" + type.suffix());
 			break;			
 		}
 		
@@ -152,22 +160,22 @@ public class CodeGenerator {
 	public void comparison(Type type, String operator) {
 		switch (operator) {
 		case ">":
-			println("gt" + type.suffix());
+			printlnt("gt" + type.suffix());
 			break;
 		case ">=":
-			println("ge" + type.suffix());
+			printlnt("ge" + type.suffix());
 			break;
 		case "<":
-			println("lt" + type.suffix());
+			printlnt("lt" + type.suffix());
 			break;
 		case "<=":
-			println("le" + type.suffix());
+			printlnt("le" + type.suffix());
 			break;			
 		case "==":
-			println("eq" + type.suffix());
+			printlnt("eq" + type.suffix());
 			break;			
 		case "!=":
-			println("ne" + type.suffix());
+			printlnt("ne" + type.suffix());
 			break;			
 		}
 		
@@ -176,13 +184,25 @@ public class CodeGenerator {
 	public void logical(String operator) {
 		switch (operator) {
 		case "&&":
-			println("and");
+			printlnt("and");
 			break;
 		case "||":
-			println("or");
+			printlnt("or");
 			break;			
 		}
 		
+	}
+
+	public void label(String name) {
+		println(name + ":");
+	}
+
+	public void enter(int bytesLocalVariables) {
+		printlnt("enter " + bytesLocalVariables);
+	}
+
+	public void ret(int bytesReturnType, int bytesLocalVariables, int bytesParameters) {
+		printlnt("ret " + bytesReturnType + ", " + bytesLocalVariables + ", " + bytesParameters);
 	}
 	
 }

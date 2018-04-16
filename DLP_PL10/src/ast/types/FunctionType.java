@@ -11,6 +11,8 @@ public class FunctionType extends AbstractType {
 	public List<VarDefinition> param;
 	public Type returnType;
 	
+	public int bytesParameters;
+	
 	public FunctionType(int line, int column, List<VarDefinition> param, Type returnType) {
 		super(line, column);
 		this.param = param;

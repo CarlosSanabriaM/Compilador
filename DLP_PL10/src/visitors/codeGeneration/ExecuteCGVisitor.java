@@ -8,7 +8,11 @@ import ast.definitions.FunDefinition;
 import ast.definitions.VarDefinition;
 import ast.statements.Assignment;
 import ast.statements.Read;
+import ast.statements.Statement;
 import ast.statements.Write;
+import ast.types.FunctionType;
+import ast.types.Type;
+import ast.types.VoidType;
 import codeGeneration.CodeGenerator;
 
 /**
@@ -53,6 +57,37 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 	}
 
 	@Override
+	public Object visit(VarDefinition varDefinition, Object param) {
+		cg.varDefinitionComment(varDefinition);
+		
+		return null;
+	}
+	
+	@Override
+	public Object visit(FunDefinition funDefinition, Object param) {
+		cg.label(funDefinition.getName());
+
+		// Info de las variables locales
+		for (Statement stm : funDefinition.statements)
+			if(stm instanceof VarDefinition)
+				stm.accept(this, param); // EXECUTE[[stm]]
+		
+		cg.enter(funDefinition.bytesLocalVariables);
+		
+		// Ejecutamos las sentencias que no son defs. vars.
+		for (Statement stm : funDefinition.statements)
+			if(! (stm instanceof VarDefinition) )
+				stm.accept(this, param); // EXECUTE[[stm]]
+		
+		// Si el tipo de retorno de la función es VOID (no tiene returns) hay que añadir un ret
+		FunctionType functionType = (FunctionType) funDefinition.getType();
+		if(functionType.returnType instanceof VoidType)
+			cg.ret(0, funDefinition.bytesLocalVariables, functionType.bytesParameters);
+		
+		return null;
+	}
+
+	@Override
 	public Object visit(Write write, Object param) {
 		write.expression.accept(valueCGVisitor, param); // VALUE[[expr]]
 		cg.out(write.expression.getType());
@@ -79,13 +114,6 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		cg.convert(assignment.right.getType(), assignment.left.getType());
 		
 		cg.store(assignment.left.getType());
-		
-		return null;
-	}
-
-	@Override
-	public Object visit(VarDefinition varDefinition, Object param) {
-		cg.varDefinitionComment(varDefinition);
 		
 		return null;
 	}

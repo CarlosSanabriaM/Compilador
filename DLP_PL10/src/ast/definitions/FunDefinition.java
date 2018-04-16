@@ -9,6 +9,8 @@ import visitors.Visitor;
 public class FunDefinition extends AbstractDefinition {
 
 	public List<Statement> statements;
+	
+	public int bytesLocalVariables;
 
 	public FunDefinition(int line, int column, String name, FunctionType type, List<Statement> statements) {
 		super(line, column, name, type);
