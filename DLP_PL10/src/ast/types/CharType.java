@@ -96,8 +96,17 @@ public class CharType extends AbstractType {
 		
 		return null;
 	}
-
 	
+	@Override
+	public Type superType(Type type) {
+		if(type instanceof ErrorType ||
+				type.isBuiltIn())
+			return type;
+		
+		return null;
+	}
+	
+
 	@Override
 	public int numBytes() {
 		return 1;

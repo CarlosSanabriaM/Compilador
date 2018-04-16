@@ -82,6 +82,11 @@ public abstract class AbstractType implements Type {
 	}
 	
 	@Override
+	public Type superType(Type type) {
+		return null;
+	}
+
+	@Override
 	public int numBytes() {
 		return 0; // XXX ??
 	}

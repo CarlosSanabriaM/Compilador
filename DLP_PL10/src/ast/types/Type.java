@@ -85,6 +85,12 @@ public interface Type extends ASTNode{
 	 */
 	Type parenthesis(List<Type> types);
 	
+	/**
+	 * If the type who calls the function and the type passed as parameter
+	 * are compatible, returns the greater of the two types. If not, returns null.
+	 */
+	Type superType(Type type);
+	
 	
 	/**
 	 * Returns the number of bytes occupied by the type in memory

@@ -78,6 +78,17 @@ public class RealType extends AbstractType {
 		return null;
 	}
 
+	@Override
+	public Type superType(Type type) {
+		if(type instanceof ErrorType)
+			return type;
+		
+		if(type.isBuiltIn())
+			return this;
+		
+		return null;
+	}
+	
 	
 	@Override
 	public int numBytes() {

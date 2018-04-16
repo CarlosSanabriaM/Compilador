@@ -26,7 +26,7 @@ public class ErrorType extends AbstractType {
 		return "Error at line " + getLine() + " and column "+ getColumn() +":\n\t"+ message;
 	}
 
-	// Visitor
+	// Visitor --> En todos los visit retornamos this
 	@Override
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
@@ -80,6 +80,11 @@ public class ErrorType extends AbstractType {
 
 	@Override
 	public Type parenthesis(List<Type> types) {
+		return this;
+	}
+
+	@Override
+	public Type superType(Type type) {
 		return this;
 	} 
 

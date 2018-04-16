@@ -98,7 +98,20 @@ public class IntType extends AbstractType {
 		
 		return null;
 	}
-
+	
+	@Override
+	public Type superType(Type type) {
+		if(type instanceof ErrorType ||
+				type instanceof RealType ||
+				type instanceof IntType)
+			return type;
+		
+		if(type instanceof CharType)
+			return this;
+		
+		return null;
+	}
+	
 	
 	@Override
 	public int numBytes() {
