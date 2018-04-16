@@ -1,4 +1,4 @@
-package visitors.codeGeneration;
+package visitors;
 
 import java.util.ListIterator;
 
@@ -8,7 +8,6 @@ import ast.definitions.VarDefinition;
 import ast.types.FunctionType;
 import ast.types.RecordField;
 import ast.types.RecordType;
-import visitors.AbstractVisitor;
 
 public class OffsetVisitor extends AbstractVisitor {
 

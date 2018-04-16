@@ -9,8 +9,8 @@ import introspector.view.IntrospectorTree;
 import parser.Parser;
 import scanner.Scanner;
 import visitors.IdentificationVisitor;
+import visitors.OffsetVisitor;
 import visitors.TypeCheckingVisitor;
-import visitors.codeGeneration.OffsetVisitor;
 
 public class Main {
 	public static void main(String args[]) throws IOException {
