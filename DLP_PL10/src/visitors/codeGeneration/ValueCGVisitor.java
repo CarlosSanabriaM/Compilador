@@ -2,6 +2,7 @@ package visitors.codeGeneration;
 
 import ast.expressions.Arithmetic;
 import ast.expressions.CharLiteral;
+import ast.expressions.Comparison;
 import ast.expressions.IntLiteral;
 import ast.expressions.RealLiteral;
 import ast.expressions.Variable;
@@ -52,14 +53,27 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 	}
 
 	@Override
-	public Object visit(Arithmetic arithmetic, Object param) {
-		arithmetic.leftOp.accept(this, param); 	// VALUE[[leftOp]]
-		cg.convert(arithmetic.leftOp.getType(), arithmetic.getType());
+	public Object visit(Arithmetic arithm, Object param) {
+		arithm.leftOp.accept(this, param);	// VALUE[[leftOp]]
+		cg.convert(arithm.leftOp.getType(), arithm.getType());
 		
-		arithmetic.rightOp.accept(this, param); 	// VALUE[[rightOp]]
-		cg.convert(arithmetic.rightOp.getType(), arithmetic.getType());
+		arithm.rightOp.accept(this, param); 	// VALUE[[rightOp]]
+		cg.convert(arithm.rightOp.getType(), arithm.getType());
 		
-		cg.arithmetic(arithmetic.getType(), arithmetic.operator);
+		cg.arithmetic(arithm.getType(), arithm.operator);
+		
+		return null;
+	}
+	
+	@Override
+	public Object visit(Comparison comp, Object param) {
+		comp.leftOp.accept(this, param);		// VALUE[[leftOp]]
+		cg.convert(comp.leftOp.getType(), comp.leftOp.getType().superType(comp.rightOp.getType()));
+		
+		comp.rightOp.accept(this, param);	// VALUE[[rightOp]]
+		cg.convert(comp.rightOp.getType(), comp.rightOp.getType().superType(comp.leftOp.getType()));
+		
+		cg.comparison(comp.getType(), comp.operator);
 		
 		return null;
 	}

@@ -42,11 +42,5 @@ public class ArrayType extends AbstractType {
 	public int numBytes() {
 		return size * of.numBytes();
 	}
-
-	
-	@Override
-	public char suffix() {
-		return ' '; // TODO - "" o null ??? o String???
-	}
 	
 }

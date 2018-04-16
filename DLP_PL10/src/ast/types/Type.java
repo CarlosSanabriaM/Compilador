@@ -95,6 +95,6 @@ public interface Type extends ASTNode{
 	/**
 	 * Returns the suffix of this type
 	 */
-	char suffix();
+	char suffix();// TODO - String???
 	
 }

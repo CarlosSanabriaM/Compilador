@@ -49,9 +49,4 @@ public class RecordType extends AbstractType {
 		return numBytes;
 	}
 
-	
-	@Override
-	public char suffix() {
-		return ' '; // TODO - "" o null ??? o String???
-	}
 }

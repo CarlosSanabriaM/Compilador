@@ -64,16 +64,5 @@ public class FunctionType extends AbstractType {
 		// Si todo es correcto, devuelvo el tipo de retorno
 		return returnType;
 	} 
-
 	
-	@Override
-	public int numBytes() {
-		return 0; // XXX ??
-	}
-
-	
-	@Override
-	public char suffix() {
-		return ' '; // TODO - "" o null ??? o String???
-	}	
 }

@@ -80,5 +80,15 @@ public abstract class AbstractType implements Type {
 	public Type parenthesis(List<Type> types) {
 		return null;
 	}
-
+	
+	@Override
+	public int numBytes() {
+		return 0; // XXX ??
+	}
+	
+	@Override
+	public char suffix() {
+		return ' ';
+	}
+	
 }
