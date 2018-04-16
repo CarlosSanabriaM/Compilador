@@ -34,7 +34,8 @@ public class CodeGenerator {
 	}
 	
 	public void push(char value) {
-		println("pushb " + value);
+		// Convertimos el char a entero
+		println("pushb " + (int) value); // TODO - cast a int??
 	}
 	
 	public void push(int value) {
