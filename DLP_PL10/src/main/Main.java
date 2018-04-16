@@ -1,6 +1,5 @@
 package main;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 
 import errorHandler.EH;
@@ -22,29 +21,21 @@ public class Main {
 	    }
 	        
 		// We create a Reader for the input file
+		String inputFileName = args[0];
 		FileReader fr=null;
 		try {
-			fr=new FileReader(args[0]);
+			fr=new FileReader(inputFileName);
 		} catch(IOException io) {
-			System.err.println("The input file "+args[0]+" could not be opened.");
+			System.err.println("The input file "+inputFileName+" could not be opened.");
 			return;
 		}
 		
-		// We create a Writer for the output file
+		// If file output is not given, by default we use "output.txt"
 		String outputFileName;
 		if(args.length >= 2) {
 			outputFileName = args[1];
-		} else { // If file output is not given, by default we use "output.txt"
+		} else {
 			outputFileName = "output.txt";
-		}
-		
-		FileWriter fw=null;
-		try {
-			fw=new FileWriter(outputFileName);
-		} catch(IOException io) {
-			System.err.println("The output file "+outputFileName+" could not be opened.");
-			fr.close(); // if error opening Writer, close Reader!
-			return;
 		}
 		
 		// * Scanner and parser creation
@@ -60,7 +51,7 @@ public class Main {
 			parser.getAST().accept(new IdentificationVisitor(), null);
 			parser.getAST().accept(new TypeCheckingVisitor(), null);
 			parser.getAST().accept(new OffsetVisitor(), null);
-			parser.getAST().accept(new ExecuteCGVisitor(fw), null);
+			parser.getAST().accept(new ExecuteCGVisitor(inputFileName, outputFileName), null);
 			
 			// * Check errors again 
 			if(!checkErrors()) {
@@ -70,9 +61,6 @@ public class Main {
 			}
 		}
 		
-		// We close the output file
-		if(fw != null)
-			fw.close(); // TODO se hace aqui??
 	}
 	
 	/**

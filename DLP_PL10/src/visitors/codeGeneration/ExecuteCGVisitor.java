@@ -1,6 +1,7 @@
 package visitors.codeGeneration;
 
 import java.io.FileWriter;
+import java.io.IOException;
 
 import ast.Program;
 import ast.definitions.Definition;
@@ -21,6 +22,8 @@ import codeGeneration.CodeGenerator;
  */
 public class ExecuteCGVisitor extends AbstractCGVisitor {
 	
+	private FileWriter fw;
+	
 	private CodeGenerator cg;
 	private ValueCGVisitor valueCGVisitor;
 	private AddressCGVisitor addressCGVisitor;
@@ -29,12 +32,34 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 	 * Es el primero de los ExecuteVisitor que se llama.
 	 * Es el encargado de crear los demás ExecuteVisitor.
 	 */
-	public ExecuteCGVisitor(FileWriter out) { //TODO - aqui recibe el nombre del fichero o el FileWriter??
-		cg = new CodeGenerator(out);
+	public ExecuteCGVisitor(String inputFileName, String outputFileName) {
+		// Creamos el Writer para el fichero de salida
+		//FileWriter fw=null; TODO - fw es local o es atributo de la clase? Yo lo pondria como atributo, para al final del visit(Program) tener una referencia a el y poder cerrarlo.
+		try {
+			fw = new FileWriter(outputFileName);
+		} catch(IOException io) {
+			System.err.println("The output file "+outputFileName+" could not be opened.");
+			return;
+		}
+		
+		cg = new CodeGenerator(fw);
 
 		// Les pasa el codeGenerator ya creado, en lugar del fileWriter, para que no tengan que crearlo.
 		valueCGVisitor = new ValueCGVisitor(cg); // TODO - ???
 		addressCGVisitor = new AddressCGVisitor(cg);
+	}
+	
+	/**
+	 * Se encarga de cerrar el Writer
+	 */
+	private void closeWriter() {// TODO ???
+		if(fw != null) {
+			try {
+				fw.close();
+			} catch (IOException e) {
+				System.err.println("Error by closing the output file");
+			}
+		}
 	}
 
 	@Override
@@ -54,6 +79,9 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		for (Definition def : program.definitions)
 			if(def instanceof FunDefinition)
 				def.accept(this, param); // EXECUTE[[def]]
+		
+		// Cerramos el Writer
+		closeWriter(); // TODO ???
 		
 		return null;
 	}
