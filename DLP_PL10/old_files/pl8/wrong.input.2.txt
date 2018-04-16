@@ -1,0 +1,10 @@
+date: struct  { 
+  day:int;
+  month:int;
+  day:double;		# Error 1
+};
+
+def main():void {
+  input date.year;	# Error 2 (se debe comentar el error 1 para que salga este, ya que el error 1 se detecta en el sintactico)
+}
+

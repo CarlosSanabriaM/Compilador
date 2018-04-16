@@ -1,0 +1,81 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+# Arrays
+v_c: [10]char;
+v_i: [10]int;
+v_r: [10]double;
+
+# Structs
+s: struct{
+	charField: char;
+	intField:  int;
+  	realField: double;
+};
+
+# Functions
+def f_void(): void{}
+def f_char(): char{}
+def f_int():  int{}
+def f_real(): double{}
+
+def checkLogical(): void{
+	i = 4 && 4;
+	i = 4 && 'a';
+	
+	i = 'a' && 4;
+	r = 'a' && 'a';
+
+	i = f_int() && f_int();
+	i = f_char() && f_int();
+	i = f_char() && f_char();
+	i = f_int() && f_char();
+
+"""	
+	# Errors
+	i = 4.5 && 4;		# Error (double cant be used in logical)
+	i = 4.5 && 'a';		# Error (double cant be used in logical)
+	i = 4.5 && 4.5;		# Error (double cant be used in logical)
+	i = 'a' && 4.5;		# Error (double cant be used in logical)
+	i = 4 && 4.5;		# Error (double cant be used in logical)
+	i = 4.5 && f_real();	# Error (double cant be used in logical)
+	i = 4.5 && f_int();	# Error (double cant be used in logical)
+	i = 4.5 && f_char();	# Error (double cant be used in logical)
+	
+	i = v_c && 4;		# Error (v_c is an array)
+	i = s && 4;			# Error (s is an struct)
+	
+	i = 4 && v_c;		# Error (v_c is an array)
+	i = 'a' && v_c;		# Error (v_c is an array)
+	i = 4.5 && v_c;		# Error (v_c is an array)
+	
+	i = 4 && s;			# Error (s is an struct)
+	i = 'a' && s;		# Error (s is an struct)
+	i = 4.5 && s;		# Error (s is an struct)
+	
+	i = 4.5 && f_void(); # Error (f_void is void)
+"""
+	
+	# UnaryNot
+	i = !4;
+	i = !'a';
+	i = !f_char();
+	i = !f_int();
+		
+"""	
+	# Errors
+	i = !4.5;		# Error (double cant be used in logical)
+	i = !f_real();	# Error (double cant be used in logical)
+	
+	i = !v_c;		# Error (v_c is an array)
+	i = !s;			# Error (s is an struct)
+	i = !f_void();	# Error (f_void is void)
+"""
+}
+
+# Main function
+def main():void {
+	
+}
