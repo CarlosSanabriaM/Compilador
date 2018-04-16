@@ -66,6 +66,10 @@ public class CodeGenerator {
 		println("in" + type.suffix());
 	}
 
+	public void load(Type type) {
+		println("load" + type.suffix());
+	}
+	
 	public void store(Type type) {
 		println("store" + type.suffix());	
 	}

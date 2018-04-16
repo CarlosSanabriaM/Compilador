@@ -3,6 +3,7 @@ package visitors.codeGeneration;
 import ast.expressions.CharLiteral;
 import ast.expressions.IntLiteral;
 import ast.expressions.RealLiteral;
+import ast.expressions.Variable;
 import codeGeneration.CodeGenerator;
 
 /**
@@ -12,9 +13,12 @@ import codeGeneration.CodeGenerator;
 public class ValueCGVisitor extends AbstractCGVisitor {
 
 	private CodeGenerator cg;
+	private AddressCGVisitor addressCGVisitor;
 	
 	public ValueCGVisitor(CodeGenerator cg) {
 		this.cg = cg;
+		
+		addressCGVisitor = new AddressCGVisitor(cg);//TODO - crear aqui o recibirlo como parametro del ctor??
 	}
 
 	@Override
@@ -34,6 +38,14 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 	@Override
 	public Object visit(RealLiteral realLiteral, Object param) {
 		cg.push(realLiteral.value);
+		
+		return null;
+	}
+	
+	@Override
+	public Object visit(Variable variable, Object param) {
+		variable.accept(addressCGVisitor, param); // ADDRESS[[variable]]
+		cg.load(variable.getType());
 		
 		return null;
 	}
