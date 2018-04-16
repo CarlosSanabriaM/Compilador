@@ -1,6 +1,7 @@
 package visitors.codeGeneration;
 
 import ast.expressions.Arithmetic;
+import ast.expressions.Cast;
 import ast.expressions.CharLiteral;
 import ast.expressions.Comparison;
 import ast.expressions.IntLiteral;
@@ -88,6 +89,14 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 		cg.convert(logic.rightOp.getType(), logic.getType());
 		
 		cg.logical(logic.operator);
+		
+		return null;
+	}
+
+	@Override
+	public Object visit(Cast cast, Object param) {
+		cast.expression.accept(this, param);	// VALUE[[expr]]
+		cg.convert(cast.expression.getType(), cast.castType);
 		
 		return null;
 	}
