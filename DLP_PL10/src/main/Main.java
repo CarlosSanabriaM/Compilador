@@ -11,11 +11,12 @@ import scanner.Scanner;
 import visitors.IdentificationVisitor;
 import visitors.OffsetVisitor;
 import visitors.TypeCheckingVisitor;
+import visitors.codeGeneration.ExecuteCGVisitor;
 
 public class Main {
 	public static void main(String args[]) throws IOException {
 		// At least, we need the name of the input file
-		if (args.length<1) {
+		if (args.length < 1) {
 	        System.err.println("Pass me the name of the input file.");
 	        return;
 	    }
@@ -31,7 +32,7 @@ public class Main {
 		
 		// We create a Writer for the output file
 		String outputFileName;
-		if(args[1] != null) {
+		if(args.length >= 2) {
 			outputFileName = args[1];
 		} else { // If file output is not given, by default we use "output.txt"
 			outputFileName = "output.txt";
@@ -59,6 +60,7 @@ public class Main {
 			parser.getAST().accept(new IdentificationVisitor(), null);
 			parser.getAST().accept(new TypeCheckingVisitor(), null);
 			parser.getAST().accept(new OffsetVisitor(), null);
+			parser.getAST().accept(new ExecuteCGVisitor(fw), null);
 			
 			// * Check errors again 
 			if(!checkErrors()) {
