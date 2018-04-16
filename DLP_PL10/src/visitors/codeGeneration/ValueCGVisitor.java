@@ -4,6 +4,7 @@ import ast.expressions.Arithmetic;
 import ast.expressions.CharLiteral;
 import ast.expressions.Comparison;
 import ast.expressions.IntLiteral;
+import ast.expressions.Logical;
 import ast.expressions.RealLiteral;
 import ast.expressions.Variable;
 import codeGeneration.CodeGenerator;
@@ -74,6 +75,19 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 		cg.convert(comp.rightOp.getType(), comp.rightOp.getType().superType(comp.leftOp.getType()));
 		
 		cg.comparison(comp.getType(), comp.operator);
+		
+		return null;
+	}
+	
+	@Override
+	public Object visit(Logical logic, Object param) {
+		logic.leftOp.accept(this, param);	// VALUE[[leftOp]]
+		cg.convert(logic.leftOp.getType(), logic.getType());
+		
+		logic.rightOp.accept(this, param);	// VALUE[[rightOp]]
+		cg.convert(logic.rightOp.getType(), logic.getType());
+		
+		cg.logical(logic.operator);
 		
 		return null;
 	}

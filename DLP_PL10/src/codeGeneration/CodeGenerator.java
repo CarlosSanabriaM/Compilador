@@ -172,5 +172,17 @@ public class CodeGenerator {
 		}
 		
 	}
+
+	public void logical(String operator) {
+		switch (operator) {
+		case "&&":
+			println("and");
+			break;
+		case "||":
+			println("or");
+			break;			
+		}
+		
+	}
 	
 }
