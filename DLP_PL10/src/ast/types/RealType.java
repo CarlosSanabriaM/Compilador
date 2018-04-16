@@ -78,9 +78,15 @@ public class RealType extends AbstractType {
 		return null;
 	}
 
+	
 	@Override
 	public int numBytes() {
 		return 4;
 	}
+
 	
+	@Override
+	public String suffix() {
+		return "f";
+	} 
 }

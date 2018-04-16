@@ -103,5 +103,10 @@ public class IntType extends AbstractType {
 	public int numBytes() {
 		return 2;
 	}
+
 	
+	@Override
+	public String suffix() {
+		return "i";
+	} 
 }

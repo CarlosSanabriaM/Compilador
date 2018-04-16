@@ -83,9 +83,15 @@ public class ErrorType extends AbstractType {
 		return this;
 	} 
 
+	
 	@Override
 	public int numBytes() {
 		return 0; // XXX ??
 	}
+
 	
+	@Override
+	public String suffix() {
+		return ""; // TODO - "" o null ???
+	} 
 }

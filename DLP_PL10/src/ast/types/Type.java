@@ -85,9 +85,16 @@ public interface Type extends ASTNode{
 	 */
 	Type parenthesis(List<Type> types);
 	
+	
 	/**
 	 * Returns the number of bytes occupied by the type in memory
 	 */
 	int numBytes();
+	
+	
+	/**
+	 * Returns the suffix of this type
+	 */
+	String suffix();
 	
 }

@@ -37,9 +37,16 @@ public class ArrayType extends AbstractType {
 		return null;
 	}
 
+	
 	@Override
 	public int numBytes() {
 		return size * of.numBytes();
+	}
+
+	
+	@Override
+	public String suffix() {
+		return ""; // TODO - "" o null ???
 	} 
 	
 }

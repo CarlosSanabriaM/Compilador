@@ -97,9 +97,15 @@ public class CharType extends AbstractType {
 		return null;
 	}
 
+	
 	@Override
 	public int numBytes() {
 		return 1;
 	}
+
 	
+	@Override
+	public String suffix() {
+		return "b";
+	} 
 }
