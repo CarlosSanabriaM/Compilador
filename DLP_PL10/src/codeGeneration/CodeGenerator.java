@@ -43,4 +43,16 @@ public class CodeGenerator {
 		println("pushf " + value);
 	}
 	
+	public void call(String functionName) {
+		println("call " + functionName);
+	}
+	
+	public void callMain() {
+		call("main");
+	}
+	
+	public void halt() {
+		println("halt");
+	}
+	
 }

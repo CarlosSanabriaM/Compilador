@@ -2,6 +2,10 @@ package visitors.codeGeneration;
 
 import java.io.FileWriter;
 
+import ast.Program;
+import ast.definitions.Definition;
+import ast.definitions.FunDefinition;
+import ast.definitions.VarDefinition;
 import codeGeneration.CodeGenerator;
 
 /**
@@ -25,6 +29,24 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		// Les pasa el codeGenerator ya creado, en lugar del fileWriter, para que no tengan que crearlo.
 		valueCGVisitor = new ValueCGVisitor(cg); // TODO - ???
 		addressCGVisitor = new AddressCGVisitor(cg);
+	}
+
+	@Override
+	public Object visit(Program program, Object param) {
+		// Info de las variables globales
+		for (Definition def : program.definitions)
+			if(def instanceof VarDefinition)
+				def.accept(this, param);
+
+		cg.callMain();
+		cg.halt();
+		
+		// Definiciones de funciones
+		for (Definition def : program.definitions)
+			if(def instanceof FunDefinition)
+				def.accept(this, param);
+		
+		return null;
 	}
 	
 }
