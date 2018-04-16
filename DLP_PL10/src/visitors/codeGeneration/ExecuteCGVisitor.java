@@ -82,5 +82,12 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		
 		return null;
 	}
+
+	@Override
+	public Object visit(VarDefinition varDefinition, Object param) {
+		cg.varDefinitionComment(varDefinition);
+		
+		return null;
+	}
 	
 }

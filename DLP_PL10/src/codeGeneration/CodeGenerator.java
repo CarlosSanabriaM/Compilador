@@ -3,6 +3,7 @@ package codeGeneration;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import ast.definitions.VarDefinition;
 import ast.types.Type;
 
 public class CodeGenerator {
@@ -117,6 +118,14 @@ public class CodeGenerator {
 			break;
 		}
 		
+	}
+
+	public void varDefinitionComment(VarDefinition varDefinition) {
+		String type = varDefinition.getType().getClass().getSimpleName();
+		String name = varDefinition.getName();
+		int offset = varDefinition.offset;
+
+		println("/t' * "+ type +" "+ name +" (offset "+ offset +")");
 	}
 	
 }
