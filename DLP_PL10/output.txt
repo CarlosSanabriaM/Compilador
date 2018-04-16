@@ -115,6 +115,7 @@ main:
 	pushb 32
 	outb
 	pushi 0
+	not
 	outi
 	pushb 10
 	outb

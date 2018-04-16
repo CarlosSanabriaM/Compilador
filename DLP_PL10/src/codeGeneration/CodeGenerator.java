@@ -34,6 +34,22 @@ public class CodeGenerator {
 		println("\t" + str);
 	}
 	
+	public void comment(String str) {
+		printlnt("' * "+ str);
+	}
+	
+	public void directive(String str) {
+		println("#"+ str);
+	}
+	
+	public void sourceDirective(String inputFileName) {
+		directive("source\t\""+ inputFileName + "\"");
+	}
+	
+	public void lineDirective(int line) {
+		directive("line " + line);
+	}
+	
 	public void pusha(int address) {
 		printlnt("pusha " + address);
 	}
@@ -133,7 +149,7 @@ public class CodeGenerator {
 		String name = varDefinition.getName();
 		int offset = varDefinition.offset;
 
-		printlnt("' * "+ type +" "+ name +" (offset "+ offset +")");
+		comment(type +" "+ name +" (offset "+ offset +")");
 	}
 	
 	public void add(Type type) {

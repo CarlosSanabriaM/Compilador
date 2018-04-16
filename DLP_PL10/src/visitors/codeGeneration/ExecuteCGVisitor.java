@@ -39,6 +39,9 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 
 	@Override
 	public Object visit(Program program, Object param) {
+		// Añadimos la directiva source con el nombre del fichero de entrada
+		
+		
 		// Info de las variables globales
 		for (Definition def : program.definitions)
 			if(def instanceof VarDefinition)
