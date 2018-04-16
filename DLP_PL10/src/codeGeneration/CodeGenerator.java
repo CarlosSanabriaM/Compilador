@@ -128,4 +128,45 @@ public class CodeGenerator {
 		println("/t' * "+ type +" "+ name +" (offset "+ offset +")");
 	}
 	
+	private void add(Type type) {
+		println("add" + type.suffix());
+	}
+	
+	private void sub(Type type) {
+		println("sub" + type.suffix());
+	}
+	
+	private void mul(Type type) {
+		println("mul" + type.suffix());
+	}
+	
+	private void div(Type type) {
+		println("div" + type.suffix());
+	}
+	
+	private void mod(Type type) {
+		println("mod" + type.suffix());
+	}
+
+	public void arithmetic(Type type, String operator) {
+		switch (operator) {
+		case "+":
+			add(type);
+			break;
+		case "-":
+			sub(type);
+			break;
+		case "*":
+			mul(type);
+			break;
+		case "/":
+			div(type);
+			break;			
+		case "%":
+			mod(type);
+			break;			
+		}
+		
+	}
+	
 }

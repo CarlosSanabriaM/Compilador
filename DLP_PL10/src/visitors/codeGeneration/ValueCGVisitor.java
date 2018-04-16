@@ -1,5 +1,6 @@
 package visitors.codeGeneration;
 
+import ast.expressions.Arithmetic;
 import ast.expressions.CharLiteral;
 import ast.expressions.IntLiteral;
 import ast.expressions.RealLiteral;
@@ -46,6 +47,19 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 	public Object visit(Variable variable, Object param) {
 		variable.accept(addressCGVisitor, param); // ADDRESS[[variable]]
 		cg.load(variable.getType());
+		
+		return null;
+	}
+
+	@Override
+	public Object visit(Arithmetic arithmetic, Object param) {
+		arithmetic.leftOp.accept(this, param); 	// VALUE[[leftOp]]
+		cg.convert(arithmetic.leftOp.getType(), arithmetic.getType());
+		
+		arithmetic.rightOp.accept(this, param); 	// VALUE[[rightOp]]
+		cg.convert(arithmetic.rightOp.getType(), arithmetic.getType());
+		
+		cg.arithmetic(arithmetic.getType(), arithmetic.operator);
 		
 		return null;
 	}

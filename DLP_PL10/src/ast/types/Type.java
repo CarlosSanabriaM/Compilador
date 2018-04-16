@@ -19,7 +19,7 @@ public interface Type extends ASTNode{
 	
 	/**
 	 * If the type who calls the function and the type passed as parameter
-	 * are compatible to do an arithmetic operation (+, -, /, *) 
+	 * are compatible to do an arithmetic operation (+, -, /, *, %) 
 	 * returns the resulting type that would have that operation. If not, returns null.
 	 */
 	Type arithmetic(Type type);
