@@ -127,43 +127,47 @@ public class CodeGenerator {
 
 		println("/t' * "+ type +" "+ name +" (offset "+ offset +")");
 	}
-	
-	private void add(Type type) {
-		println("add" + type.suffix());
-	}
-	
-	private void sub(Type type) {
-		println("sub" + type.suffix());
-	}
-	
-	private void mul(Type type) {
-		println("mul" + type.suffix());
-	}
-	
-	private void div(Type type) {
-		println("div" + type.suffix());
-	}
-	
-	private void mod(Type type) {
-		println("mod" + type.suffix());
-	}
 
 	public void arithmetic(Type type, String operator) {
 		switch (operator) {
 		case "+":
-			add(type);
+			println("add" + type.suffix());
 			break;
 		case "-":
-			sub(type);
+			println("sub" + type.suffix());
 			break;
 		case "*":
-			mul(type);
+			println("mul" + type.suffix());
 			break;
 		case "/":
-			div(type);
+			println("div" + type.suffix());
 			break;			
 		case "%":
-			mod(type);
+			println("mod" + type.suffix());
+			break;			
+		}
+		
+	}
+
+	public void comparison(Type type, String operator) {
+		switch (operator) {
+		case ">":
+			println("gt" + type.suffix());
+			break;
+		case ">=":
+			println("ge" + type.suffix());
+			break;
+		case "<":
+			println("lt" + type.suffix());
+			break;
+		case "<=":
+			println("le" + type.suffix());
+			break;			
+		case "==":
+			println("eq" + type.suffix());
+			break;			
+		case "!=":
+			println("ne" + type.suffix());
 			break;			
 		}
 		
