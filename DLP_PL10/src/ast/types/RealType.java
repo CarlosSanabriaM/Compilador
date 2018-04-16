@@ -86,7 +86,7 @@ public class RealType extends AbstractType {
 
 	
 	@Override
-	public String suffix() {
-		return "f";
+	public char suffix() {
+		return 'f';
 	} 
 }

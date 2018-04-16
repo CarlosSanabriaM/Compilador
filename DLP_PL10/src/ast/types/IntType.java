@@ -99,6 +99,7 @@ public class IntType extends AbstractType {
 		return null;
 	}
 
+	
 	@Override
 	public int numBytes() {
 		return 2;
@@ -106,7 +107,7 @@ public class IntType extends AbstractType {
 
 	
 	@Override
-	public String suffix() {
-		return "i";
+	public char suffix() {
+		return 'i';
 	} 
 }

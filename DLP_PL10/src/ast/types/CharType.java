@@ -105,7 +105,7 @@ public class CharType extends AbstractType {
 
 	
 	@Override
-	public String suffix() {
-		return "b";
+	public char suffix() {
+		return 'b';
 	} 
 }

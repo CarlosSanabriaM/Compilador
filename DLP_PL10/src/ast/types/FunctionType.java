@@ -73,7 +73,7 @@ public class FunctionType extends AbstractType {
 
 	
 	@Override
-	public String suffix() {
-		return ""; // TODO - "" o null ???
-	} 	
+	public char suffix() {
+		return ' '; // TODO - "" o null ??? o String???
+	}	
 }
