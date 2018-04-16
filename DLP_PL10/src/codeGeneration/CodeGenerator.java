@@ -3,6 +3,8 @@ package codeGeneration;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import ast.types.Type;
+
 public class CodeGenerator {
 
 	private FileWriter out;
@@ -53,6 +55,18 @@ public class CodeGenerator {
 	
 	public void halt() {
 		println("halt");
+	}
+
+	public void out(Type type) {
+		println("out" + type.suffix());
+	}
+
+	public void in(Type type) {
+		println("in" + type.suffix());
+	}
+
+	public void store(Type type) {
+		println("store" + type.suffix());	
 	}
 	
 }

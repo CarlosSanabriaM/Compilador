@@ -6,6 +6,8 @@ import ast.Program;
 import ast.definitions.Definition;
 import ast.definitions.FunDefinition;
 import ast.definitions.VarDefinition;
+import ast.statements.Read;
+import ast.statements.Write;
 import codeGeneration.CodeGenerator;
 
 /**
@@ -36,7 +38,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		// Info de las variables globales
 		for (Definition def : program.definitions)
 			if(def instanceof VarDefinition)
-				def.accept(this, param);
+				def.accept(this, param); // EXECUTE[[def]]
 
 		cg.callMain();
 		cg.halt();
@@ -44,7 +46,24 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		// Definiciones de funciones
 		for (Definition def : program.definitions)
 			if(def instanceof FunDefinition)
-				def.accept(this, param);
+				def.accept(this, param); // EXECUTE[[def]]
+		
+		return null;
+	}
+
+	@Override
+	public Object visit(Write write, Object param) {
+		write.expression.accept(valueCGVisitor, param); // VALUE[[expr]]
+		cg.out(write.expression.getType());
+		
+		return null;
+	}
+
+	@Override
+	public Object visit(Read read, Object param) {
+		read.expression.accept(addressCGVisitor, param); // ADDRESS[[expr]]
+		cg.in(read.expression.getType());
+		cg.store(read.expression.getType());
 		
 		return null;
 	}
