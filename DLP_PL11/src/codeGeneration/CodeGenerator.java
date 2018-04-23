@@ -9,6 +9,7 @@ import ast.types.Type;
 public class CodeGenerator {
 
 	private FileWriter out;
+	private int labelNum;
 
 	public CodeGenerator(FileWriter out) {
 		this.out = out;
@@ -22,7 +23,7 @@ public class CodeGenerator {
 		try {
 			out.write(str + "\n");
 		} catch (IOException e) {
-			e.printStackTrace(); //TODO - ???
+			e.printStackTrace();
 		}
 	}
 	
@@ -32,6 +33,14 @@ public class CodeGenerator {
 	 */
 	private void printlnt(String str) {
 		println("\t" + str);
+	}
+	
+	/**
+	 * Returns a unique number to add to a label
+	 */
+	public int getLabelNum() {
+		labelNum++;
+		return labelNum;
 	}
 	
 	public void directive(String str) {
@@ -63,7 +72,7 @@ public class CodeGenerator {
 	}
 	
 	public void pushbp() {
-		printlnt("push bp"); //TODO - pusha bp??
+		printlnt("push bp");
 	}
 	
 	public void push(char value) {
@@ -219,7 +228,7 @@ public class CodeGenerator {
 	}
 	
 	public void label(String name) {
-		println("\n" + name + ":");
+		println("\n " + name + ":");
 	}
 
 	public void enter(int bytesLocalVariables) {
@@ -228,6 +237,19 @@ public class CodeGenerator {
 
 	public void ret(int bytesReturnType, int bytesLocalVariables, int bytesParameters) {
 		printlnt("ret\t" + bytesReturnType + ", " + bytesLocalVariables + ", " + bytesParameters);
+	}
+	
+	// Jumps
+	public void jmp(String labelName) {
+		printlnt("jmp " + labelName);
+	}
+	
+	public void jz(String labelName) {
+		printlnt("jz " + labelName);
+	}
+	
+	public void jnz(String labelName) {
+		printlnt("jnz " + labelName);
 	}
 	
 }

@@ -10,6 +10,7 @@ import ast.definitions.VarDefinition;
 import ast.statements.Assignment;
 import ast.statements.Read;
 import ast.statements.Statement;
+import ast.statements.While;
 import ast.statements.Write;
 import ast.types.FunctionType;
 import ast.types.VoidType;
@@ -155,7 +156,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 
 	@Override
 	public Object visit(Assignment assignment, Object param) {
-		cg.lineDirective(assignment.getLine());// TODO - cada statement en su visit pone esta linea?? Porque si se quiere hacer en el for, while e if dan la linea mal, a menos q se acceda a su cond.
+		cg.lineDirective(assignment.getLine());
 		cg.comment("Assignment");
 		
 		assignment.left.accept(addressCGVisitor, param); 	// ADDRESS[[left]]
@@ -166,6 +167,25 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		cg.convert(assignment.right.getType(), assignment.left.getType());
 		
 		cg.store(assignment.left.getType());
+		
+		return null;
+	}
+
+	@Override
+	public Object visit(While _while, Object param) {
+		cg.lineDirective(_while.condition.getLine());
+		cg.comment("While");
+		
+		int labelNum = cg.getLabelNum();
+		
+		cg.label("while" + labelNum);
+		_while.condition.accept(valueCGVisitor, param);	// VALUE[[condition]]
+		cg.jz("end_while" + labelNum);
+		
+		cg.comment("While body");
+		_while.body.forEach( (stm) -> stm.accept(this, param) );	// EXECUTE[[stmi]]
+		cg.jmp("while" + labelNum);
+		cg.label("end_while" + labelNum);
 		
 		return null;
 	}

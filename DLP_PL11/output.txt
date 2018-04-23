@@ -1,5 +1,5 @@
 
-#source	"input_mine_1.txt"
+#source	"input_mine_2.txt"
 
 	' * ArrayType v (offset 0)
 
@@ -8,22 +8,61 @@ call main
 halt
 
 
-#line 3
+#line 4
 
-f:
-	' * Parameters
-	' * IntType x (offset 11)
-	' * IntType c (offset 9)
-	' * RealType d (offset 5)
-	' * CharType a (offset 4)
-	' * Local variables
-	enter 0
-	ret	0, 0, 9
-
-#line 8
-
-main:
+ main:
 	' * Parameters
 	' * Local variables
-	enter 0
-	ret	0, 0, 0
+	' * IntType a (offset -2)
+	enter 2
+
+#line 7
+	' * Assignment
+	push bp
+	pushi -2
+	addi
+	pushi 1
+	storei
+
+#line 9
+	' * While
+
+ while1:
+	push bp
+	pushi -2
+	addi
+	loadi
+	pushi 5
+	lei
+	jz end_while1
+	' * While body
+
+#line 10
+	' * Write
+	push bp
+	pushi -2
+	addi
+	loadi
+	outi
+
+#line 10
+	' * Write
+	pushb 10
+	outb
+
+#line 11
+	' * Assignment
+	push bp
+	pushi -2
+	addi
+	push bp
+	pushi -2
+	addi
+	loadi
+	pushi 1
+	addi
+	storei
+	jmp while1
+
+ end_while1:
+	ret	0, 2, 0
