@@ -1,0 +1,16 @@
+v:[10]double;
+
+def f():void{
+
+
+
+
+
+
+	       }
+
+# Main program
+def main():void {
+	
+}
+	

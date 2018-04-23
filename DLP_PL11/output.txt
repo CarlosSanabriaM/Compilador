@@ -1,0 +1,23 @@
+
+#source	"input_mine_1.txt"
+
+	' * ArrayType v (offset 0)
+
+' Invocation to the main function
+call main
+halt
+
+
+#line 3
+
+f:
+	' * Local variables
+	enter 0
+	ret	0, 0, 0
+
+#line 13
+
+main:
+	' * Local variables
+	enter 0
+	ret	0, 0, 0

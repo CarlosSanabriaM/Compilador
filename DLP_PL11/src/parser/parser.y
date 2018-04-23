@@ -72,10 +72,10 @@ _program: 															{$$ = new LinkedList<Definition>();}
 		| _program function_definition								{List<Definition> definitions = (List<Definition>) $1; definitions.add((Definition) $2); $$ = definitions;}
 		;
 
-main: DEF MAIN '(' ')' ':' VOID '{' function_body '}'					{
-																		FunctionType functionType = new FunctionType(scanner.getLine(), scanner.getColumn(), 
-																														new LinkedList<VarDefinition>(), VoidType.getInstance());
-																		$$ = new FunDefinition(scanner.getLine(), scanner.getColumn(), "main", functionType, (List<Statement>) $8);
+main: DEF {tempLine = scanner.getLine();} MAIN '(' ')' ':' VOID '{' function_body '}'					
+																	{
+																		FunctionType functionType = new FunctionType(tempLine, 1, new LinkedList<VarDefinition>(), VoidType.getInstance());
+																		$$ = new FunDefinition(tempLine, 1, "main", functionType, (List<Statement>) $9);
 																	}
 	;
 
@@ -113,11 +113,11 @@ variables: ID														{
 
 	
 // Definicion de funciones
-function_definition: DEF ID '(' parameters ')' ':' return_type '{' function_body '}' 		
+function_definition: DEF {tempLine = scanner.getLine();} ID '(' parameters ')' ':' return_type '{' function_body '}' 		
 																	
 																	{
-																		FunctionType functionType = new FunctionType(scanner.getLine(), scanner.getColumn(), (List<VarDefinition>) $4, (Type) $7);
-																		$$ = new FunDefinition(scanner.getLine(), scanner.getColumn(), (String) $2, functionType, (List<Statement>) $9);
+																		FunctionType functionType = new FunctionType(tempLine, 1, (List<VarDefinition>) $5, (Type) $8);
+																		$$ = new FunDefinition(tempLine, 1, (String) $3, functionType, (List<Statement>) $10);
 																	}
 		;
 																	// parameters es un List<VarDefinition>
@@ -429,4 +429,7 @@ private List<Statement> asStatementList(Statement statement){
 	list.add(statement);
 	return list;
 }
+
+// Variable temporal para detectar bien los numeros de linea
+int tempLine;
 
