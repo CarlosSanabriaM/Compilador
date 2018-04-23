@@ -113,7 +113,7 @@ main:
 	pushb 32
 	outb
 
-#line 18
+#line 19
 	' * Write
 	pushb 48
 	b2i
@@ -122,12 +122,12 @@ main:
 	divf
 	outf
 
-#line 18
+#line 19
 	' * Write
 	pushb 32
 	outb
 
-#line 18
+#line 20
 	' * Write
 	pushb 48
 	b2i
@@ -136,12 +136,12 @@ main:
 	modi
 	outi
 
-#line 18
+#line 20
 	' * Write
 	pushb 32
 	outb
 
-#line 18
+#line 21
 	' * Write
 	pushb 48
 	b2i
@@ -150,7 +150,7 @@ main:
 	addi
 	outi
 
-#line 18
+#line 21
 	' * Write
 	pushb 10
 	outb
@@ -167,61 +167,61 @@ main:
 	pushb 32
 	outb
 
-#line 22
+#line 23
 	' * Write
 	pushi 4
 	pushi 3
 	gei
 	outi
 
-#line 22
+#line 23
 	' * Write
 	pushb 32
 	outb
 
-#line 22
+#line 24
 	' * Write
 	pushi 5
 	pushi 5
 	eqi
 	outi
 
-#line 22
+#line 24
 	' * Write
 	pushb 32
 	outb
 
-#line 22
+#line 25
 	' * Write
 	pushi 1
 	pushi 2
 	and
 	outi
 
-#line 22
+#line 25
 	' * Write
 	pushb 32
 	outb
 
-#line 22
+#line 26
 	' * Write
 	pushi 0
 	pushi 3
 	or
 	outi
 
-#line 22
+#line 26
 	' * Write
 	pushb 32
 	outb
 
-#line 22
+#line 27
 	' * Write
 	pushi 0
 	not
 	outi
 
-#line 22
+#line 27
 	' * Write
 	pushb 10
 	outb

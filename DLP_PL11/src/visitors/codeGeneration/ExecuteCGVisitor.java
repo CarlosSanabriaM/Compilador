@@ -49,7 +49,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		cg = new CodeGenerator(fw);
 
 		// Les pasa el codeGenerator ya creado, en lugar del fileWriter, para que no tengan que crearlo.
-		valueCGVisitor = new ValueCGVisitor(cg); // TODO - ???
+		valueCGVisitor = new ValueCGVisitor(cg);
 		addressCGVisitor = new AddressCGVisitor(cg);
 	}
 	
@@ -99,7 +99,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 	
 	@Override
 	public Object visit(FunDefinition funDefinition, Object param) {
-		cg.lineDirective(funDefinition.getLine());// TODO - da la linea mal
+		cg.lineDirective(funDefinition.getLine());
 		cg.label(funDefinition.getName());
 
 		// TODO - Info de los parametros? For de ellos o visit del FunctionType??		' * Parameters
@@ -128,7 +128,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 
 	@Override
 	public Object visit(Write write, Object param) {
-		cg.lineDirective(write.getLine());	//TODO - la linea la da mal, la da en el ;. Debe ser cosa del lexico/sintactico
+		cg.lineDirective(write.expression.getLine());	// TODO - sacar la linea de  write o de write.expression?? En el expected_output usa la linea del write, pero se imprime mal en MAPL
 		cg.comment("Write");
 		
 		write.expression.accept(valueCGVisitor, param); // VALUE[[expr]]
