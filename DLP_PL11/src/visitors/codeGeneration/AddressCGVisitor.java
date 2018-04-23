@@ -2,9 +2,11 @@ package visitors.codeGeneration;
 
 import ast.definitions.Scope;
 import ast.definitions.VarDefinition;
+import ast.expressions.FieldAccess;
 import ast.expressions.Indexing;
 import ast.expressions.Variable;
 import ast.types.IntType;
+import ast.types.RecordType;
 import codeGeneration.CodeGenerator;
 
 /**
@@ -54,4 +56,14 @@ public class AddressCGVisitor extends AbstractCGVisitor {
 		return null;
 	}
 
+	@Override
+	public Object visit(FieldAccess fieldAccess, Object param) {
+		fieldAccess.leftOp.accept(this, param);	// ADDRESS[[leftOp]]
+		
+		RecordType recordType = (RecordType) fieldAccess.leftOp.getType();
+		cg.push(recordType.get(fieldAccess.name).offset);
+		cg.add(IntType.getInstance());
+		
+		return null;
+	}
 }

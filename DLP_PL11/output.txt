@@ -1,113 +1,79 @@
 
-#source	"input_mine_4.txt"
+#source	"input_mine_5.txt"
 
-	' * ArrayType v (offset 0)
+	' * RecordType s (offset 0)
 
 ' Invocation to the main function
 call main
 halt
 
 
-#line 4
+#line 8
 
  main:
 	' * Parameters
 	' * Local variables
 	enter 0
 
-#line 6
+#line 10
 	' * Assignment
 	pusha 0
 	pushi 0
-	pushi 4
-	muli
-	addi
-	pushf 5.5
-	storef
-
-#line 7
-	' * Assignment
-	pusha 0
-	pushi 1
-	pushi 4
-	muli
-	addi
-	pushi 10
-	i2f
-	storef
-
-#line 8
-	' * Assignment
-	pusha 0
-	pushi 2
-	pushi 4
-	muli
 	addi
 	pushb 97
-	b2i
-	i2f
-	storef
-
-#line 10
-	' * Write
-	pusha 0
-	pushi 0
-	pushi 4
-	muli
-	addi
-	loadf
-	outf
-
-#line 10
-	' * Write
-	pushb 10
-	outb
+	storeb
 
 #line 11
-	' * Write
+	' * Assignment
 	pusha 0
 	pushi 1
-	pushi 4
-	muli
 	addi
-	loadf
-	outf
-
-#line 11
-	' * Write
-	pushb 10
-	outb
+	pushi 100
+	storei
 
 #line 12
-	' * Write
+	' * Assignment
 	pusha 0
-	pushi 2
-	pushi 4
-	muli
+	pushi 3
 	addi
-	loadf
-	outf
-
-#line 12
-	' * Write
-	pushb 10
-	outb
+	pushf 9.9
+	storef
 
 #line 14
 	' * Write
 	pusha 0
-	pushb 98
-	b2i
-	pushb 97
-	b2i
-	subi
-	pushi 4
-	muli
+	pushi 0
+	addi
+	loadb
+	outb
+
+#line 14
+	' * Write
+	pushb 10
+	outb
+
+#line 15
+	' * Write
+	pusha 0
+	pushi 1
+	addi
+	loadi
+	outi
+
+#line 15
+	' * Write
+	pushb 10
+	outb
+
+#line 16
+	' * Write
+	pusha 0
+	pushi 3
 	addi
 	loadf
 	outf
 
-#line 14
+#line 16
 	' * Write
 	pushb 10
 	outb

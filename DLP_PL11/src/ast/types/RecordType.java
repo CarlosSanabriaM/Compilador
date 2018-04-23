@@ -49,6 +49,17 @@ public class RecordType extends AbstractType {
 		return numBytes;
 	}
 
-	// TODO - get(String) devuelve el RecordField con ese nombre
+	/**
+	 * Returns the field of the struct with that name,
+	 * or null if not exists.
+	 */
+	public RecordField get(String fieldName) {
+		for (RecordField field : fields) {
+			if(field.name.equals(fieldName))
+				return field;
+		}
+		
+		return null;
+	}
 	
 }
