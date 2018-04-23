@@ -4,6 +4,7 @@ import ast.expressions.Arithmetic;
 import ast.expressions.Cast;
 import ast.expressions.CharLiteral;
 import ast.expressions.Comparison;
+import ast.expressions.Indexing;
 import ast.expressions.IntLiteral;
 import ast.expressions.Logical;
 import ast.expressions.RealLiteral;
@@ -107,6 +108,14 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 		unaryNot.expression.accept(this, param);
 		cg.not();
 
+		return null;
+	}
+
+	@Override
+	public Object visit(Indexing indexing, Object param) {
+		indexing.accept(addressCGVisitor, param);	// ADDRESS[[rightOp]]
+		cg.load(indexing.getType());
+		
 		return null;
 	}
 
