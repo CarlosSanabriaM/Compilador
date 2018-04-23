@@ -23,7 +23,7 @@ public class OffsetVisitor extends AbstractVisitor {
 		while(iterator.hasPrevious()) {
 			VarDefinition actualParam = iterator.previous();
 			actualParam.offset = + 4 + numTotalBytesParamsAtItsRight; // BP + 4 + Σ(tam. param declarados a la dcha)
-			numTotalBytesParamsAtItsRight = actualParam.getType().numBytes();
+			numTotalBytesParamsAtItsRight += actualParam.getType().numBytes();
 		}
 		
 		functionType.returnType.accept(this, param);
