@@ -61,5 +61,21 @@ public class RecordType extends AbstractType {
 		
 		return null;
 	}
-	
+
+	@Override
+	public String getInfo() {
+		String info = this.getClass().getSimpleName();
+		info += "[fields: [";
+		
+		int i = 0;
+		for (RecordField field : fields) {
+			info += field.getInfo();
+			if(i != fields.size()-1)
+				info  += ", ";
+			i++;
+		}
+		
+		info += "]]";
+		return info;
+	}
 }

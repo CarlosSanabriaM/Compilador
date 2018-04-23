@@ -42,5 +42,11 @@ public class ArrayType extends AbstractType {
 	public int numBytes() {
 		return size * of.numBytes();
 	}
+
+	@Override
+	public String getInfo() {
+		return this.getClass().getSimpleName() + 
+				"[of: "+ of.getInfo()  +", size: "+ size +"]";
+	}
 	
 }

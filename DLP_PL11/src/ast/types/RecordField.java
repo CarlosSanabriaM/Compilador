@@ -79,6 +79,13 @@ public class RecordField implements ASTNode {
 	@Override
 	public Object accept(Visitor v, Object param) {
 		return v.visit(this, param);
+	}
+
+	/**
+	 * Returns info about the fields
+	 */
+	public String getInfo() {
+		return "Field{name:"+ name +", type:"+ type.getInfo() +", offset:"+ offset +"}";
 	} 
 
 }

@@ -103,4 +103,9 @@ public interface Type extends ASTNode{
 	 */
 	char suffix();
 	
+	/**
+	 * Returns info about the type
+	 */
+	String getInfo();
+	
 }

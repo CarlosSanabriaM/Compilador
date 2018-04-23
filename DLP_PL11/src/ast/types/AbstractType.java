@@ -95,5 +95,9 @@ public abstract class AbstractType implements Type {
 	public char suffix() {
 		return ' ';
 	}
-	
+
+	@Override
+	public String getInfo() {
+		return this.getClass().getSimpleName();// TODO - por que funciona??
+	}
 }

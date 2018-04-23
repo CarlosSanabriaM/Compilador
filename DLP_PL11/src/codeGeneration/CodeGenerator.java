@@ -60,7 +60,8 @@ public class CodeGenerator {
 	}
 	
 	public void varDefinitionComment(VarDefinition varDefinition) {
-		String type = varDefinition.getType().getClass().getSimpleName();
+		// String type = varDefinition.getType().getClass().getSimpleName(); TODO
+		String type = varDefinition.getType().getInfo();
 		String name = varDefinition.getName();
 		int offset = varDefinition.offset;
 
