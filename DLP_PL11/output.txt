@@ -17,7 +17,7 @@ halt
 	' * IntType i (offset -6)
 	' * IntType j (offset -8)
 	' * ArrayType[of: ArrayType[of: IntType, size: 5], size: 4] w (offset -48)
-	' * RecordType[fields: [Field{name:day, type:IntType, offset:-54}, Field{name:month, type:IntType, offset:-52}, Field{name:year, type:IntType, offset:-50}]] date (offset -54)
+	' * RecordType[fields: [Field{name:day, type:IntType, offset:0}, Field{name:month, type:IntType, offset:2}, Field{name:year, type:IntType, offset:4}]] date (offset -54)
 	enter 54
 
 #line 12
@@ -25,7 +25,7 @@ halt
 	push bp
 	pushi -54
 	addi
-	pushi -54
+	pushi 0
 	addi
 	ini
 	storei
@@ -35,7 +35,7 @@ halt
 	push bp
 	pushi -54
 	addi
-	pushi -50
+	pushi 4
 	addi
 	pushb 97
 	b2i
@@ -46,18 +46,18 @@ halt
 	push bp
 	pushi -54
 	addi
-	pushi -52
+	pushi 2
 	addi
 	push bp
 	pushi -54
 	addi
-	pushi -54
+	pushi 0
 	addi
 	loadi
 	push bp
 	pushi -54
 	addi
-	pushi -50
+	pushi 4
 	addi
 	loadi
 	muli
@@ -72,7 +72,7 @@ halt
 	push bp
 	pushi -54
 	addi
-	pushi -54
+	pushi 0
 	addi
 	loadi
 	outi
@@ -87,7 +87,7 @@ halt
 	push bp
 	pushi -54
 	addi
-	pushi -52
+	pushi 2
 	addi
 	loadi
 	outi
@@ -102,7 +102,7 @@ halt
 	push bp
 	pushi -54
 	addi
-	pushi -50
+	pushi 4
 	addi
 	loadi
 	i2f
@@ -222,6 +222,7 @@ halt
 	jmp end_if2
 
  else2:
+	' * Else body
 
 #line 26
 	' * Write

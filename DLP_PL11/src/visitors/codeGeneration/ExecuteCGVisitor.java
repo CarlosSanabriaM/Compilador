@@ -209,6 +209,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		cg.jmp("end_if" + labelNum);
 		
 		cg.label("else" + labelNum);
+		cg.comment("Else body");
 		ifStatement.elseBody.forEach( (stm) -> stm.accept(this, param) );	// EXECUTE[[elseBodyi]]
 		cg.label("end_if" + labelNum);
 		

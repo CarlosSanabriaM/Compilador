@@ -60,7 +60,7 @@ public class OffsetVisitor extends AbstractVisitor {
 			varDefinition.offset = -numTotalBytesLocalVars; // BP + - Σ(tam. vars. locales anteriores, incluida la actual)
 		}
 		
-		varDefinition.getType().accept(this, varDefinition.offset);// Le pasamos al struct su direccion base como parámetro
+		varDefinition.getType().accept(this, param);
 		
 		return null;
 	}
@@ -68,11 +68,10 @@ public class OffsetVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(RecordType recordType, Object param) {
 		// En lugar de visitar los campos, iteramos por ellos
-		int structBaseDir = (int) param;
 		int numTotalBytesFields = 0;
 		
 		for (RecordField field : recordType.fields) {
-			field.offset = structBaseDir + numTotalBytesFields;
+			field.offset = numTotalBytesFields;
 			numTotalBytesFields += field.getType().numBytes();
 		}
 			
