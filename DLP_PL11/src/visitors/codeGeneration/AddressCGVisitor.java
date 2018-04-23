@@ -2,6 +2,7 @@ package visitors.codeGeneration;
 
 import ast.definitions.Scope;
 import ast.definitions.VarDefinition;
+import ast.expressions.Indexing;
 import ast.expressions.Variable;
 import ast.types.IntType;
 import codeGeneration.CodeGenerator;
@@ -13,9 +14,14 @@ import codeGeneration.CodeGenerator;
 public class AddressCGVisitor extends AbstractCGVisitor {
 	
 	private CodeGenerator cg;
+	private ValueCGVisitor valueCGVisitor;
 	
 	public AddressCGVisitor(CodeGenerator cg) {
-		this.cg = cg;
+		this.cg = cg; 
+	}
+	
+	public void setValueCGVisitor(ValueCGVisitor valueCGVisitor) {
+		this.valueCGVisitor = valueCGVisitor;
 	}
 
 	@Override
@@ -33,5 +39,19 @@ public class AddressCGVisitor extends AbstractCGVisitor {
 		
 		return null;
 	}
-	
+
+	@Override
+	public Object visit(Indexing indexing, Object param) {
+		indexing.leftOp.accept(this, param);				// ADDRESS[[leftOp]]
+		indexing.rightOp.accept(valueCGVisitor, param);	// VALUE[[rightOp]]
+		
+		cg.convert(indexing.rightOp.getType(), IntType.getInstance());
+		
+		cg.push(indexing.getType().numBytes());
+		cg.mul(IntType.getInstance());
+		cg.add(IntType.getInstance());
+		
+		return null;
+	}
+
 }

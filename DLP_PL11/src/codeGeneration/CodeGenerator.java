@@ -165,6 +165,10 @@ public class CodeGenerator {
 	public void add(Type type) {
 		printlnt("add" + type.suffix());	
 	}
+	
+	public void mul(Type type) {
+		printlnt("mul" + type.suffix());	
+	}
 
 	public void arithmetic(Type type, String operator) {
 		switch (operator) {
@@ -175,7 +179,7 @@ public class CodeGenerator {
 			printlnt("sub" + type.suffix());
 			break;
 		case "*":
-			printlnt("mul" + type.suffix());
+			mul(type);
 			break;
 		case "/":
 			printlnt("div" + type.suffix());

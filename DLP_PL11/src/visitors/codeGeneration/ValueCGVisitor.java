@@ -23,8 +23,10 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 	
 	public ValueCGVisitor(CodeGenerator cg) {
 		this.cg = cg;
-		
-		addressCGVisitor = new AddressCGVisitor(cg);
+	}
+
+	public void setAddressCGVisitor(AddressCGVisitor addressCGVisitor) {
+		this.addressCGVisitor = addressCGVisitor;
 	}
 
 	@Override

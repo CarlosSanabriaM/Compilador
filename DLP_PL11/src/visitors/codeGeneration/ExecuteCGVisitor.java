@@ -53,6 +53,9 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		// Les pasa el codeGenerator ya creado, en lugar del fileWriter, para que no tengan que crearlo.
 		valueCGVisitor = new ValueCGVisitor(cg);
 		addressCGVisitor = new AddressCGVisitor(cg);
+		
+		valueCGVisitor.setAddressCGVisitor(addressCGVisitor);
+		addressCGVisitor.setValueCGVisitor(valueCGVisitor);
 	}
 	
 	/**
