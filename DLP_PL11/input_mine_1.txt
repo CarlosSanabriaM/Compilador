@@ -1,16 +1,23 @@
 v:[10]double;
 
-def f():void{
+def f(c:int, d:int, a:int, g:int):void{
 
 
 
 
-
+return 
+		
+		1;
 
 	       }
 
 # Main program
 def main():void {
+	
+	a = f(1,
+			3,
+			4,
+			5);
 	
 }
 	

@@ -13,6 +13,7 @@ halt
 #line 5
 
 main:
+	' * Parameters
 	' * Local variables
 	' * IntType a (offset -2)
 	' * IntType i (offset -4)

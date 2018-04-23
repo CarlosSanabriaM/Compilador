@@ -99,11 +99,16 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 	
 	@Override
 	public Object visit(FunDefinition funDefinition, Object param) {
+		FunctionType functionType = (FunctionType) funDefinition.getType();
+		
 		cg.lineDirective(funDefinition.getLine());
 		cg.label(funDefinition.getName());
 
-		// TODO - Info de los parametros? For de ellos o visit del FunctionType??		' * Parameters
-		//Hacer el for y un accept de cada uno
+		// Info de los parametros
+		cg.comment("Parameters");
+		for (VarDefinition p : functionType.param) { // TODO - con este bucle o visit(FunctionType)???
+			p.accept(this, param); // EXECUTE[[parami]]
+		}
 		
 		// Info de las variables locales
 		cg.comment("Local variables");
@@ -119,7 +124,6 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 				stm.accept(this, param); // EXECUTE[[stm]]
 		
 		// Si el tipo de retorno de la función es VOID (no tiene returns) hay que añadir un ret
-		FunctionType functionType = (FunctionType) funDefinition.getType();
 		if(functionType.returnType instanceof VoidType)
 			cg.ret(0, funDefinition.bytesLocalVariables, functionType.bytesParameters);
 		
