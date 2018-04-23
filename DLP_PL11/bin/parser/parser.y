@@ -72,10 +72,10 @@ _program: 															{$$ = new LinkedList<Definition>();}
 		| _program function_definition								{List<Definition> definitions = (List<Definition>) $1; definitions.add((Definition) $2); $$ = definitions;}
 		;
 
-main: DEF {tempLine = scanner.getLine();} MAIN '(' ')' ':' VOID '{' function_body '}'					
+main: DEF {funDefTempLine = scanner.getLine();} MAIN '(' ')' ':' VOID '{' function_body '}'					
 																	{
-																		FunctionType functionType = new FunctionType(tempLine, 1, new LinkedList<VarDefinition>(), VoidType.getInstance());
-																		$$ = new FunDefinition(tempLine, 1, "main", functionType, (List<Statement>) $9);
+																		FunctionType functionType = new FunctionType(funDefTempLine, 1, new LinkedList<VarDefinition>(), VoidType.getInstance());
+																		$$ = new FunDefinition(funDefTempLine, 1, "main", functionType, (List<Statement>) $9);
 																	}
 	;
 
@@ -113,11 +113,11 @@ variables: ID														{
 
 	
 // Definicion de funciones
-function_definition: DEF {tempLine = scanner.getLine();} ID '(' parameters ')' ':' return_type '{' function_body '}' 		
+function_definition: DEF {funDefTempLine = scanner.getLine();} ID '(' parameters ')' ':' return_type '{' function_body '}' 		
 																	
 																	{
-																		FunctionType functionType = new FunctionType(tempLine, 1, (List<VarDefinition>) $5, (Type) $8);
-																		$$ = new FunDefinition(tempLine, 1, (String) $3, functionType, (List<Statement>) $10);
+																		FunctionType functionType = new FunctionType(funDefTempLine, 1, (List<VarDefinition>) $5, (Type) $8);
+																		$$ = new FunDefinition(funDefTempLine, 1, (String) $3, functionType, (List<Statement>) $10);
 																	}
 		;
 																	// parameters es un List<VarDefinition>
@@ -230,12 +230,12 @@ read: INPUT expressions ';'											{	// statement se espera una lista (hay qu
 																	}
 	;
 	
-write: PRINT expressions ';'											{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
+write: PRINT {writeTempLine = scanner.getLine();} expressions ';'		{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
 																		List<Statement> statements = new LinkedList<Statement>();
 																		
-																		List<Expression> expressions = (List<Expression>) $2;
+																		List<Expression> expressions = (List<Expression>) $3;
 																		for(Expression expression : expressions){
-																			statements.add( new Write(scanner.getLine(), scanner.getColumn(), expression) );
+																			statements.add( new Write(writeTempLine, scanner.getColumn(), expression) );
 																		}
 																		$$ = statements;
 																	}
@@ -430,6 +430,7 @@ private List<Statement> asStatementList(Statement statement){
 	return list;
 }
 
-// Variable temporal para detectar bien los numeros de linea
-int tempLine;
+// Variables temporales para detectar bien los numeros de linea
+int funDefTempLine;
+int writeTempLine;
 
