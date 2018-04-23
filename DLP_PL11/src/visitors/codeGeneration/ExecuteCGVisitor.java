@@ -8,6 +8,7 @@ import ast.definitions.Definition;
 import ast.definitions.FunDefinition;
 import ast.definitions.VarDefinition;
 import ast.statements.Assignment;
+import ast.statements.IfStatement;
 import ast.statements.Read;
 import ast.statements.Statement;
 import ast.statements.While;
@@ -186,6 +187,27 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		_while.body.forEach( (stm) -> stm.accept(this, param) );	// EXECUTE[[stmi]]
 		cg.jmp("while" + labelNum);
 		cg.label("end_while" + labelNum);
+		
+		return null;
+	}
+
+	@Override
+	public Object visit(IfStatement ifStatement, Object param) {
+		cg.lineDirective(ifStatement.condition.getLine());
+		cg.comment("If");
+		
+		int labelNum = cg.getLabelNum();
+		
+		ifStatement.condition.accept(valueCGVisitor, param);	// VALUE[[condition]]
+		cg.jz("else" + labelNum);
+		
+		cg.comment("If body");
+		ifStatement.ifBody.forEach( (stm) -> stm.accept(this, param) );	// EXECUTE[[ifBodyi]]
+		cg.jmp("end_if" + labelNum);
+		
+		cg.label("else" + labelNum);
+		ifStatement.elseBody.forEach( (stm) -> stm.accept(this, param) );	// EXECUTE[[elseBodyi]]
+		cg.label("end_if" + labelNum);
 		
 		return null;
 	}

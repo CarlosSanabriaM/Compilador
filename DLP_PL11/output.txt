@@ -1,5 +1,5 @@
 
-#source	"input_mine_2.txt"
+#source	"input_mine_3.txt"
 
 	' * ArrayType v (offset 0)
 
@@ -17,27 +17,106 @@ halt
 	enter 2
 
 #line 7
-	' * Assignment
+	' * Read
 	push bp
 	pushi -2
 	addi
-	pushi 1
+	ini
 	storei
 
 #line 9
-	' * While
+	' * If
+	push bp
+	pushi -2
+	addi
+	loadi
+	pushi 2
+	modi
+	pushi 0
+	eqi
+	jz else1
+	' * If body
 
- while1:
+#line 10
+	' * Write
+	pushb 112
+	outb
+
+#line 10
+	' * Write
+	pushb 97
+	outb
+
+#line 10
+	' * Write
+	pushb 114
+	outb
+
+#line 10
+	' * Write
+	pushb 10
+	outb
+	jmp end_if1
+
+ else1:
+
+#line 12
+	' * Write
+	pushb 105
+	outb
+
+#line 12
+	' * Write
+	pushb 109
+	outb
+
+#line 12
+	' * Write
+	pushb 112
+	outb
+
+#line 12
+	' * Write
+	pushb 97
+	outb
+
+#line 12
+	' * Write
+	pushb 114
+	outb
+
+#line 12
+	' * Write
+	pushb 10
+	outb
+
+ end_if1:
+
+#line 14
+	' * If
 	push bp
 	pushi -2
 	addi
 	loadi
 	pushi 5
 	lei
-	jz end_while1
+	jz else2
+	' * If body
+
+#line 15
+	' * While
+
+ while3:
+	push bp
+	pushi -2
+	addi
+	loadi
+	pushi 5
+	lei
+	jz end_while3
 	' * While body
 
-#line 10
+#line 16
 	' * Write
 	push bp
 	pushi -2
@@ -45,12 +124,12 @@ halt
 	loadi
 	outi
 
-#line 10
+#line 16
 	' * Write
 	pushb 10
 	outb
 
-#line 11
+#line 17
 	' * Assignment
 	push bp
 	pushi -2
@@ -62,7 +141,12 @@ halt
 	pushi 1
 	addi
 	storei
-	jmp while1
+	jmp while3
 
- end_while1:
+ end_while3:
+	jmp end_if2
+
+ else2:
+
+ end_if2:
 	ret	0, 2, 0
