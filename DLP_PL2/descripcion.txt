@@ -1,0 +1,19 @@
+
+Elementos l�xicos sensibles a may�sculas/min�sculas.
+
+Elementos:
+
+  Comentarios con # hasta el final de l�nea √
+  Comentarios con varias l�neas (de """ hasta """) √
+  Identificadores { letra o _ (letra|_|digito)* } 
+  Palabras Reservadas: input print def while if else int double char struct return void  	√
+  Constantes Enteras sin signo √
+  Constantes Reales con punto decimal y formato exponente √
+	12.3, 34.12E-3, 2., 3e3 (se puede poner 1.3E+2)
+  Constantes car�cter entre ' ', √
+  Constantes car�cter mediante codigo ASCII (ejemplo '\126' = '~') √
+  Dos caracteres especiales '\n' y '\t' √
+  Operadores + - / * % > < = == <= >= != ( ) ! [ ] √
+  Delimitadores de �mbito con llaves { } √
+  El delimitador de sentencias ; y de declaraci�n de variables o paso de par�metros , √
+  POR CONVENIO, el final de fichero es el token 0 (devolvemos ese token al final del fichero --> Ya lo hace solo)
