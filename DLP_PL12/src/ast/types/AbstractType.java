@@ -97,7 +97,13 @@ public abstract class AbstractType implements Type {
 	}
 
 	@Override
-	public String getInfo() {
+	public String getCommentInfo() {
 		return this.getClass().getSimpleName();
 	}
+	
+	@Override
+	public String getDirectiveInfo() {
+		return "";
+	}
+	
 }

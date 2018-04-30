@@ -81,7 +81,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		// Info de las variables globales
 		for (Definition def : program.definitions)
 			if(def instanceof VarDefinition)
-				def.accept(this, param); // EXECUTE[[def]]
+				def.accept(this, "global"); // EXECUTE[[def]]
 
 		cg.callMain();
 		cg.halt();
@@ -99,7 +99,10 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 
 	@Override
 	public Object visit(VarDefinition varDefinition, Object param) {
+		String scope = (String) param;
+		
 		cg.varDefinitionComment(varDefinition);
+		cg.varDefinitionDirective(varDefinition, scope);
 		
 		return null;
 	}
@@ -114,14 +117,14 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		// Info de los parametros
 		cg.comment("--- Parameters ---");
 		for (VarDefinition p : functionType.param) {
-			p.accept(this, param); // EXECUTE[[parami]]
+			p.accept(this, "param"); // EXECUTE[[parami]]
 		}
 		
 		// Info de las variables locales
 		cg.comment("--- Local variables ---");
 		for (Statement stm : funDefinition.statements)
 			if(stm instanceof VarDefinition)
-				stm.accept(this, param); // EXECUTE[[stm]]
+				stm.accept(this, "local"); // EXECUTE[[stm]]
 		
 		cg.enter(funDefinition.bytesLocalVariables);
 		

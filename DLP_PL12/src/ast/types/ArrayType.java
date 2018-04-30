@@ -44,9 +44,14 @@ public class ArrayType extends AbstractType {
 	}
 
 	@Override
-	public String getInfo() {
+	public String getCommentInfo() {
 		return this.getClass().getSimpleName() + 
-				"[of: "+ of.getInfo()  +", size: "+ size +"]";
+				"[of: "+ of.getCommentInfo()  +", size: "+ size +"]";
+	}
+
+	@Override
+	public String getDirectiveInfo() {
+		return size + " * " + of.getDirectiveInfo();
 	}
 	
 }

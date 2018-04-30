@@ -100,4 +100,10 @@ public class RealType extends AbstractType {
 	public char suffix() {
 		return 'f';
 	} 
+	
+	@Override
+	public String getDirectiveInfo() {
+		return "real";
+	}
+	
 }

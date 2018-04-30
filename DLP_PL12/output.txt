@@ -2,11 +2,17 @@
 #source	"input.txt"
 
 	' * IntType i (offset 0)
+	#global	i:int
 	' * IntType n (offset 2)
+	#global	n:int
 	' * IntType j (offset 4)
+	#global	j:int
 	' * CharType c (offset 6)
+	#global	c:char
 	' * RecordType[fields: [Field{name:integer, type:IntType, offset:0}, Field{name:character, type:CharType, offset:2}]] pair (offset 7)
+	#global	pair:
 	' * ArrayType[of: ArrayType[of: IntType, size: 10], size: 10] matrix (offset 10)
+	#global	matrix:10 * 10 * int
 
 ' Invocation to the main function
 call main
@@ -16,18 +22,18 @@ halt
 #line 12
 
  p:
-	' * Parameters
-	' * Local variables
+	' * --- Parameters ---
+	' * --- Local variables ---
 	enter 0
 	ret	0, 0, 0
 
 #line 14
 
  f:
-	' * Parameters
+	' * --- Parameters ---
 	' * RealType r (offset 6)
 	' * IntType e (offset 4)
-	' * Local variables
+	' * --- Local variables ---
 	' * RealType real (offset -4)
 	' * CharType c (offset -5)
 	enter 5
@@ -187,9 +193,9 @@ halt
 #line 35
 
  show:
-	' * Parameters
+	' * --- Parameters ---
 	' * IntType row (offset 4)
-	' * Local variables
+	' * --- Local variables ---
 	' * IntType i (offset -2)
 	enter 2
 
@@ -300,8 +306,8 @@ halt
 #line 46
 
  main:
-	' * Parameters
-	' * Local variables
+	' * --- Parameters ---
+	' * --- Local variables ---
 	' * IntType i (offset -2)
 	enter 2
 

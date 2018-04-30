@@ -117,4 +117,10 @@ public class CharType extends AbstractType {
 	public char suffix() {
 		return 'b';
 	} 
+	
+	@Override
+	public String getDirectiveInfo() {
+		return "char";
+	}
+	
 }

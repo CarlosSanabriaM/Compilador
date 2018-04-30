@@ -63,7 +63,7 @@ public class RecordType extends AbstractType {
 	}
 
 	@Override
-	public String getInfo() {
+	public String getCommentInfo() {
 		String info = this.getClass().getSimpleName();
 		info += "[fields: [";
 		

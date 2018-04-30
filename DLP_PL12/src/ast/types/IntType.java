@@ -122,5 +122,10 @@ public class IntType extends AbstractType {
 	@Override
 	public char suffix() {
 		return 'i';
-	} 
+	}
+	
+	@Override
+	public String getDirectiveInfo() {
+		return "int";
+	}
 }

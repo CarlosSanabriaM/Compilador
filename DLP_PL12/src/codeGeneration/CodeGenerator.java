@@ -43,16 +43,20 @@ public class CodeGenerator {
 		return labelNum;
 	}
 	
-	public void directive(String str) {
+	public void directiveln(String str) {
 		println("\n#"+ str);
 	}
 	
+	public void directivet(String str) {
+		println("\t#"+ str);
+	}
+	
 	public void sourceDirective(String inputFileName) {
-		directive("source\t\""+ inputFileName + "\"\n");
+		directiveln("source\t\""+ inputFileName + "\"\n");
 	}
 	
 	public void lineDirective(int line) {
-		directive("line " + line);
+		directiveln("line " + line);
 	}
 	
 	public void comment(String str) {
@@ -60,11 +64,27 @@ public class CodeGenerator {
 	}
 	
 	public void varDefinitionComment(VarDefinition varDefinition) {
-		String type = varDefinition.getType().getInfo();
+		String type = varDefinition.getType().getCommentInfo();
 		String name = varDefinition.getName();
 		int offset = varDefinition.offset;
 
 		comment(type +" "+ name +" (offset "+ offset +")");
+	}
+	
+	public void varDefinitionDirective(VarDefinition varDefinition, String scope) {
+		switch (scope) {
+		case "global":
+			directivet("global\t"+ varDefinition.getName() + ":" + varDefinition.getType().getDirectiveInfo());
+			break;
+		
+		case "local":
+			directivet("local\t"+ varDefinition.getName() + ":" + varDefinition.getType().getDirectiveInfo());
+			break;
+		
+		case "param":
+			directivet("global\t"+ varDefinition.getName() + ":" + varDefinition.getType().getDirectiveInfo());
+			break;
+		}
 	}
 	
 	public void pusha(int address) {

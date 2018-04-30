@@ -85,7 +85,7 @@ public class RecordField implements ASTNode {
 	 * Returns info about the fields
 	 */
 	public String getInfo() {
-		return "Field{name:"+ name +", type:"+ type.getInfo() +", offset:"+ offset +"}";
+		return "Field{name:"+ name +", type:"+ type.getCommentInfo() +", offset:"+ offset +"}";
 	} 
 
 }

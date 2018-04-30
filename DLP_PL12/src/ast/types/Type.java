@@ -93,19 +93,24 @@ public interface Type extends ASTNode{
 	
 	
 	/**
-	 * Returns the number of bytes occupied by the type in memory
+	 * Returns the number of bytes occupied by the type in memory.
 	 */
 	int numBytes();
 	
 	
 	/**
-	 * Returns the suffix of this type
+	 * Returns the suffix of this type.
 	 */
 	char suffix();
 	
 	/**
-	 * Returns info about the type
+	 * Returns info about the type for using it in a varDefinition comment in the code generation.
 	 */
-	String getInfo();
+	String getCommentInfo();
+	
+	/**
+	 * Returns info about the type for using it in a varDefinition directive in the code generation.
+	 */
+	String getDirectiveInfo();
 	
 }
