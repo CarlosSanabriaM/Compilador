@@ -10,7 +10,10 @@
 	' * CharType c (offset 6)
 	#global	c:char
 	' * RecordType[fields: [Field{name:integer, type:IntType, offset:0}, Field{name:character, type:CharType, offset:2}]] pair (offset 7)
-	#global	pair:
+	#global	pair:{
+		integer:int
+		character:char
+	}
 	' * ArrayType[of: ArrayType[of: IntType, size: 10], size: 10] matrix (offset 10)
 	#global	matrix:10 * 10 * int
 

@@ -69,7 +69,7 @@ public class RecordType extends AbstractType {
 		
 		int i = 0;
 		for (RecordField field : fields) {
-			info += field.getInfo();
+			info += field.getCommentInfo();
 			if(i != fields.size()-1)
 				info  += ", ";
 			i++;
@@ -78,4 +78,17 @@ public class RecordType extends AbstractType {
 		info += "]]";
 		return info;
 	}
+	
+	@Override
+	public String getDirectiveInfo() {
+		String info = "{";
+		
+		for (RecordField field : fields)
+			info += "\n\t\t" + field.getDirectiveInfo();
+		
+		info += "\n\t}";
+		
+		return info;
+	}
+	
 }

@@ -82,10 +82,17 @@ public class RecordField implements ASTNode {
 	}
 
 	/**
-	 * Returns info about the fields
+	 * Returns info about the fields for the comments
 	 */
-	public String getInfo() {
+	public String getCommentInfo() {
 		return "Field{name:"+ name +", type:"+ type.getCommentInfo() +", offset:"+ offset +"}";
+	} 
+	
+	/**
+	 * Returns info about the fields for the directives
+	 */
+	public String getDirectiveInfo() {
+		return name + ":" + type.getDirectiveInfo();
 	} 
 
 }

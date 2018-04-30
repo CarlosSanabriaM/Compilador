@@ -78,11 +78,11 @@ public class CodeGenerator {
 			break;
 		
 		case "local":
-			directivet("local\t"+ varDefinition.getName() + ":" + varDefinition.getType().getDirectiveInfo());
+//			directivet("local\t"+ varDefinition.getName() + ":" + varDefinition.getType().getDirectiveInfo());
 			break;
 		
 		case "param":
-			directivet("global\t"+ varDefinition.getName() + ":" + varDefinition.getType().getDirectiveInfo());
+//			directivet("global\t"+ varDefinition.getName() + ":" + varDefinition.getType().getDirectiveInfo());
 			break;
 		}
 	}
