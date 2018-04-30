@@ -7,10 +7,10 @@ import ast.Program;
 import ast.definitions.Definition;
 import ast.definitions.FunDefinition;
 import ast.definitions.VarDefinition;
-import ast.expressions.Expression;
 import ast.statements.Assignment;
 import ast.statements.IfStatement;
 import ast.statements.Read;
+import ast.statements.Return;
 import ast.statements.Statement;
 import ast.statements.While;
 import ast.statements.Write;
@@ -128,7 +128,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		// Ejecutamos las sentencias que no son defs. vars.
 		for (Statement stm : funDefinition.statements)
 			if(! (stm instanceof VarDefinition) )
-				stm.accept(this, param); // EXECUTE[[stm]]
+				stm.accept(this, funDefinition); // EXECUTE[[stm]]	// Le pasamos el FunDefinition a todos sus statements
 		
 		// Si el tipo de retorno de la función es VOID (no tiene returns) hay que añadir un ret
 		if(functionType.returnType instanceof VoidType)
@@ -226,6 +226,22 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		if(! (functionType.returnType instanceof VoidType) ) {
 			cg.pop(functionType.returnType);
 		}
+		
+		return null;
+	}
+
+	@Override
+	public Object visit(Return _return, Object param) {
+		FunDefinition funDefinition = (FunDefinition) param;	// el visit(FunDefinition) pasa el FunDefinition a todos sus statements como parametro
+		FunctionType functionType = (FunctionType) funDefinition.getType();
+		
+		_return.expression.accept(valueCGVisitor, param);		// VALUE[[exp]]
+		
+		cg.convert(_return.expression.getType(), functionType.returnType);
+		
+		cg.ret(functionType.returnType.numBytes(), 
+				funDefinition.bytesLocalVariables, 
+				functionType.bytesParameters);
 		
 		return null;
 	}
