@@ -7,12 +7,14 @@ import ast.Program;
 import ast.definitions.Definition;
 import ast.definitions.FunDefinition;
 import ast.definitions.VarDefinition;
+import ast.expressions.Expression;
 import ast.statements.Assignment;
 import ast.statements.IfStatement;
 import ast.statements.Read;
 import ast.statements.Statement;
 import ast.statements.While;
 import ast.statements.Write;
+import ast.statementsAndExpressions.Invocation;
 import ast.types.FunctionType;
 import ast.types.VoidType;
 import codeGeneration.CodeGenerator;
@@ -212,6 +214,18 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		cg.comment("Else body");
 		ifStatement.elseBody.forEach( (stm) -> stm.accept(this, param) );	// EXECUTE[[elseBodyi]]
 		cg.label("end_if" + labelNum);
+		
+		return null;
+	}
+	
+	@Override
+	public Object visit(Invocation invocation, Object param) {
+		invocation.accept(valueCGVisitor, param);	// VALUE[[invocation]]
+		
+		FunctionType functionType = (FunctionType) invocation.function.getType();
+		if(! (functionType.returnType instanceof VoidType) ) {
+			cg.pop(functionType.returnType);
+		}
 		
 		return null;
 	}

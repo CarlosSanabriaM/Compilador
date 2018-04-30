@@ -88,6 +88,10 @@ public class CodeGenerator {
 		printlnt("pushf " + value);
 	}
 	
+	public void pop(Type type) {
+		printlnt("pop" + type.suffix());
+	}
+	
 	public void call(String functionName) {
 		printlnt("call " + functionName);
 	}
