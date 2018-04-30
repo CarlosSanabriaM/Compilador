@@ -321,8 +321,8 @@ if: IF expression ':' '{' statements '}' 	%prec MENOR_QUE_ELSE		{	// statement s
   ;
 
 
-return: RETURN expression ';'										{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
-																		Return _return = new Return(scanner.getLine(), scanner.getColumn(), (Expression) $2);
+return: RETURN {returnTempLine = scanner.getLine();} expression ';'	{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+																		Return _return = new Return(returnTempLine, scanner.getColumn(), (Expression) $3);
 																		$$ = asStatementList(_return);
 																	}
 	;
@@ -433,4 +433,5 @@ private List<Statement> asStatementList(Statement statement){
 // Variables temporales para detectar bien los numeros de linea
 int funDefTempLine;
 int writeTempLine;
+int returnTempLine;
 

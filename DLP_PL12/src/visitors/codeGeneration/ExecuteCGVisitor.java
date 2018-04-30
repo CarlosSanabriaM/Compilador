@@ -112,13 +112,13 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		cg.label(funDefinition.getName());
 
 		// Info de los parametros
-		cg.comment("Parameters");
+		cg.comment("--- Parameters ---");
 		for (VarDefinition p : functionType.param) {
 			p.accept(this, param); // EXECUTE[[parami]]
 		}
 		
 		// Info de las variables locales
-		cg.comment("Local variables");
+		cg.comment("--- Local variables ---");
 		for (Statement stm : funDefinition.statements)
 			if(stm instanceof VarDefinition)
 				stm.accept(this, param); // EXECUTE[[stm]]
@@ -220,6 +220,9 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 	
 	@Override
 	public Object visit(Invocation invocation, Object param) {
+		cg.lineDirective(invocation.function.getLine());
+		cg.comment("Invocation of function: " + invocation.function.name);
+		
 		invocation.accept(valueCGVisitor, param);	// VALUE[[invocation]]
 		
 		FunctionType functionType = (FunctionType) invocation.function.getType();
@@ -232,6 +235,9 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 
 	@Override
 	public Object visit(Return _return, Object param) {
+		cg.lineDirective(_return.getLine());
+		cg.comment("Return");
+		
 		FunDefinition funDefinition = (FunDefinition) param;	// el visit(FunDefinition) pasa el FunDefinition a todos sus statements como parametro
 		FunctionType functionType = (FunctionType) funDefinition.getType();
 		
