@@ -25,4 +25,9 @@ public class VoidType extends AbstractType {
 		return v.visit(this, param);
 	} 
 
+	@Override
+	public String getDirectiveInfo() {
+		return "void";
+	}
+	
 }

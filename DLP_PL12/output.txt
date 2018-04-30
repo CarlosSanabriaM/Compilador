@@ -25,20 +25,34 @@ halt
 #line 12
 
  p:
+	#func	p
 	' * --- Parameters ---
+
+	#ret	void
+
 	' * --- Local variables ---
+
 	enter 0
 	ret	0, 0, 0
 
 #line 14
 
  f:
+	#func	f
 	' * --- Parameters ---
 	' * RealType r (offset 6)
+	#param	r:real
 	' * IntType e (offset 4)
+	#param	e:int
+
+	#ret	int
+
 	' * --- Local variables ---
 	' * RealType real (offset -4)
+	#local	real:real
 	' * CharType c (offset -5)
+	#local	c:char
+
 	enter 5
 
 #line 17
@@ -91,13 +105,23 @@ halt
 #line 24
 
  fill:
+	#func	fill
 	' * --- Parameters ---
 	' * IntType row (offset 8)
+	#param	row:int
 	' * IntType value (offset 6)
+	#param	value:int
 	' * IntType increment (offset 4)
+	#param	increment:int
+
+	#ret	void
+
 	' * --- Local variables ---
 	' * IntType i (offset -2)
+	#local	i:int
 	' * IntType inc (offset -4)
+	#local	inc:int
+
 	enter 4
 
 #line 26
@@ -196,10 +220,17 @@ halt
 #line 35
 
  show:
+	#func	show
 	' * --- Parameters ---
 	' * IntType row (offset 4)
+	#param	row:int
+
+	#ret	void
+
 	' * --- Local variables ---
 	' * IntType i (offset -2)
+	#local	i:int
+
 	enter 2
 
 #line 37
@@ -309,9 +340,15 @@ halt
 #line 46
 
  main:
+	#func	main
 	' * --- Parameters ---
+
+	#ret	void
+
 	' * --- Local variables ---
 	' * IntType i (offset -2)
+	#local	i:int
+
 	enter 2
 
 #line 49

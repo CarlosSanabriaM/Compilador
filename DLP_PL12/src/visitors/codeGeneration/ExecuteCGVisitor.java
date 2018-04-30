@@ -113,12 +113,15 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		
 		cg.lineDirective(funDefinition.getLine());
 		cg.label(funDefinition.getName());
+		cg.directivet("func\t" + funDefinition.getName());
 
 		// Info de los parametros
 		cg.comment("--- Parameters ---");
-		for (VarDefinition p : functionType.param) {
+		for (VarDefinition p : functionType.param)
 			p.accept(this, "param"); // EXECUTE[[parami]]
-		}
+		
+		// Info del valor de retorno
+		cg.directivelnt("ret\t" + functionType.returnType.getDirectiveInfo() + "\n");
 		
 		// Info de las variables locales
 		cg.comment("--- Local variables ---");

@@ -51,6 +51,10 @@ public class CodeGenerator {
 		println("\t#"+ str);
 	}
 	
+	public void directivelnt(String str) {
+		println("\n\t#"+ str);
+	}
+	
 	public void sourceDirective(String inputFileName) {
 		directiveln("source\t\""+ inputFileName + "\"\n");
 	}
@@ -72,19 +76,7 @@ public class CodeGenerator {
 	}
 	
 	public void varDefinitionDirective(VarDefinition varDefinition, String scope) {
-		switch (scope) {
-		case "global":
-			directivet("global\t"+ varDefinition.getName() + ":" + varDefinition.getType().getDirectiveInfo());
-			break;
-		
-		case "local":
-//			directivet("local\t"+ varDefinition.getName() + ":" + varDefinition.getType().getDirectiveInfo());
-			break;
-		
-		case "param":
-//			directivet("global\t"+ varDefinition.getName() + ":" + varDefinition.getType().getDirectiveInfo());
-			break;
-		}
+		directivet(scope + "\t"+ varDefinition.getName() + ":" + varDefinition.getType().getDirectiveInfo());
 	}
 	
 	public void pusha(int address) {
@@ -260,6 +252,7 @@ public class CodeGenerator {
 	}
 
 	public void enter(int bytesLocalVariables) {
+		println("");
 		printlnt("enter " + bytesLocalVariables);
 	}
 
