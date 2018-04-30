@@ -1,0 +1,114 @@
+Un programa es una secuencia de variables y definiciones de funciones. (pueden venir mezcladas)
+
+La sintaxis de la definici—n de una variable es una lista, con al menos un elemento, 
+de identificadores separados por comas seguido de ':' y un tipo. 
+Las definiciones de variables terminan mediante el caracter ';'
+(a : INT;     b, c: CHAR)
+
+Las funciones se definen mediante la palabra reservada "def" el identificador 
+de la función, una lista de parametros separados por comas entre '(' y ')' seguido (cada parametro su propia definicion --> (a:INT, b:CHAR) SON OPCIONALES)
+ de ':' y el tipo de retorno o la palabra reservada "void". (SOLO INT, CHAR, DOUBLE o la palabra reservada VOID)
+El tipo de retorno y de los par‡metros debe ser de tipo simple (no se permiten 
+ni arrays ni registros). El cuerpo de la funcion va entre '{' y '}'.
+El cuerpo de las funciones son secuencias de definiciones de variables seguidos 
+por una secuencia de sentencias. En ambos casos terminan con el caracter ';' (ARRIBA DEL TODO VARIABLES y DESPUES SENTENCIAS, no puede haber def de variables dentro de un if por ejemplo)
+La funcion "main" debe estar la última, retornando void y sin parámetros.
+(TODAS LAS PALABRAS RESERVADAS SON EN MINUSCULAS, MAIN INCLUIDO)
+(def main(): void {}) --> ES OBLIGATORIO
+Los tipos simples son "int", "double" y "char".
+
+Los arrays se pueden crear con el constructor de tipos "[]", especificando el 
+tama–o con un entero (como en C) seguido de cualquier tipo.
+(OBLIGATORIO ESTABLECER EL TAMA„O MEDIANTE UN LITERAL ENTERO)
+(a: [4]int;) Nos hace falta conocer el tama–o del array para guardar espacio en memoria
+(a: [5][4]int;) --> )PUEDER TENER TANTAS DIMENSIONES COMO SE QUIERA [][][][] ... [])
+
+Se usa el constructor de tipos "struct" para la creacion de registros. 
+Los registros no tienen identificador, y los campos son declarados como variables 
+dentro de '{' '}'. No se permite la definicion de tipos (p.e. typedef).
+(LOS CAMPOS SE DECLARAN DE FORMA SIMILAR A UNA VARIABLE)
+(Ejemplo:
+	struct{
+		a,b:INT;
+		c:CHAR;
+		a2:[4][4] INT;
+	}
+)
+(Se usa asi:
+a:	struct{
+		a,b:INT;
+		c:CHAR;
+		a2:[4][4] INT;
+	};
+a:[5][4]struct{
+		a,b:INT;
+		c:CHAR;
+		a2:[4][4] INT;
+	};
+)
+
+Una escritura es la palabra reservada "print" seguida de una lista de expresiones
+ separadas por comas.
+(print a,4,b;)
+
+Una lectura es la palabra reservada "input" seguida de una lista de expresiones 
+separadas por comas.
+(input a,4,b;) --> Esto ya se detectara luego que es un error, pero sintacticamente es correcto
+
+Una asignación está compuesta por dos expresiones separadas por el operador '='.
+(a=b;)
+(4=4;) --> Esto ya se detectara luego que es un error, pero sintacticamente es correcto
+
+La sentencia condicional "if"-"else" y la sentencia iterativa "while" siguen la 
+sintaxis del lenguaje Python (sin parentesis y con ':' despues de la condicion).
+(
+if a<4:{
+	a=4;
+	print a;
+}
+else
+	print a;
+
+while a:
+	a=5;
+
+while (a):
+	a=5;
+Los parŽntesis se pueden poner o no, sigue siendo una expresion.
+)
+CUANDO EL BOQUE DE UN ELSE IF o WHILE SOLO TIENE UNA SENTENCIA, SE PUEDE OMITIR LA LLAVES
+
+Se permite la sentencia 'return' <expresion> (la expresion es obligatoria).
+(SOLO HAY QUE RECONOCER QUE ES UNA SENTENCIA. SI ES VOID Y PONEN RETURN, NO PASA NADA, ESO NO SE MIRA AQUI. PUEDE IR EN CUALQUIER SITIO. NO TIENE POR QUE SER LA ULTIMA SENTENCIA.
+PUEDE HABER VARIOS RETURN.)
+
+La invocaci—n a una funci—n ser‡ una nueva expresi—n cuando retorne un valor 
+(distinto de void). Un procedimiento (retorno void) ser‡ siempre sentencia.
+
+(; 
+a;
+NO SON VALIDOS --> NO SON SENTENCIAS
+)
+
+La conversi—n explícita a tipos simples (cast) se realizará utilizando la sintaxis
+ del lenguaje C. 
+(SOLO TIPOS BASICOS, NO VALE ARRAY o STRUCT)
+(NO SE PUEDE ASIGNAR UN ARRAY A UN ARRAY, NI UN STRUCT A UN STRUCT, SOLO A TIPOS BASICOS)
+
+Las expresiones están formadas por:
+- Constantes enteras, reales y caracter sin signo.
+- Identificadores
+- Los siguientes operadores aplicados a una o dos expresiones (por orden de precedencia descendente):
+		( )			Non associative
+		[]			Non associative
+ 		.			Left associative
+        CAST     	Non associative
+		- (unary)	Non associative
+        !			Non associative
+		* / %		Left associative
+		+ -			Left associative
+	> >= < <= != ==	Left associative
+		&& ||		Left associative
+		= 			Right associative (NO DEBERIA ESTAR EN ESTA TABLA, NO ES UNA EXPRESION. NO SE PERMITE a=b=4;)
+
+(CAST IMPLICITO EN OPERACIONES 4+4.5. De 4 se puede hacer un cast automatico a double, no se pierde informacion. La operacion es la misma que si el cast fuera explicito. Pero 4.5 no se debe pasar a 4, porque se pierde informacion)

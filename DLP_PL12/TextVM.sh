@@ -1,0 +1,1 @@
+mono ./mapl/TextVM.exe output.txt

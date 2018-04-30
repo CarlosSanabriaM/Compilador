@@ -1,0 +1,26 @@
+integer:int;
+character:char;
+real, integer:double; # Error 
+real, real:double; 	 # Error semántico detectado en el sintáctico 
+					 # (Compruebo dos veces los errores, una vez antes de los visitors y otra despues. 
+					 # Este error sale antes de los visitors, por lo que al producirse no se recorre el arbol y no se ven los demas errores). 
+
+def prueba(integer: int):void{}
+
+def p(a:int):void {
+  a:char;             # Error
+  b: double;
+  b: char;
+}
+
+def func(): void{ }
+
+def func(real: char): void{
+	integer:int;
+}
+
+def main():void {
+  character:double;
+  input integer, i;   # Error 
+  f();                # Error 
+}
