@@ -37,15 +37,15 @@ public Object getYylval() {
 
 %}
 
-// ************  Patrones (macros) ********************
+// ********************  Patrones (macros) ********************
 
 // Saltables y comentarios
 Saltables = [ \n\t\r]+
-ComentarioUnaLinea = "#" .* (\n)? //El operador . no incluye caracteres especiales como puede ser \n, mientras que ~ si, por eso no nos vale
+ComentarioUnaLinea = "#" .* (\n)? //El operador . no incluye caracteres especiales, como puede ser \n, mientras que ~ sí, por eso usamos .* y no ~
 ComentarioVariasLineas = \"\"\" ~ \"\"\" 
 
 // Enteros
-ConstanteEntera = [0-9]+ //EL PROFESOR TENIA PUESTO [0-9]* 
+ConstanteEntera = [0-9]+
 
 // Reales
 ConstanteRealIzda = {ConstanteEntera}"."
@@ -65,7 +65,7 @@ ConstanteCaracterASCII = '\\[0-9]+'
 // Identificadores
 Identificador = [a-zA-ZñÑáéíóúÁÉÍÓÚ_][a-zA-ZñÑáéíóúÁÉÍÓÚ_0-9]* //Incluye ñ y las tíldes habituales
 
-// Operadores de mas de un carácter
+// Operadores de más de un carácter
 IgualIgual = "==" 
 MenorOIgual = "<="
 MayorOIgual = ">=" 
@@ -74,8 +74,8 @@ And = "&&"
 Or = "||"
 
 %%
-// ************  Acciones ********************
-//Para utilizar el patrón, ponemos su nombre entre llaves
+// ********************  Acciones ********************
+// Para utilizar un patrón, ponemos su nombre entre llaves
 
 // * Saltables y comentarios
 {Saltables}						{ }
@@ -97,9 +97,9 @@ Or = "||"
 "void"							{ return Parser.VOID; }
 "main"							{ return Parser.MAIN; }
 
-// * Operadores, llaves, coma, punto, punto y coma
+// * Operadores, paréntesis, corchetes, llaves, coma, punto, punto y coma, dos puntos
 [+\-/*%><=()!\[\]{},;.:]			{ this.yylval = yytext();
-									return yytext().charAt(0);}
+									return yytext().charAt(0); }
 {IgualIgual}						{ this.yylval = yytext();
 									return Parser.EQUALS; }
 {MenorOIgual}					{ this.yylval = yytext();
@@ -115,7 +115,7 @@ Or = "||"
 									
 // * Constante Entera
 {ConstanteEntera}				{ this.yylval = new Integer(yytext());
-         			  				return Parser.INT_CONSTANT;  }
+         			  				return Parser.INT_CONSTANT; }
 // * Constante Real         			  				
 {ConstanteReal}					{ this.yylval = new Double(yytext());
 									return Parser.REAL_CONSTANT; }
@@ -124,7 +124,7 @@ Or = "||"
 								  	//Comprobamos si el caracter es uno de los especiales
 								  	if(s.equals("'\\n'")) this.yylval = '\n'; 
 								  	else if(s.equals("'\\t'")) this.yylval = '\t';
-								  	//Si no es que solo tiene un elemento dentro de las comillas
+								  	//Si no, es que solo tiene un elemento dentro de las comillas
 								  	else this.yylval = yytext().charAt(1);
 									return Parser.CHAR_CONSTANT; }
 
@@ -143,9 +143,7 @@ Or = "||"
 
 		  
 // * Cualquier otro carácter
-.			{ //System.err.println ("Lexical error at line " 	+ this.getLine() + " and column "+getColumn()+":\n\tUnknow character \'"+ yycharat(0)+"\'."); 
-				new ErrorType(this.getLine(), this.getColumn(), "Lexical error: Unknow character \'"+ yycharat(0)+"\'."); 
-			}		
+.								{ new ErrorType(this.getLine(), this.getColumn(), "Lexical error: Unknow character \'"+ yycharat(0)+"\'."); }		
 				
 			
 			

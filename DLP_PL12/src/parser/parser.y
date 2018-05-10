@@ -165,7 +165,8 @@ statement: assignment												{$$ = (List<Statement>) $1;}
 		| read														{$$ = (List<Statement>) $1;}
 		| write														{$$ = (List<Statement>) $1;}
 		;
-		
+
+// Tipos		
 type: simple_type													{$$ = (Type) $1;}
 	| array															{$$ = (Type) $1;}
 	| struct															{$$ = (Type) $1;}			
@@ -330,20 +331,20 @@ return: RETURN {returnTempLine = scanner.getLine();} expression ';'	{	// stateme
 
 // Auxiliar.  Entre los () va una secuencia de expresiones separadas por comas (QUE PUEDE SER VACIA). 
 // Necesitamos 0+cs. Hacemos que expressions sea opcional.
-parameters_in_funcion_call: 											{$$ = new LinkedList<Expression>();}
+parameters_in_function_call: 											{$$ = new LinkedList<Expression>();}
 						| expressions								{$$ = (List<Expression>) $1;}
 						;
 		
-function_call_as_statement: ID '(' parameters_in_funcion_call ')' ';' {	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+function_call_as_statement: ID '(' parameters_in_function_call ')' ';' {	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
 																		Variable function = new Variable(scanner.getLine(), scanner.getColumn(), (String) $1);
 																		Invocation invocation = new Invocation(scanner.getLine(), scanner.getColumn(), function, (List<Expression>) $3); 
 																		$$ = asStatementList(invocation);	 
 																	}
 						; 
 
-//  ########### Expresiones (Expressions)  ###########
+// ########### Expresiones (Expressions)  ###########
 
-function_call_as_expression: ID '(' parameters_in_funcion_call ')'  	{	
+function_call_as_expression: ID '(' parameters_in_function_call ')'  	{	
 																		Variable function = new Variable(scanner.getLine(), scanner.getColumn(), (String) $1);
 																		$$ = new Invocation(scanner.getLine(), scanner.getColumn(), function, (List<Expression>) $3);
 																	}
