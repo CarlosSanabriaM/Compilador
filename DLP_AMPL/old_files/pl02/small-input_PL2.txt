@@ -1,0 +1,40 @@
+
+# One line comment!
+
+""" Integer
+   constants """
+    0 123	
+    0 12   
+# Estas las reconoce como operador seguido de constante entera
+    -12 +123
+
+""" Real
+   constants """
+    12.3  2.  .34
+    3e3 3E3 3e+3 3E+3 3e-3 3E-3 
+    1.3E+2 34.12E-3 
+    2.E2
+#    1.5E1.5 #NO SE SI DEBERIA ADMITIRLO
+
+""" Palabras reservadas
+   #comentario dentro de comentario """
+
+input print def while if else int double char struct return void #El valor semantico que retornan es el que habia antes guardado, ya que no modifica yylval, no interesa
+
+""" Identificadores """
+
+_id id id12 l_l_112_2132 ñ ñóA_12Ó ___hola___ ___hola_123asdaóÚÁá__
+var1  _var_1  VAR_1_AB_2 _12 a12
+
+""" Character constants """
+
+'a' 'b' 'c' '1'
+'a'  'b'  '.'  '-'  '~' 
+'\n'  '\t' # '\a' Esto falla
+ '\126' '\123'
+ 
+ # OTROS
+ 
+ + - / * % > < = ( ) ! [ ] { } , ;
+ 
+ == <= >= !=

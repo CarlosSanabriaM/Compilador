@@ -1,0 +1,30 @@
+# Lvalue required
+
+def main():void {
+	i:int;	
+	i,a,j:int;
+	v:[10]double;
+	
+	""" Read statement """
+	
+	input i;
+	input v[i];
+	input v.campo;
+		
+	""" Assignment statement """
+	i = right; 			# Correct
+	v[i] = right; 		# Correct
+	v.campo = right;		# Correct
+  
+  	a = 0;
+  	i = 0;
+  	j = -i*a-2;  
+  	v[(int)(v[j])] = a;
+  	print 'f', '(', 'i', ')', '=' ,f(i);
+  	v[i].campo.a = 3;
+  	v[i][5][a] = 6.7 * 6 - 5;
+  	_var = t && f;
+  	v[4][6].campo.campo.campo = 100;
+  	
+  	campo = 100;
+}

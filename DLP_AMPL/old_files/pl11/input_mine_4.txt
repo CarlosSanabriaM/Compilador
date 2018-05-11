@@ -1,0 +1,16 @@
+v:[10]double;
+
+# Main program
+def main():void {
+	
+	v[0] = 5.5;
+	v[1] = 10;
+	v[2] = 'a';
+	
+	print v[0], '\n';
+	print v[1], '\n';
+	print v[2], '\n';
+	
+	print v['b' - 'a'], '\n';
+}
+	
