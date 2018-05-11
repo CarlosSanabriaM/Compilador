@@ -10,6 +10,7 @@ import ast.expressions.Indexing;
 import ast.expressions.IntLiteral;
 import ast.expressions.Logical;
 import ast.expressions.RealLiteral;
+import ast.expressions.UnaryMinus;
 import ast.expressions.UnaryNot;
 import ast.expressions.Variable;
 import ast.statementsAndExpressions.Invocation;
@@ -111,12 +112,23 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 
 	@Override
 	public Object visit(UnaryNot unaryNot, Object param) {
-		unaryNot.expression.accept(this, param);
+		unaryNot.expression.accept(this, param);	// VALUE[[expr]]
 		cg.not();
 
 		return null;
 	}
 
+	@Override
+	public Object visit(UnaryMinus unaryMinus, Object param) {
+		unaryMinus.expression.accept(this, param);	// VALUE[[expr]]
+
+		// Multiplicamos la expresion por -1
+		cg.push(-1);
+		cg.mul(unaryMinus.getType());
+		
+		return null;
+	}
+	
 	@Override
 	public Object visit(Indexing indexing, Object param) {
 		indexing.accept(addressCGVisitor, param);	// ADDRESS[[indexing]]

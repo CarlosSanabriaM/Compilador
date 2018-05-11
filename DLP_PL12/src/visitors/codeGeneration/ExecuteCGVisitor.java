@@ -118,7 +118,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		// Info de los parametros
 		cg.comment("--- Parameters ---");
 		for (VarDefinition p : functionType.param)
-			p.accept(this, "param"); // EXECUTE[[parami]]
+			p.accept(this, "param"); // EXECUTE[[parami]]("param")
 		
 		// Info del valor de retorno
 		cg.directivelnt("ret\t" + functionType.returnType.getDirectiveInfo() + "\n");
@@ -127,7 +127,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		cg.comment("--- Local variables ---");
 		for (Statement stm : funDefinition.statements)
 			if(stm instanceof VarDefinition)
-				stm.accept(this, "local"); // EXECUTE[[stm]]
+				stm.accept(this, "local"); // EXECUTE[[stm]]("local")
 		
 		cg.enter(funDefinition.bytesLocalVariables);
 		

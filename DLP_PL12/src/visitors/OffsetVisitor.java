@@ -54,7 +54,7 @@ public class OffsetVisitor extends AbstractVisitor {
 			varDefinition.offset = numTotalBytesGlobalVars; // Σ(tam. vars. globales anteriores)			
 			numTotalBytesGlobalVars += varDefinition.getType().numBytes();			
 		}
-		// Si es local (aunque los parámetros también tienen scope=1, no visitamos los parámetros)
+		// Si es local (los parámetros también tienen scope=1, pero no visitamos los parámetros, así que el scope es LOCAL)
 		else { // varDefinition.scope == Scope.LOCAL_OR_PARAM
 			numTotalBytesLocalVars += varDefinition.getType().numBytes();
 			varDefinition.offset = -numTotalBytesLocalVars; // BP + - Σ(tam. vars. locales anteriores, incluida la actual)
