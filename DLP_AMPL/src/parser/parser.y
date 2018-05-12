@@ -35,6 +35,12 @@ import ast.types.*;
 %token ID
 %token MAIN
 
+%token PLUS_EQUAL
+%token MINUS_EQUAL
+%token MUL_EQUAL
+%token DIV_EQUAL
+%token MOD_EQUAL
+
 //Tokens con prioridades (los de mas abajo son mas prioritarios)
 %nonassoc MENOR_QUE_ELSE
 %nonassoc ELSE
@@ -164,6 +170,11 @@ statement: assignment												{$$ = (List<Statement>) $1;}
 		| if															{$$ = (List<Statement>) $1;}
 		| read														{$$ = (List<Statement>) $1;}
 		| write														{$$ = (List<Statement>) $1;}
+		| plusEqual													{$$ = (List<Statement>) $1;}
+		| minusEqual													{$$ = (List<Statement>) $1;}
+		| mulEqual													{$$ = (List<Statement>) $1;}
+		| divEqual													{$$ = (List<Statement>) $1;}
+		| modEqual													{$$ = (List<Statement>) $1;}		
 		;
 
 // Tipos		
@@ -341,7 +352,44 @@ function_call_as_statement: ID '(' parameters_in_function_call ')' ';' {	// stat
 																		$$ = asStatementList(invocation);	 
 																	}
 						; 
-
+		
+// * +=, -=, *=, /= y %=				
+plusEqual: expression PLUS_EQUAL expression ';'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+																		Assignment assignment = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, 
+																			new Arithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "+", (Expression) $3));
+  																		$$ = asStatementList(assignment);
+																	}
+		;
+		
+minusEqual: expression MINUS_EQUAL expression ';'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+																		Assignment assignment = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, 
+																			new Arithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "-", (Expression) $3));
+  																		$$ = asStatementList(assignment);
+																	}
+		;
+		
+mulEqual: expression MUL_EQUAL expression ';'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+																		Assignment assignment = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, 
+																			new Arithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "*", (Expression) $3));
+  																		$$ = asStatementList(assignment);
+																	}
+		;
+		
+divEqual: expression DIV_EQUAL expression ';'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+																		Assignment assignment = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, 
+																			new Arithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "/", (Expression) $3));
+  																		$$ = asStatementList(assignment);
+																	}
+		;
+		
+modEqual: expression MOD_EQUAL expression ';'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+																		Assignment assignment = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, 
+																			new Arithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "%", (Expression) $3));
+  																		$$ = asStatementList(assignment);
+																	}
+		;
+		
+		
 // ########### Expresiones (Expressions)  ###########
 
 function_call_as_expression: ID '(' parameters_in_function_call ')'  	{	

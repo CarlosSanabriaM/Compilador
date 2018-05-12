@@ -66,12 +66,17 @@ ConstanteCaracterASCII = '\\[0-9]+'
 Identificador = [a-zA-ZñÑáéíóúÁÉÍÓÚ_][a-zA-ZñÑáéíóúÁÉÍÓÚ_0-9]* //Incluye ñ y las tíldes habituales
 
 // Operadores de más de un carácter
-IgualIgual = "==" 
-MenorOIgual = "<="
-MayorOIgual = ">=" 
-Distinto = "!="
-And = "&&"
-Or = "||"
+IgualIgual 	= "==" 
+MenorOIgual 	= "<="
+MayorOIgual 	= ">=" 
+Distinto 	= "!="
+And 			= "&&"
+Or 			= "||"
+MasIgual 	= "+="
+MenosIgual 	= "-="
+PorIgual 	= "*="
+DivIgual 	= "/="
+ModIgual 	= "%="
 
 %%
 // ********************  Acciones ********************
@@ -100,6 +105,7 @@ Or = "||"
 // * Operadores, paréntesis, corchetes, llaves, coma, punto, punto y coma, dos puntos
 [+\-/*%><=()!\[\]{},;.:]			{ this.yylval = yytext();
 									return yytext().charAt(0); }
+									
 {IgualIgual}						{ this.yylval = yytext();
 									return Parser.EQUALS; }
 {MenorOIgual}					{ this.yylval = yytext();
@@ -113,6 +119,22 @@ Or = "||"
 {Or}								{ this.yylval = yytext();
 									return Parser.OR; }
 									
+// * +=, -=, *=, /= y %=
+{MasIgual}						{ this.yylval = yytext();
+									return Parser.PLUS_EQUAL; }
+
+{MenosIgual}						{ this.yylval = yytext();
+									return Parser.MINUS_EQUAL; }
+
+{PorIgual}						{ this.yylval = yytext();
+									return Parser.MUL_EQUAL; }
+
+{DivIgual}						{ this.yylval = yytext();
+									return Parser.DIV_EQUAL; }
+
+{ModIgual}						{ this.yylval = yytext();
+									return Parser.MOD_EQUAL; }
+
 // * Constante Entera
 {ConstanteEntera}				{ this.yylval = new Integer(yytext());
          			  				return Parser.INT_CONSTANT; }

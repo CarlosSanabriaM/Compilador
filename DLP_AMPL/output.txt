@@ -1,343 +1,13 @@
 
 #source	"input.txt"
 
-	' * IntType i (offset 0)
-	#global	i:int
-	' * IntType n (offset 2)
-	#global	n:int
-	' * IntType j (offset 4)
-	#global	j:int
-	' * CharType c (offset 6)
-	#global	c:char
-	' * RecordType[fields: [Field{name:integer, type:IntType, offset:0}, Field{name:character, type:CharType, offset:2}]] pair (offset 7)
-	#global	pair:{
-		integer:int
-		character:char
-	}
-	' * ArrayType[of: ArrayType[of: IntType, size: 10], size: 10] matrix (offset 10)
-	#global	matrix:10 * 10 * int
 
 ' Invocation to the main function
 call main
 halt
 
 
-#line 12
-
- p:
-	#func	p
-	' * --- Parameters ---
-
-	#ret	void
-
-	' * --- Local variables ---
-
-	enter 0
-	ret	0, 0, 0
-
-#line 14
-
- f:
-	#func	f
-	' * --- Parameters ---
-	' * RealType r (offset 6)
-	#param	r:real
-	' * IntType e (offset 4)
-	#param	e:int
-
-	#ret	int
-
-	' * --- Local variables ---
-	' * RealType real (offset -4)
-	#local	real:real
-	' * CharType c (offset -5)
-	#local	c:char
-
-	enter 5
-
-#line 17
-	' * Assignment
-	push bp
-	pushi -4
-	addi
-	pusha 7
-	pushi 2
-	addi
-	loadb
-	b2i
-	i2f
-	pusha 7
-	pushi 0
-	addi
-	loadi
-	i2f
-	addf
-	push bp
-	pushi 6
-	addi
-	loadf
-	addf
-	push bp
-	pushi 4
-	addi
-	loadi
-	i2f
-	addf
-	storef
-
-#line 18
-	' * Assignment
-	push bp
-	pushi -5
-	addi
-	pushb 48
-	storeb
-
-#line 19
-	' * Return
-	push bp
-	pushi -5
-	addi
-	loadb
-	b2i
-	ret	2, 5, 6
-
-#line 24
-
- fill:
-	#func	fill
-	' * --- Parameters ---
-	' * IntType row (offset 8)
-	#param	row:int
-	' * IntType value (offset 6)
-	#param	value:int
-	' * IntType increment (offset 4)
-	#param	increment:int
-
-	#ret	void
-
-	' * --- Local variables ---
-	' * IntType i (offset -2)
-	#local	i:int
-	' * IntType inc (offset -4)
-	#local	inc:int
-
-	enter 4
-
-#line 26
-	' * Assignment
-	push bp
-	pushi -2
-	addi
-	pushi 0
-	storei
-
-#line 27
-	' * Assignment
-	push bp
-	pushi -4
-	addi
-	push bp
-	pushi 4
-	addi
-	loadi
-	storei
-
-#line 28
-	' * While
-
- while1:
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 10
-	lti
-	jz end_while1
-	' * While body
-
-#line 29
-	' * Assignment
-	pusha 10
-	push bp
-	pushi 8
-	addi
-	loadi
-	pushi 20
-	muli
-	addi
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 2
-	muli
-	addi
-	push bp
-	pushi 6
-	addi
-	loadi
-	push bp
-	pushi -4
-	addi
-	loadi
-	addi
-	storei
-
-#line 30
-	' * Assignment
-	push bp
-	pushi -2
-	addi
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 1
-	addi
-	storei
-
-#line 31
-	' * Assignment
-	push bp
-	pushi -4
-	addi
-	push bp
-	pushi -4
-	addi
-	loadi
-	push bp
-	pushi 4
-	addi
-	loadi
-	addi
-	storei
-	jmp while1
-
- end_while1:
-	ret	0, 4, 6
-
-#line 35
-
- show:
-	#func	show
-	' * --- Parameters ---
-	' * IntType row (offset 4)
-	#param	row:int
-
-	#ret	void
-
-	' * --- Local variables ---
-	' * IntType i (offset -2)
-	#local	i:int
-
-	enter 2
-
-#line 37
-	' * Assignment
-	push bp
-	pushi -2
-	addi
-	pushi 0
-	storei
-
-#line 38
-	' * While
-
- while2:
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 10
-	lti
-	jz end_while2
-	' * While body
-
-#line 39
-	' * Write
-	pushb 40
-	outb
-
-#line 39
-	' * Write
-	push bp
-	pushi 4
-	addi
-	loadi
-	outi
-
-#line 39
-	' * Write
-	pushb 44
-	outb
-
-#line 39
-	' * Write
-	push bp
-	pushi -2
-	addi
-	loadi
-	outi
-
-#line 39
-	' * Write
-	pushb 41
-	outb
-
-#line 39
-	' * Write
-	pushb 58
-	outb
-
-#line 39
-	' * Write
-	pusha 10
-	push bp
-	pushi 4
-	addi
-	loadi
-	pushi 20
-	muli
-	addi
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 2
-	muli
-	addi
-	loadi
-	outi
-
-#line 39
-	' * Write
-	pushb 32
-	outb
-
-#line 40
-	' * Assignment
-	push bp
-	pushi -2
-	addi
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 1
-	addi
-	storei
-	jmp while2
-
- end_while2:
-
-#line 42
-	' * Write
-	pushb 10
-	outb
-	ret	0, 2, 2
-
-#line 46
+#line 2
 
  main:
 	#func	main
@@ -351,109 +21,28 @@ halt
 
 	enter 2
 
-#line 49
-	' * Invocation of function: p
-	call p
-
-#line 50
+#line 5
 	' * Assignment
 	push bp
 	pushi -2
 	addi
-	pushi 0
+	pushi 1
 	storei
 
-#line 51
-	' * Assignment
-	pusha 7
-	pushi 2
-	addi
-	pushb 48
-	storeb
-
-#line 52
-	' * Assignment
-	pusha 7
-	pushi 0
-	addi
-	pushb 48
-	b2i
-	storei
-
-#line 53
+#line 6
 	' * Write
 	push bp
 	pushi -2
 	addi
 	loadi
-	i2f
-	pusha 7
-	pushi 2
-	addi
-	loadb
-	b2i
-	call f
 	outi
 
-#line 53
+#line 6
 	' * Write
 	pushb 10
 	outb
 
-#line 55
-	' * Invocation of function: f
-	pushf 1.3
-	pushi 2
-	call f
-	popi
-
-#line 57
-	' * Assignment
-	push bp
-	pushi -2
-	addi
-	pushi 0
-	storei
-
-#line 58
-	' * Assignment
-	pusha 4
-	pushi 0
-	storei
-
-#line 59
-	' * While
-
- while3:
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 10
-	lti
-	jz end_while3
-	' * While body
-
-#line 60
-	' * Invocation of function: fill
-	push bp
-	pushi -2
-	addi
-	loadi
-	pusha 4
-	loadi
-	pushi 1
-	call fill
-
-#line 61
-	' * Invocation of function: show
-	push bp
-	pushi -2
-	addi
-	loadi
-	call show
-
-#line 62
+#line 8
 	' * Assignment
 	push bp
 	pushi -2
@@ -462,21 +51,228 @@ halt
 	pushi -2
 	addi
 	loadi
-	pushi 1
+	pushi 4
 	addi
 	storei
 
-#line 63
-	' * Assignment
-	pusha 4
+#line 9
+	' * Write
 	push bp
 	pushi -2
 	addi
 	loadi
-	pushi 10
+	outi
+
+#line 9
+	' * Write
+	pushb 10
+	outb
+
+#line 11
+	' * Assignment
+	push bp
+	pushi -2
+	addi
+	push bp
+	pushi -2
+	addi
+	loadi
+	pushi 3
+	subi
+	storei
+
+#line 12
+	' * Write
+	push bp
+	pushi -2
+	addi
+	loadi
+	outi
+
+#line 12
+	' * Write
+	pushb 10
+	outb
+
+#line 14
+	' * Assignment
+	push bp
+	pushi -2
+	addi
+	push bp
+	pushi -2
+	addi
+	loadi
+	pushi 5
 	muli
 	storei
-	jmp while3
 
- end_while3:
+#line 15
+	' * Write
+	push bp
+	pushi -2
+	addi
+	loadi
+	outi
+
+#line 15
+	' * Write
+	pushb 10
+	outb
+
+#line 17
+	' * Assignment
+	push bp
+	pushi -2
+	addi
+	push bp
+	pushi -2
+	addi
+	loadi
+	pushi 5
+	divi
+	storei
+
+#line 18
+	' * Write
+	push bp
+	pushi -2
+	addi
+	loadi
+	outi
+
+#line 18
+	' * Write
+	pushb 10
+	outb
+
+#line 20
+	' * Assignment
+	push bp
+	pushi -2
+	addi
+	push bp
+	pushi -2
+	addi
+	loadi
+	pushi 6
+	muli
+	storei
+
+#line 21
+	' * Write
+	push bp
+	pushi -2
+	addi
+	loadi
+	outi
+
+#line 21
+	' * Write
+	pushb 10
+	outb
+
+#line 23
+	' * Assignment
+	push bp
+	pushi -2
+	addi
+	push bp
+	pushi -2
+	addi
+	loadi
+	pushi 4
+	divi
+	storei
+
+#line 24
+	' * Write
+	push bp
+	pushi -2
+	addi
+	loadi
+	outi
+
+#line 24
+	' * Write
+	pushb 10
+	outb
+
+#line 26
+	' * Assignment
+	push bp
+	pushi -2
+	addi
+	push bp
+	pushi -2
+	addi
+	loadi
+	pushi 2
+	modi
+	storei
+
+#line 27
+	' * Write
+	push bp
+	pushi -2
+	addi
+	loadi
+	outi
+
+#line 27
+	' * Write
+	pushb 10
+	outb
+
+#line 29
+	' * Assignment
+	push bp
+	pushi -2
+	addi
+	push bp
+	pushi -2
+	addi
+	loadi
+	pushi 6
+	muli
+	storei
+
+#line 30
+	' * Write
+	push bp
+	pushi -2
+	addi
+	loadi
+	outi
+
+#line 30
+	' * Write
+	pushb 10
+	outb
+
+#line 32
+	' * Assignment
+	push bp
+	pushi -2
+	addi
+	push bp
+	pushi -2
+	addi
+	loadi
+	pushi 4
+	divi
+	storei
+
+#line 33
+	' * Write
+	push bp
+	pushi -2
+	addi
+	loadi
+	outi
+
+#line 33
+	' * Write
+	pushb 10
+	outb
 	ret	0, 2, 0
