@@ -47,14 +47,18 @@ public class Main {
 		
 		// * Check errors 
 		if(!checkErrors()) {
-			// * Visitors
+			// * Syntactical and Semantical analisis
 			parser.getAST().accept(new IdentificationVisitor(), null);
 			parser.getAST().accept(new TypeCheckingVisitor(), null);
-			parser.getAST().accept(new OffsetVisitor(), null);
-			parser.getAST().accept(new ExecuteCGVisitor(inputFileName, outputFileName), null);
 			
 			// * Check errors again 
 			if(!checkErrors()) {
+				// Here, the program has no errors
+				
+				// * Code generation
+				parser.getAST().accept(new OffsetVisitor(), null);
+				parser.getAST().accept(new ExecuteCGVisitor(inputFileName, outputFileName), null);
+				
 				// * Show AST
 				IntrospectorModel model=new IntrospectorModel("Program",parser.getAST());
 				new IntrospectorTree("Introspector", model);

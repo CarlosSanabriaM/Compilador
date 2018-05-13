@@ -1,0 +1,60 @@
+
+# Arrays
+v_c: [10]char;
+v_i: [10]int;
+v_r: [10]double;
+
+# Structs
+s: struct{
+	charField: char;
+	intField:  int;
+  	realField: double;
+};
+
+# Main program
+def main():void {
+	
+	# Errors
+	1++;
+	'a'++;
+	1.5++;
+	
+	v_c++;
+	v_i++;
+	v_r++;
+	
+	s++;
+
+	# ------------
+	1--;
+	'a'--;
+	1.5--;
+	
+	v_c--;
+	v_i--;
+	v_r--;
+	
+	s--;
+
+	# ------------
+	++1;
+	++'a';
+	++1.5;
+	
+	++v_c;
+	++v_i;
+	++v_r;
+	
+	++s;
+
+	# ------------
+	--1;
+	--'a';
+	--1.5;
+	
+	--v_c;
+	--v_i;
+	--v_r;
+	
+	--s;
+}

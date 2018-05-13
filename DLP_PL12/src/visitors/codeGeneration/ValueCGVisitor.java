@@ -15,6 +15,7 @@ import ast.expressions.UnaryNot;
 import ast.expressions.Variable;
 import ast.statementsAndExpressions.Invocation;
 import ast.types.FunctionType;
+import ast.types.IntType;
 import codeGeneration.CodeGenerator;
 
 /**
@@ -113,6 +114,7 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 	@Override
 	public Object visit(UnaryNot unaryNot, Object param) {
 		unaryNot.expression.accept(this, param);	// VALUE[[expr]]
+		cg.convert(unaryNot.expression.getType(), unaryNot.getType());
 		cg.not();
 
 		return null;
@@ -122,8 +124,11 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 	public Object visit(UnaryMinus unaryMinus, Object param) {
 		unaryMinus.expression.accept(this, param);	// VALUE[[expr]]
 
+		cg.convert(unaryMinus.expression.getType(), unaryMinus.getType());
+		
 		// Multiplicamos la expresion por -1
 		cg.push(-1);
+		cg.convert(IntType.getInstance(), unaryMinus.getType());
 		cg.mul(unaryMinus.getType());
 		
 		return null;
