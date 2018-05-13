@@ -92,6 +92,7 @@ MenosMenos	= "--"
 // * Palabras reservadas
 "input"							{ return Parser.INPUT; }
 "print"							{ return Parser.PRINT; }
+"println"						{ return Parser.PRINTLN; }
 "def"							{ return Parser.DEF; }
 "while"							{ return Parser.WHILE; }
 "if"								{ return Parser.IF; }

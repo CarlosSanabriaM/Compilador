@@ -22,6 +22,7 @@ import ast.types.*;
 %token CHAR_CONSTANT
 %token INPUT
 %token PRINT
+%token PRINTLN
 %token DEF
 %token WHILE
 %token IF
@@ -251,6 +252,20 @@ write: PRINT {writeTempLine = scanner.getLine();} expressions ';'		{	// statemen
 																		for(Expression expression : expressions){
 																			statements.add( new Write(writeTempLine, scanner.getColumn(), expression) );
 																		}
+																		$$ = statements;
+																	}
+	| PRINTLN {writeTempLine = scanner.getLine();} expressions ';'	{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
+																		List<Statement> statements = new LinkedList<Statement>();
+																		
+																		List<Expression> expressions = (List<Expression>) $3;
+																		for(Expression expression : expressions){
+																			statements.add( new Write(writeTempLine, scanner.getColumn(), expression) );
+																		}
+																		
+																		// Añadimos un ultimo Write con un salto de linea
+																		statements.add( new Write(writeTempLine, scanner.getColumn(), 
+																			new CharLiteral(scanner.getLine(), scanner.getColumn(), '\n')) );
+																		
 																		$$ = statements;
 																	}
 	;

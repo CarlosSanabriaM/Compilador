@@ -1,5 +1,5 @@
 
-#source	"old_files/ampliaciones/masMas/input.postArithmetic.masMas.txt"
+#source	"old_files/ampliaciones/println/input.println.txt"
 
 
 ' Invocation to the main function
@@ -16,70 +16,157 @@ halt
 	#ret	void
 
 	' * --- Local variables ---
-	' * CharType c (offset -1)
-	#local	c:char
-	' * IntType i (offset -3)
-	#local	i:int
-	' * RealType d (offset -7)
-	#local	d:real
-	' * ArrayType[of: IntType, size: 10] v_i (offset -27)
-	#local	v_i:10 * int
-	' * RecordType[fields: [Field{name:charField, type:CharType, offset:0}, Field{name:intField, type:IntType, offset:1}, Field{name:realField, type:RealType, offset:3}]] s (offset -34)
-	#local	s:{
-		charField:char
-		intField:int
-		realField:real
-	}
 
-	enter 34
+	enter 0
 
-#line 15
-	' * Assignment
-	push bp
-	pushi -1
-	addi
-	pushb 97
-	storeb
-
-#line 16
+#line 5
 	' * Write
-	push bp
-	pushi -1
-	addi
-	loadb
+	pushb 104
+	outb
+
+#line 5
+	' * Write
+	pushb 111
+	outb
+
+#line 5
+	' * Write
+	pushb 108
+	outb
+
+#line 5
+	' * Write
+	pushb 97
+	outb
+
+#line 7
+	' * Write
+	pushb 104
+	outb
+
+#line 7
+	' * Write
+	pushb 111
+	outb
+
+#line 7
+	' * Write
+	pushb 108
+	outb
+
+#line 7
+	' * Write
+	pushb 97
+	outb
+
+#line 7
+	' * Write
+	pushb 10
+	outb
+
+#line 9
+	' * Write
+	pushb 104
+	outb
+
+#line 9
+	' * Write
+	pushb 111
+	outb
+
+#line 9
+	' * Write
+	pushb 108
+	outb
+
+#line 9
+	' * Write
+	pushb 97
+	outb
+
+#line 12
+	' * Write
+	pushb 104
+	outb
+
+#line 12
+	' * Write
+	pushb 111
+	outb
+
+#line 12
+	' * Write
+	pushb 108
+	outb
+
+#line 12
+	' * Write
+	pushb 97
+	outb
+
+#line 12
+	' * Write
+	pushb 10
+	outb
+
+#line 14
+	' * Write
+	pushb 104
+	outb
+
+#line 14
+	' * Write
+	pushb 111
+	outb
+
+#line 14
+	' * Write
+	pushb 108
+	outb
+
+#line 14
+	' * Write
+	pushb 97
+	outb
+
+#line 14
+	' * Write
+	pushb 10
 	outb
 
 #line 16
+	' * Write
+	pushb 49
+	outb
+
+#line 16
+	' * Write
+	pushb 10
+	outb
+
+#line 17
+	' * Write
+	pushb 50
+	outb
+
+#line 17
 	' * Write
 	pushb 10
 	outb
 
 #line 18
-	' * Post Arithmetic
-	push bp
-	pushi -1
-	addi
-	loadb
-	push bp
-	pushi -1
-	addi
-	push bp
-	pushi -1
-	addi
-	loadb
-	b2i
-	pushi 1
-	addi
-	i2b
-	storeb
-	popb
+	' * Write
+	pushb 51
+	outb
+
+#line 18
+	' * Write
+	pushb 10
+	outb
 
 #line 19
 	' * Write
-	push bp
-	pushi -1
-	addi
-	loadb
+	pushb 52
 	outb
 
 #line 19
@@ -89,22 +176,7 @@ halt
 
 #line 21
 	' * Write
-	push bp
-	pushi -1
-	addi
-	loadb
-	push bp
-	pushi -1
-	addi
-	push bp
-	pushi -1
-	addi
-	loadb
-	b2i
-	pushi 1
-	addi
-	i2b
-	storeb
+	pushb 32
 	outb
 
 #line 21
@@ -114,798 +186,11 @@ halt
 
 #line 22
 	' * Write
-	push bp
-	pushi -1
-	addi
-	loadb
+	pushb 53
 	outb
 
 #line 22
 	' * Write
 	pushb 10
 	outb
-
-#line 24
-	' * Post Arithmetic
-	push bp
-	pushi -1
-	addi
-	loadb
-	push bp
-	pushi -1
-	addi
-	push bp
-	pushi -1
-	addi
-	loadb
-	b2i
-	pushi 1
-	addi
-	i2b
-	storeb
-	popb
-
-#line 25
-	' * Write
-	push bp
-	pushi -1
-	addi
-	loadb
-	push bp
-	pushi -1
-	addi
-	push bp
-	pushi -1
-	addi
-	loadb
-	b2i
-	pushi 1
-	addi
-	i2b
-	storeb
-	b2i
-	pushi -1
-	muli
-	outi
-
-#line 25
-	' * Write
-	pushb 10
-	outb
-
-#line 26
-	' * Write
-	push bp
-	pushi -1
-	addi
-	loadb
-	outb
-
-#line 26
-	' * Write
-	pushb 10
-	outb
-
-#line 30
-	' * Write
-	pushb 10
-	outb
-
-#line 30
-	' * Write
-	pushb 10
-	outb
-
-#line 32
-	' * Assignment
-	push bp
-	pushi -3
-	addi
-	pushi 1
-	storei
-
-#line 33
-	' * Write
-	push bp
-	pushi -3
-	addi
-	loadi
-	outi
-
-#line 33
-	' * Write
-	pushb 10
-	outb
-
-#line 35
-	' * Post Arithmetic
-	push bp
-	pushi -3
-	addi
-	loadi
-	push bp
-	pushi -3
-	addi
-	push bp
-	pushi -3
-	addi
-	loadi
-	pushi 1
-	addi
-	storei
-	popi
-
-#line 36
-	' * Write
-	push bp
-	pushi -3
-	addi
-	loadi
-	outi
-
-#line 36
-	' * Write
-	pushb 10
-	outb
-
-#line 38
-	' * Write
-	push bp
-	pushi -3
-	addi
-	loadi
-	push bp
-	pushi -3
-	addi
-	push bp
-	pushi -3
-	addi
-	loadi
-	pushi 1
-	addi
-	storei
-	outi
-
-#line 38
-	' * Write
-	pushb 10
-	outb
-
-#line 39
-	' * Write
-	push bp
-	pushi -3
-	addi
-	loadi
-	outi
-
-#line 39
-	' * Write
-	pushb 10
-	outb
-
-#line 41
-	' * Post Arithmetic
-	push bp
-	pushi -3
-	addi
-	loadi
-	push bp
-	pushi -3
-	addi
-	push bp
-	pushi -3
-	addi
-	loadi
-	pushi 1
-	addi
-	storei
-	popi
-
-#line 42
-	' * Write
-	push bp
-	pushi -3
-	addi
-	loadi
-	push bp
-	pushi -3
-	addi
-	push bp
-	pushi -3
-	addi
-	loadi
-	pushi 1
-	addi
-	storei
-	pushi -1
-	muli
-	outi
-
-#line 42
-	' * Write
-	pushb 10
-	outb
-
-#line 43
-	' * Write
-	push bp
-	pushi -3
-	addi
-	loadi
-	outi
-
-#line 43
-	' * Write
-	pushb 10
-	outb
-
-#line 47
-	' * Write
-	pushb 10
-	outb
-
-#line 47
-	' * Write
-	pushb 10
-	outb
-
-#line 49
-	' * Assignment
-	push bp
-	pushi -7
-	addi
-	pushf 1.5
-	storef
-
-#line 50
-	' * Write
-	push bp
-	pushi -7
-	addi
-	loadf
-	outf
-
-#line 50
-	' * Write
-	pushb 10
-	outb
-
-#line 52
-	' * Post Arithmetic
-	push bp
-	pushi -7
-	addi
-	loadf
-	push bp
-	pushi -7
-	addi
-	push bp
-	pushi -7
-	addi
-	loadf
-	pushi 1
-	i2f
-	addf
-	storef
-	popf
-
-#line 53
-	' * Write
-	push bp
-	pushi -7
-	addi
-	loadf
-	outf
-
-#line 53
-	' * Write
-	pushb 10
-	outb
-
-#line 55
-	' * Write
-	push bp
-	pushi -7
-	addi
-	loadf
-	push bp
-	pushi -7
-	addi
-	push bp
-	pushi -7
-	addi
-	loadf
-	pushi 1
-	i2f
-	addf
-	storef
-	outf
-
-#line 55
-	' * Write
-	pushb 10
-	outb
-
-#line 56
-	' * Write
-	push bp
-	pushi -7
-	addi
-	loadf
-	outf
-
-#line 56
-	' * Write
-	pushb 10
-	outb
-
-#line 58
-	' * Post Arithmetic
-	push bp
-	pushi -7
-	addi
-	loadf
-	push bp
-	pushi -7
-	addi
-	push bp
-	pushi -7
-	addi
-	loadf
-	pushi 1
-	i2f
-	addf
-	storef
-	popf
-
-#line 59
-	' * Write
-	push bp
-	pushi -7
-	addi
-	loadf
-	push bp
-	pushi -7
-	addi
-	push bp
-	pushi -7
-	addi
-	loadf
-	pushi 1
-	i2f
-	addf
-	storef
-	pushi -1
-	i2f
-	mulf
-	outf
-
-#line 59
-	' * Write
-	pushb 10
-	outb
-
-#line 60
-	' * Write
-	push bp
-	pushi -7
-	addi
-	loadf
-	outf
-
-#line 60
-	' * Write
-	pushb 10
-	outb
-
-#line 63
-	' * Write
-	pushb 10
-	outb
-
-#line 63
-	' * Write
-	pushb 10
-	outb
-
-#line 65
-	' * Assignment
-	push bp
-	pushi -27
-	addi
-	pushi 0
-	pushi 2
-	muli
-	addi
-	pushi 1
-	storei
-
-#line 66
-	' * Write
-	push bp
-	pushi -27
-	addi
-	pushi 0
-	pushi 2
-	muli
-	addi
-	loadi
-	outi
-
-#line 66
-	' * Write
-	pushb 10
-	outb
-
-#line 68
-	' * Post Arithmetic
-	push bp
-	pushi -27
-	addi
-	pushi 0
-	pushi 2
-	muli
-	addi
-	loadi
-	push bp
-	pushi -27
-	addi
-	pushi 0
-	pushi 2
-	muli
-	addi
-	push bp
-	pushi -27
-	addi
-	pushi 0
-	pushi 2
-	muli
-	addi
-	loadi
-	pushi 1
-	addi
-	storei
-	popi
-
-#line 69
-	' * Write
-	push bp
-	pushi -27
-	addi
-	pushi 0
-	pushi 2
-	muli
-	addi
-	loadi
-	outi
-
-#line 69
-	' * Write
-	pushb 10
-	outb
-
-#line 71
-	' * Write
-	push bp
-	pushi -27
-	addi
-	pushi 0
-	pushi 2
-	muli
-	addi
-	loadi
-	push bp
-	pushi -27
-	addi
-	pushi 0
-	pushi 2
-	muli
-	addi
-	push bp
-	pushi -27
-	addi
-	pushi 0
-	pushi 2
-	muli
-	addi
-	loadi
-	pushi 1
-	addi
-	storei
-	outi
-
-#line 71
-	' * Write
-	pushb 10
-	outb
-
-#line 72
-	' * Write
-	push bp
-	pushi -27
-	addi
-	pushi 0
-	pushi 2
-	muli
-	addi
-	loadi
-	outi
-
-#line 72
-	' * Write
-	pushb 10
-	outb
-
-#line 74
-	' * Post Arithmetic
-	push bp
-	pushi -27
-	addi
-	pushi 0
-	pushi 2
-	muli
-	addi
-	loadi
-	push bp
-	pushi -27
-	addi
-	pushi 0
-	pushi 2
-	muli
-	addi
-	push bp
-	pushi -27
-	addi
-	pushi 0
-	pushi 2
-	muli
-	addi
-	loadi
-	pushi 1
-	addi
-	storei
-	popi
-
-#line 75
-	' * Write
-	push bp
-	pushi -27
-	addi
-	pushi 0
-	pushi 2
-	muli
-	addi
-	loadi
-	push bp
-	pushi -27
-	addi
-	pushi 0
-	pushi 2
-	muli
-	addi
-	push bp
-	pushi -27
-	addi
-	pushi 0
-	pushi 2
-	muli
-	addi
-	loadi
-	pushi 1
-	addi
-	storei
-	pushi -1
-	muli
-	outi
-
-#line 75
-	' * Write
-	pushb 10
-	outb
-
-#line 76
-	' * Write
-	push bp
-	pushi -27
-	addi
-	pushi 0
-	pushi 2
-	muli
-	addi
-	loadi
-	outi
-
-#line 76
-	' * Write
-	pushb 10
-	outb
-
-#line 79
-	' * Write
-	pushb 10
-	outb
-
-#line 79
-	' * Write
-	pushb 10
-	outb
-
-#line 81
-	' * Assignment
-	push bp
-	pushi -34
-	addi
-	pushi 1
-	addi
-	pushi 1
-	storei
-
-#line 82
-	' * Write
-	push bp
-	pushi -34
-	addi
-	pushi 1
-	addi
-	loadi
-	outi
-
-#line 82
-	' * Write
-	pushb 10
-	outb
-
-#line 84
-	' * Post Arithmetic
-	push bp
-	pushi -34
-	addi
-	pushi 1
-	addi
-	loadi
-	push bp
-	pushi -34
-	addi
-	pushi 1
-	addi
-	push bp
-	pushi -34
-	addi
-	pushi 1
-	addi
-	loadi
-	pushi 1
-	addi
-	storei
-	popi
-
-#line 85
-	' * Write
-	push bp
-	pushi -34
-	addi
-	pushi 1
-	addi
-	loadi
-	outi
-
-#line 85
-	' * Write
-	pushb 10
-	outb
-
-#line 87
-	' * Write
-	push bp
-	pushi -34
-	addi
-	pushi 1
-	addi
-	loadi
-	push bp
-	pushi -34
-	addi
-	pushi 1
-	addi
-	push bp
-	pushi -34
-	addi
-	pushi 1
-	addi
-	loadi
-	pushi 1
-	addi
-	storei
-	outi
-
-#line 87
-	' * Write
-	pushb 10
-	outb
-
-#line 88
-	' * Write
-	push bp
-	pushi -34
-	addi
-	pushi 1
-	addi
-	loadi
-	outi
-
-#line 88
-	' * Write
-	pushb 10
-	outb
-
-#line 90
-	' * Post Arithmetic
-	push bp
-	pushi -34
-	addi
-	pushi 1
-	addi
-	loadi
-	push bp
-	pushi -34
-	addi
-	pushi 1
-	addi
-	push bp
-	pushi -34
-	addi
-	pushi 1
-	addi
-	loadi
-	pushi 1
-	addi
-	storei
-	popi
-
-#line 91
-	' * Write
-	push bp
-	pushi -34
-	addi
-	pushi 1
-	addi
-	loadi
-	push bp
-	pushi -34
-	addi
-	pushi 1
-	addi
-	push bp
-	pushi -34
-	addi
-	pushi 1
-	addi
-	loadi
-	pushi 1
-	addi
-	storei
-	pushi -1
-	muli
-	outi
-
-#line 91
-	' * Write
-	pushb 10
-	outb
-
-#line 92
-	' * Write
-	push bp
-	pushi -34
-	addi
-	pushi 1
-	addi
-	loadi
-	outi
-
-#line 92
-	' * Write
-	pushb 10
-	outb
-	ret	0, 34, 0
+	ret	0, 0, 0
