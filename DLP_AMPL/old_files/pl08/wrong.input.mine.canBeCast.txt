@@ -17,10 +17,9 @@ s: struct{
 
 # Functions
 def f_void(): void{}
-
-def f_char(): char{}
-def f_int():  int{}
-def f_real(): double{}
+def f_char(): char{ return 'c';}
+def f_int():  int{ return 1;}
+def f_real(): double{ return 1.0; }
 
 def checkCanBeCast(): void{
 	r = (double) 'c';	
@@ -39,6 +38,12 @@ def checkCanBeCast(): void{
 	r = (double) f_int();
 	r = (double) f_char();
 	
+	# Casts implicitos
+	i = '1';
+	r = '1';
+	r = 1;
+
+"""
 	# Errors
 	r = (char) s;	# Error
 	r = (double) s;	# Error
@@ -55,9 +60,12 @@ def checkCanBeCast(): void{
 	r = (double) f_void(); # Error
 
 	c = (double) f_char(); # Error de asignacion
+"""
+
+	f_void();
 }	
 
 # Main function
 def main():void {
-  
+  checkCanBeCast();
 }

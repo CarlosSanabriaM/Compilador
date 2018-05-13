@@ -24,6 +24,8 @@ import ast.statements.Return;
 import ast.statements.While;
 import ast.statements.Write;
 import ast.statementsAndExpressions.Invocation;
+import ast.statementsAndExpressions.PostArithmetic;
+import ast.statementsAndExpressions.PreArithmetic;
 import ast.types.ArrayType;
 import ast.types.CharType;
 import ast.types.ErrorType;
@@ -208,6 +210,20 @@ public abstract class AbstractVisitor implements Visitor {
 	public Object visit(Invocation invocation, Object param) {
 		invocation.function.accept(this, param);
 		invocation.arguments.forEach( (arg) -> arg.accept(this, param) );
+		
+		return null;
+	}
+	
+	@Override
+	public Object visit(PreArithmetic preArithmetic, Object param) {
+		preArithmetic.expression.accept(this, param);
+		
+		return null;
+	}
+
+	@Override
+	public Object visit(PostArithmetic postArithmetic, Object param) {
+		postArithmetic.expression.accept(this, param);
 		
 		return null;
 	}

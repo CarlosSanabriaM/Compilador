@@ -16,10 +16,10 @@ s: struct{
 };
 
 # Functions
-def f(): char{}
-def g(c: char): char{}
-def h(c: char, i: int): int{}
-def j(c: char, i: int, r: double): double{}
+def f(): char{ return 'a'; }
+def g(c: char): char{ return 'a'; }
+def h(c: char, i: int): int{ return 1; }
+def j(c: char, i: int, r: double): double{ return 20.0; }
 
 def checkParenthesis(): void{
 #	checkParenthesis(); # Error overflow Introspector ?????
@@ -34,7 +34,8 @@ def checkParenthesis(): void{
 	print j('a', 'a', 'a');
 	
 	print j('a', 1, 1);
-	
+
+"""	
 	# Errors
 	print f('a');				#Error
 	print f(1);					#Error
@@ -53,9 +54,11 @@ def checkParenthesis(): void{
 	print h(1.5);				#Error
 	print h(1.5, 1.5);			#Error
 	print h('a','a','a');		#Error
+"""
+
 }
 
 # Main function
 def main():void {
-	
+	checkParenthesis();
 }

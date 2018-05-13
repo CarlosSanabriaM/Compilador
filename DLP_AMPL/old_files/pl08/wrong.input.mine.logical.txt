@@ -17,9 +17,9 @@ s: struct{
 
 # Functions
 def f_void(): void{}
-def f_char(): char{}
-def f_int():  int{}
-def f_real(): double{}
+def f_char(): char{ return 'c';}
+def f_int():  int{ return 1;}
+def f_real(): double{return 1.0;}
 
 def checkLogical(): void{
 	i = 4 && 4;
@@ -73,9 +73,12 @@ def checkLogical(): void{
 	i = !s;			# Error (s is an struct)
 	i = !f_void();	# Error (f_void is void)
 """
+
+	f_void();
+	f_real();
 }
 
 # Main function
 def main():void {
-	
+	checkLogical();
 }

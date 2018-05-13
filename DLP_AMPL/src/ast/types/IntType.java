@@ -53,6 +53,11 @@ public class IntType extends AbstractType {
 	public Type arithmetic() {
 		return this;
 	}
+	
+	@Override
+	public Type pArithmetic() {
+		return this;
+	}
 
 	@Override
 	public Type comparison(Type type) {

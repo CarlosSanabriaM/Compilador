@@ -22,6 +22,8 @@ import ast.statements.Return;
 import ast.statements.While;
 import ast.statements.Write;
 import ast.statementsAndExpressions.Invocation;
+import ast.statementsAndExpressions.PostArithmetic;
+import ast.statementsAndExpressions.PreArithmetic;
 import ast.types.ArrayType;
 import ast.types.CharType;
 import ast.types.ErrorType;
@@ -144,6 +146,16 @@ public abstract class AbstractCGVisitor implements Visitor {
 
 	@Override
 	public Object visit(Invocation invocation, Object param) {
+		throw new IllegalStateException(ERROR_MESSAGE);
+	}
+
+	@Override
+	public Object visit(PreArithmetic preArithmetic, Object param) {
+		throw new IllegalStateException(ERROR_MESSAGE);
+	}
+
+	@Override
+	public Object visit(PostArithmetic postArithmetic, Object param) {
 		throw new IllegalStateException(ERROR_MESSAGE);
 	}
 

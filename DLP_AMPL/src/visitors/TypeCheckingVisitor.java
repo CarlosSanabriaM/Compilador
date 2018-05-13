@@ -23,6 +23,8 @@ import ast.statements.Return;
 import ast.statements.While;
 import ast.statements.Write;
 import ast.statementsAndExpressions.Invocation;
+import ast.statementsAndExpressions.PostArithmetic;
+import ast.statementsAndExpressions.PreArithmetic;
 import ast.types.CharType;
 import ast.types.ErrorType;
 import ast.types.FunctionType;
@@ -328,6 +330,54 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 			invocation.setType( new ErrorType(invocation.function, 
 					"Semantical error: The invocation of the function '" + invocation.function + "' "
 							+ "is not valid. The number of arguments or the type of those arguments isn't right.") );
+		
+		return null;
+	}
+
+	@Override
+	public Object visit(PreArithmetic preArithmetic, Object param) {
+		preArithmetic.expression.accept(this, param);
+
+		// predicate (preArithmetic.expression.getLValue() == true)		
+		if(preArithmetic.expression.getLValue() == false) {
+			preArithmetic.setType( new ErrorType(preArithmetic.expression, 
+					"Semantical error: The expression of an Pre Arithmetic element must be an lValue expression.") );
+			
+			return null;
+		}
+		
+		preArithmetic.setLValue(false);
+		
+		// predicate (preArithmetic.expression.getType().pArithmetic() != null)
+		preArithmetic.setType(preArithmetic.expression.getType().pArithmetic());
+		if(preArithmetic.getType() == null)
+			preArithmetic.setType( new ErrorType(preArithmetic.expression, 
+					"Semantical error: The type of this expression '" + preArithmetic.expression + "' "
+							+ "can't be used in a Pre Arithmetic element.") );
+		
+		return null;
+	}
+
+	@Override
+	public Object visit(PostArithmetic postArithmetic, Object param) {
+		postArithmetic.expression.accept(this, param);
+
+		// predicate (postArithmetic.expression.getLValue() == true)		
+		if(postArithmetic.expression.getLValue() == false) {
+			postArithmetic.setType( new ErrorType(postArithmetic.expression, 
+					"Semantical error: The expression of an Post Arithmetic element must be an lValue expression.") );
+			
+			return null;
+		}
+		
+		postArithmetic.setLValue(false);
+		
+		// predicate (postArithmetic.expression.getType().pArithmetic() != null)
+		postArithmetic.setType(postArithmetic.expression.getType().pArithmetic());
+		if(postArithmetic.getType() == null)
+			postArithmetic.setType( new ErrorType(postArithmetic.expression, 
+					"Semantical error: The type of this expression '" + postArithmetic.expression + "' "
+							+ "can't be used in a Post Arithmetic element.") );
 		
 		return null;
 	}

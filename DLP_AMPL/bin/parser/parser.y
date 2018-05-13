@@ -35,31 +35,29 @@ import ast.types.*;
 %token ID
 %token MAIN
 
-%token PLUS_EQUAL
-%token MINUS_EQUAL
-%token MUL_EQUAL
-%token DIV_EQUAL
-%token MOD_EQUAL
 
-//Tokens con prioridades (los de mas abajo son mas prioritarios)
+// ** Tokens con prioridades (los de mas abajo son mas prioritarios) **
 %nonassoc MENOR_QUE_ELSE
 %nonassoc ELSE
 
 // Igual es siempre el que menos prioridad tiene
-%right '='
+%right '=' PLUS_EQUAL MINUS_EQUAL MUL_EQUAL DIV_EQUAL MOD_EQUAL
 
 %left AND OR
 %left '>' GREATER_OR_EQUAL '<' LESS_OR_EQUAL DISTINCT EQUALS
 %left '+' '-'
 %left '*' '/' '%'
-%nonassoc '!'
-%nonassoc UNARY_MINUS
+%nonassoc '!' UNARY_MINUS PRE_ARITHMETIC
+%nonassoc PLUS_PLUS MINUS_MINUS
+
+
 %nonassoc CAST
 %left '.'
 %nonassoc '[' ']'
 
-// Parentesis es siempre el que mas prioridad tiene
+// Parentesis es siempre el que más prioridad tiene
 %nonassoc PARENTESIS
+
 
 %%
 // * Gramática y acciones Yacc
@@ -170,11 +168,15 @@ statement: assignment												{$$ = (List<Statement>) $1;}
 		| if															{$$ = (List<Statement>) $1;}
 		| read														{$$ = (List<Statement>) $1;}
 		| write														{$$ = (List<Statement>) $1;}
-		| plusEqual													{$$ = (List<Statement>) $1;}
-		| minusEqual													{$$ = (List<Statement>) $1;}
-		| mulEqual													{$$ = (List<Statement>) $1;}
-		| divEqual													{$$ = (List<Statement>) $1;}
-		| modEqual													{$$ = (List<Statement>) $1;}		
+		| plus_equal													{$$ = (List<Statement>) $1;}
+		| minus_equal												{$$ = (List<Statement>) $1;}
+		| mul_equal													{$$ = (List<Statement>) $1;}
+		| div_equal													{$$ = (List<Statement>) $1;}
+		| mod_equal													{$$ = (List<Statement>) $1;}
+		| pre_plus_plus_as_statement									{$$ = (List<Statement>) $1;}
+        	| pre_minus_minus_as_statement								{$$ = (List<Statement>) $1;}
+       	| post_plus_plus_as_statement								{$$ = (List<Statement>) $1;}
+        	| post_minus_minus_as_statement								{$$ = (List<Statement>) $1;}		
 		;
 
 // Tipos		
@@ -354,41 +356,66 @@ function_call_as_statement: ID '(' parameters_in_function_call ')' ';' {	// stat
 						; 
 		
 // * +=, -=, *=, /= y %=				
-plusEqual: expression PLUS_EQUAL expression ';'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+plus_equal: expression PLUS_EQUAL expression ';'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
 																		Assignment assignment = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, 
 																			new Arithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "+", (Expression) $3));
   																		$$ = asStatementList(assignment);
 																	}
 		;
 		
-minusEqual: expression MINUS_EQUAL expression ';'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+minus_equal: expression MINUS_EQUAL expression ';'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
 																		Assignment assignment = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, 
 																			new Arithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "-", (Expression) $3));
   																		$$ = asStatementList(assignment);
 																	}
 		;
 		
-mulEqual: expression MUL_EQUAL expression ';'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+mul_equal: expression MUL_EQUAL expression ';'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
 																		Assignment assignment = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, 
 																			new Arithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "*", (Expression) $3));
   																		$$ = asStatementList(assignment);
 																	}
 		;
 		
-divEqual: expression DIV_EQUAL expression ';'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+div_equal: expression DIV_EQUAL expression ';'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
 																		Assignment assignment = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, 
 																			new Arithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "/", (Expression) $3));
   																		$$ = asStatementList(assignment);
 																	}
 		;
 		
-modEqual: expression MOD_EQUAL expression ';'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+mod_equal: expression MOD_EQUAL expression ';'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
 																		Assignment assignment = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, 
 																			new Arithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "%", (Expression) $3));
   																		$$ = asStatementList(assignment);
 																	}
 		;
-		
+
+// ++ y --				
+pre_plus_plus_as_statement: PLUS_PLUS expression ';'					{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+																		PreArithmetic preArithmetic = new PreArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $2, "++");
+  																		$$ = asStatementList(preArithmetic);
+																	}
+		;
+
+pre_minus_minus_as_statement: MINUS_MINUS expression ';'				{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+																		PreArithmetic preArithmetic = new PreArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $2, "--");
+  																		$$ = asStatementList(preArithmetic);
+																	}
+		;
+
+post_plus_plus_as_statement: expression PLUS_PLUS ';'					{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+																		PostArithmetic postArithmetic = new PostArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "++");
+  																		$$ = asStatementList(postArithmetic);
+																	}
+		;
+
+post_minus_minus_as_statement: expression MINUS_MINUS ';'				{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+																		PostArithmetic postArithmetic = new PostArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "--");
+  																		$$ = asStatementList(postArithmetic);
+																	}
+		;
+			
 		
 // ########### Expresiones (Expressions)  ###########
 
@@ -422,6 +449,10 @@ expression: expression AND expression								{$$ = new Logical(scanner.getLine()
          | REAL_CONSTANT												{$$ = new RealLiteral(scanner.getLine(), scanner.getColumn(), (double) $1);}
          | CHAR_CONSTANT												{$$ = new CharLiteral(scanner.getLine(), scanner.getColumn(), (char) $1);}
          | ID														{$$ = new Variable(scanner.getLine(), scanner.getColumn(), (String) $1);}
+         | PLUS_PLUS expression				%prec PRE_ARITHMETIC		{$$ = new PreArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $2, "++");}
+         | MINUS_MINUS expression			%prec PRE_ARITHMETIC		{$$ = new PreArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $2, "--");}
+         | expression PLUS_PLUS										{$$ = new PostArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "++");}
+         | expression MINUS_MINUS									{$$ = new PostArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "--");}
          ;
           
          

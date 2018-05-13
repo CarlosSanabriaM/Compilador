@@ -14,7 +14,12 @@ import ast.expressions.UnaryMinus;
 import ast.expressions.UnaryNot;
 import ast.expressions.Variable;
 import ast.statementsAndExpressions.Invocation;
+import ast.statementsAndExpressions.PostArithmetic;
+import ast.statementsAndExpressions.PreArithmetic;
+import ast.types.CharType;
 import ast.types.FunctionType;
+import ast.types.IntType;
+import ast.types.Type;
 import codeGeneration.CodeGenerator;
 
 /**
@@ -84,7 +89,7 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 		comp.rightOp.accept(this, param);	// VALUE[[rightOp]]
 		cg.convert(comp.rightOp.getType(), comp.rightOp.getType().superType(comp.leftOp.getType()));
 		
-		cg.comparison(comp.getType(), comp.operator);
+		cg.comparison(comp.leftOp.getType().superType(comp.rightOp.getType()), comp.operator);
 		
 		return null;
 	}
@@ -113,6 +118,7 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 	@Override
 	public Object visit(UnaryNot unaryNot, Object param) {
 		unaryNot.expression.accept(this, param);	// VALUE[[expr]]
+		cg.convert(unaryNot.expression.getType(), unaryNot.getType());
 		cg.not();
 
 		return null;
@@ -122,8 +128,11 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 	public Object visit(UnaryMinus unaryMinus, Object param) {
 		unaryMinus.expression.accept(this, param);	// VALUE[[expr]]
 
+		cg.convert(unaryMinus.expression.getType(), unaryMinus.getType());
+		
 		// Multiplicamos la expresion por -1
 		cg.push(-1);
+		cg.convert(IntType.getInstance(), unaryMinus.getType());
 		cg.mul(unaryMinus.getType());
 		
 		return null;
@@ -157,6 +166,59 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 		}
 		
 		cg.call(invocation.function.name);
+		
+		return null;
+	}
+
+	@Override
+	public Object visit(PreArithmetic preArithmetic, Object param) {
+		Type type = preArithmetic.expression.getType() instanceof CharType ? IntType.getInstance() : preArithmetic.getType();
+		
+		preArithmetic.expression.accept(addressCGVisitor, param);		// ADDRESS[[expr]] 
+		preArithmetic.expression.accept(this, param);				// VALUE[[expr]]
+		
+		// Si la expresion es char, hay que convertirla a entero primero, para sumarle 1
+		if(preArithmetic.expression.getType() instanceof CharType)
+			cg.convert(CharType.getInstance(), IntType.getInstance());
+		
+		cg.push(1);
+		cg.convert(IntType.getInstance(), type);
+		 
+		cg.pArithmetic(type, preArithmetic.operator);
+		
+		// Si la expresion es char, despues de convertirla en entero y sumarle 1, la volvemos a convertir en char
+		if(preArithmetic.expression.getType() instanceof CharType)
+			cg.convert(IntType.getInstance(), CharType.getInstance());
+		
+		cg.store(preArithmetic.getType());
+		
+		preArithmetic.expression.accept(this, param);				// VALUE[[expr]] 
+		
+		return null;
+	}
+
+	@Override
+	public Object visit(PostArithmetic postArithmetic, Object param) {
+		Type type = postArithmetic.expression.getType() instanceof CharType ? IntType.getInstance() : postArithmetic.getType();
+		
+		postArithmetic.expression.accept(this, param);				// VALUE[[expr]] 
+		postArithmetic.expression.accept(addressCGVisitor, param);	// ADDRESS[[expr]] 
+		postArithmetic.expression.accept(this, param);				// VALUE[[expr]]
+		
+		// Si la expresion es char, hay que convertirla a entero primero, para sumarle 1
+		if(postArithmetic.expression.getType() instanceof CharType)
+			cg.convert(CharType.getInstance(), IntType.getInstance());
+		
+		cg.push(1);
+		cg.convert(IntType.getInstance(), type);
+		 
+		cg.pArithmetic(type, postArithmetic.operator);
+		
+		// Si la expresion es char, despues de convertirla en entero y sumarle 1, la volvemos a convertir en char
+		if(postArithmetic.expression.getType() instanceof CharType)
+			cg.convert(IntType.getInstance(), CharType.getInstance());
+		
+		cg.store(postArithmetic.getType());
 		
 		return null;
 	}

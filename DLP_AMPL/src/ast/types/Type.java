@@ -30,6 +30,13 @@ public interface Type extends ASTNode{
 	 * returns the resulting type that would have that operation. If not, returns null.
 	 */
 	Type arithmetic();
+	
+	/**
+	 * If the type who calls the function can be used to do an postArithmetic
+	 * or an preArithmetic operation (for example, i++ or --i), 
+	 * returns the resulting type that would have that operation. If not, returns null.
+	 */
+	Type pArithmetic();
 
 	/**
 	 * If the type who calls the function and the type passed as parameter
@@ -87,7 +94,8 @@ public interface Type extends ASTNode{
 	
 	/**
 	 * If the type who calls the function and the type passed as parameter
-	 * are compatible, returns the greater of the two types. If not, returns null.
+	 * are compatible, returns the greater of the two types, except if the two types
+	 * are CharType (in that case, it returns IntType). If not, returns null.
 	 */
 	Type superType(Type type);
 	

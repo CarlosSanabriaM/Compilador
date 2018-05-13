@@ -17,10 +17,9 @@ s: struct{
 
 # Functions
 def f_void(): void{}
-
-def f_char(): char{}
-def f_int():  int{}
-def f_real(): double{}
+def f_char(): char{ return 'c';}
+def f_int():  int{ return 1;}
+def f_real(): double{ return 1.0; }
 
 def checkComparison(): void{
 	r = 4 > 4;
@@ -28,7 +27,7 @@ def checkComparison(): void{
 	r = 4 > 4.5;
 	
 	r = 'a' > 4;
-	r = 'a' > 'a'; 	# Devuelve un CharType
+	r = 'a' > 'a';
 	r = 'a' > 4.5;
 		
 	r = 4.5 > 4;
@@ -52,9 +51,10 @@ def checkComparison(): void{
 	
 	r = 4.5 > f_void(); # Error (f_void is void)
 """
+	f_void();
 }
 
 # Main function
 def main():void {
-  
+  checkComparison();
 }

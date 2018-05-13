@@ -40,6 +40,11 @@ public abstract class AbstractType implements Type {
 	public Type arithmetic() {
 		return null;
 	}
+	
+	@Override
+	public Type pArithmetic() {
+		return null;
+	}
 
 	@Override
 	public Type comparison(Type type) {

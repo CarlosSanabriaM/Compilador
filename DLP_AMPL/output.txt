@@ -1,5 +1,5 @@
 
-#source	"input.txt"
+#source	"old_files/ampliaciones/masMas/input.preArithmetic.menosMenos.txt"
 
 
 ' Invocation to the main function
@@ -16,52 +16,30 @@ halt
 	#ret	void
 
 	' * --- Local variables ---
-	' * IntType i (offset -2)
+	' * CharType c (offset -1)
+	#local	c:char
+	' * IntType i (offset -3)
 	#local	i:int
+	' * RealType d (offset -7)
+	#local	d:real
 
-	enter 2
-
-#line 5
-	' * Assignment
-	push bp
-	pushi -2
-	addi
-	pushi 1
-	storei
-
-#line 6
-	' * Write
-	push bp
-	pushi -2
-	addi
-	loadi
-	outi
-
-#line 6
-	' * Write
-	pushb 10
-	outb
+	enter 7
 
 #line 8
 	' * Assignment
 	push bp
-	pushi -2
+	pushi -1
 	addi
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 4
-	addi
-	storei
+	pushb 101
+	storeb
 
 #line 9
 	' * Write
 	push bp
-	pushi -2
+	pushi -1
 	addi
-	loadi
-	outi
+	loadb
+	outb
 
 #line 9
 	' * Write
@@ -69,25 +47,32 @@ halt
 	outb
 
 #line 11
-	' * Assignment
+	' * Pre Arithmetic
 	push bp
-	pushi -2
+	pushi -1
 	addi
 	push bp
-	pushi -2
+	pushi -1
 	addi
-	loadi
-	pushi 3
+	loadb
+	b2i
+	pushi 1
 	subi
-	storei
+	i2b
+	storeb
+	push bp
+	pushi -1
+	addi
+	loadb
+	popb
 
 #line 12
 	' * Write
 	push bp
-	pushi -2
+	pushi -1
 	addi
-	loadi
-	outi
+	loadb
+	outb
 
 #line 12
 	' * Write
@@ -95,25 +80,37 @@ halt
 	outb
 
 #line 14
-	' * Assignment
+	' * Write
 	push bp
-	pushi -2
+	pushi -1
 	addi
 	push bp
-	pushi -2
+	pushi -1
 	addi
-	loadi
-	pushi 5
-	muli
-	storei
+	loadb
+	b2i
+	pushi 1
+	subi
+	i2b
+	storeb
+	push bp
+	pushi -1
+	addi
+	loadb
+	outb
+
+#line 14
+	' * Write
+	pushb 10
+	outb
 
 #line 15
 	' * Write
 	push bp
-	pushi -2
+	pushi -1
 	addi
-	loadi
-	outi
+	loadb
+	outb
 
 #line 15
 	' * Write
@@ -121,158 +118,368 @@ halt
 	outb
 
 #line 17
-	' * Assignment
+	' * Pre Arithmetic
 	push bp
-	pushi -2
+	pushi -1
 	addi
 	push bp
-	pushi -2
+	pushi -1
 	addi
-	loadi
-	pushi 5
-	divi
-	storei
+	loadb
+	b2i
+	pushi 1
+	subi
+	i2b
+	storeb
+	push bp
+	pushi -1
+	addi
+	loadb
+	popb
 
 #line 18
 	' * Write
 	push bp
-	pushi -2
+	pushi -1
 	addi
-	loadi
-	outi
+	push bp
+	pushi -1
+	addi
+	loadb
+	b2i
+	pushi 1
+	subi
+	i2b
+	storeb
+	push bp
+	pushi -1
+	addi
+	loadb
+	outb
 
 #line 18
 	' * Write
 	pushb 10
 	outb
 
-#line 20
-	' * Assignment
-	push bp
-	pushi -2
-	addi
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 6
-	muli
-	storei
-
-#line 21
+#line 19
 	' * Write
 	push bp
-	pushi -2
+	pushi -1
 	addi
-	loadi
-	outi
+	loadb
+	outb
 
-#line 21
+#line 19
 	' * Write
 	pushb 10
 	outb
 
 #line 23
-	' * Assignment
-	push bp
-	pushi -2
-	addi
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 4
-	divi
-	storei
-
-#line 24
-	' * Write
-	push bp
-	pushi -2
-	addi
-	loadi
-	outi
-
-#line 24
 	' * Write
 	pushb 10
 	outb
+
+#line 23
+	' * Write
+	pushb 10
+	outb
+
+#line 25
+	' * Assignment
+	push bp
+	pushi -3
+	addi
+	pushi 1
+	storei
 
 #line 26
-	' * Assignment
-	push bp
-	pushi -2
-	addi
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 2
-	modi
-	storei
-
-#line 27
 	' * Write
 	push bp
-	pushi -2
+	pushi -3
 	addi
 	loadi
 	outi
 
-#line 27
+#line 26
 	' * Write
 	pushb 10
 	outb
 
-#line 29
-	' * Assignment
+#line 28
+	' * Pre Arithmetic
 	push bp
-	pushi -2
+	pushi -3
 	addi
 	push bp
-	pushi -2
+	pushi -3
 	addi
 	loadi
-	pushi 6
-	muli
+	pushi 1
+	subi
 	storei
+	push bp
+	pushi -3
+	addi
+	loadi
+	popi
 
-#line 30
+#line 29
 	' * Write
 	push bp
-	pushi -2
+	pushi -3
 	addi
 	loadi
 	outi
 
-#line 30
+#line 29
+	' * Write
+	pushb 10
+	outb
+
+#line 31
+	' * Write
+	push bp
+	pushi -3
+	addi
+	push bp
+	pushi -3
+	addi
+	loadi
+	pushi 1
+	subi
+	storei
+	push bp
+	pushi -3
+	addi
+	loadi
+	outi
+
+#line 31
 	' * Write
 	pushb 10
 	outb
 
 #line 32
-	' * Assignment
-	push bp
-	pushi -2
-	addi
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 4
-	divi
-	storei
-
-#line 33
 	' * Write
 	push bp
-	pushi -2
+	pushi -3
 	addi
 	loadi
 	outi
 
-#line 33
+#line 32
 	' * Write
 	pushb 10
 	outb
-	ret	0, 2, 0
+
+#line 34
+	' * Pre Arithmetic
+	push bp
+	pushi -3
+	addi
+	push bp
+	pushi -3
+	addi
+	loadi
+	pushi 1
+	subi
+	storei
+	push bp
+	pushi -3
+	addi
+	loadi
+	popi
+
+#line 35
+	' * Write
+	push bp
+	pushi -3
+	addi
+	push bp
+	pushi -3
+	addi
+	loadi
+	pushi 1
+	subi
+	storei
+	push bp
+	pushi -3
+	addi
+	loadi
+	outi
+
+#line 35
+	' * Write
+	pushb 10
+	outb
+
+#line 36
+	' * Write
+	push bp
+	pushi -3
+	addi
+	loadi
+	outi
+
+#line 36
+	' * Write
+	pushb 10
+	outb
+
+#line 40
+	' * Write
+	pushb 10
+	outb
+
+#line 40
+	' * Write
+	pushb 10
+	outb
+
+#line 42
+	' * Assignment
+	push bp
+	pushi -7
+	addi
+	pushf 1.5
+	storef
+
+#line 43
+	' * Write
+	push bp
+	pushi -7
+	addi
+	loadf
+	outf
+
+#line 43
+	' * Write
+	pushb 10
+	outb
+
+#line 45
+	' * Pre Arithmetic
+	push bp
+	pushi -7
+	addi
+	push bp
+	pushi -7
+	addi
+	loadf
+	pushi 1
+	i2f
+	subf
+	storef
+	push bp
+	pushi -7
+	addi
+	loadf
+	popf
+
+#line 46
+	' * Write
+	push bp
+	pushi -7
+	addi
+	loadf
+	outf
+
+#line 46
+	' * Write
+	pushb 10
+	outb
+
+#line 48
+	' * Write
+	push bp
+	pushi -7
+	addi
+	push bp
+	pushi -7
+	addi
+	loadf
+	pushi 1
+	i2f
+	subf
+	storef
+	push bp
+	pushi -7
+	addi
+	loadf
+	outf
+
+#line 48
+	' * Write
+	pushb 10
+	outb
+
+#line 49
+	' * Write
+	push bp
+	pushi -7
+	addi
+	loadf
+	outf
+
+#line 49
+	' * Write
+	pushb 10
+	outb
+
+#line 51
+	' * Pre Arithmetic
+	push bp
+	pushi -7
+	addi
+	push bp
+	pushi -7
+	addi
+	loadf
+	pushi 1
+	i2f
+	subf
+	storef
+	push bp
+	pushi -7
+	addi
+	loadf
+	popf
+
+#line 52
+	' * Write
+	push bp
+	pushi -7
+	addi
+	push bp
+	pushi -7
+	addi
+	loadf
+	pushi 1
+	i2f
+	subf
+	storef
+	push bp
+	pushi -7
+	addi
+	loadf
+	outf
+
+#line 52
+	' * Write
+	pushb 10
+	outb
+
+#line 53
+	' * Write
+	push bp
+	pushi -7
+	addi
+	loadf
+	outf
+
+#line 53
+	' * Write
+	pushb 10
+	outb
+	ret	0, 7, 0

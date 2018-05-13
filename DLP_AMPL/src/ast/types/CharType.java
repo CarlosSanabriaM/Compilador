@@ -54,6 +54,12 @@ public class CharType extends AbstractType {
 	public Type arithmetic() {
 		return IntType.getInstance();
 	}
+	
+	@Override
+	public Type pArithmetic() {
+		// c: char; c = 'a'; c++; // c = 'b'
+		return this;
+	}
 
 	@Override
 	public Type comparison(Type type) {
@@ -99,6 +105,11 @@ public class CharType extends AbstractType {
 	
 	@Override
 	public Type superType(Type type) {
+		// Si tenemos 'a' > 'a', hay que convertir ambos a int
+		// ya que no existe el operador gtb, por ejemplo.
+		if(type instanceof CharType)
+			return IntType.getInstance();
+		
 		if(type instanceof ErrorType ||
 				type.isBuiltIn())
 			return type;

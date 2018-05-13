@@ -5,6 +5,7 @@ record:struct {
   intField:int;
   realField:double;
 };
+
 # Functions
 def f(a:int, c:double):int {
   real:double;
@@ -12,10 +13,18 @@ def f(a:int, c:double):int {
   i = a;
   return n;
 }
+
 # Main program
 def main():void {
   i:int;
   r:double;
-  print i, f(n,r), record.intField, record.realField;
+  
+  i = 10;
+  r = 5.0;
+  c = 'a';
+  n = 22;
+  record.intField = 100;
+  record.realField = 99.9;
+  
+  print i, ' ', f(n,r),' ', record.intField,' ', record.realField;
 }
-

@@ -206,6 +206,17 @@ public class CodeGenerator {
 		}
 		
 	}
+	
+	public void pArithmetic(Type type, String operator) {
+		switch (operator) {
+		case "++":
+			add(type);
+			break;
+		case "--":
+			printlnt("sub" + type.suffix());
+			break;
+		}
+	}
 
 	public void comparison(Type type, String operator) {
 		switch (operator) {

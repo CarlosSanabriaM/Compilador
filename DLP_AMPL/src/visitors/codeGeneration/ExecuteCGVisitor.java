@@ -15,6 +15,8 @@ import ast.statements.Statement;
 import ast.statements.While;
 import ast.statements.Write;
 import ast.statementsAndExpressions.Invocation;
+import ast.statementsAndExpressions.PostArithmetic;
+import ast.statementsAndExpressions.PreArithmetic;
 import ast.types.FunctionType;
 import ast.types.VoidType;
 import codeGeneration.CodeGenerator;
@@ -254,6 +256,30 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		cg.ret(functionType.returnType.numBytes(), 
 				funDefinition.bytesLocalVariables, 
 				functionType.bytesParameters);
+		
+		return null;
+	}
+
+	@Override
+	public Object visit(PreArithmetic preArithmetic, Object param) {
+		cg.lineDirective(preArithmetic.getLine());
+		cg.comment("Pre Arithmetic");
+		
+		preArithmetic.accept(valueCGVisitor, param);		// VALUE[[preArithmetic]]
+		
+		cg.pop(preArithmetic.getType());
+		
+		return null;
+	}
+
+	@Override
+	public Object visit(PostArithmetic postArithmetic, Object param) {
+		cg.lineDirective(postArithmetic.getLine());
+		cg.comment("Post Arithmetic");
+		
+		postArithmetic.accept(valueCGVisitor, param);	// VALUE[[postArithmetic]]
+		
+		cg.pop(postArithmetic.getType());
 		
 		return null;
 	}

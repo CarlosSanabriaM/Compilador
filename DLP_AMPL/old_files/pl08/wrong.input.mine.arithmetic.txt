@@ -17,9 +17,9 @@ s: struct{
 
 # Functions
 def f_void(): void{}
-def f_char(): char{}
-def f_int():  int{}
-def f_real(): double{}
+def f_char(): char{ return 'c';}
+def f_int():  int{ return 1;}
+def f_real(): double{ return 1.0; }
 
 def checkArithmetic(): void{
 	r = 4 + 4;
@@ -27,7 +27,7 @@ def checkArithmetic(): void{
 	r = 4 + 4.5;
 	
 	r = 'a' + 4;
-	r = 'a' + 'a'; 	# Devuelve un CharType
+	r = 'a' + 'a';
 	r = 'a' + 4.5;
 		
 	r = 4.5 + 4;
@@ -59,13 +59,17 @@ def checkArithmetic(): void{
 	r = -f_char();
 	r = -f_int();
 	r = -f_real();	
-	
+
+"""	
 	r = -v_c;		# Error (v_c is an array)
 	r = -s;			# Error (s is an struct)
 	r = -f_void();	# Error (f_void is void)
+"""
+
+	f_void();
 }
 
 # Main function
 def main():void {
-	
+	checkArithmetic();
 }

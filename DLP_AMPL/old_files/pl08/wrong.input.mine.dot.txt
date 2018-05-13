@@ -15,18 +15,12 @@ s: struct{
   	realField: double;
 };
 
-# Functions
-def f_void(): void{}
-
-def f_char(): char{}
-def f_int():  int{}
-def f_real(): double{}
-
 def checkDot(): void{
 	input s.charField;
 	input s.intField;	
 	input s.realField;
 
+"""
 	# Errors	
 #	input 'a'.charField;	# Error
 #	input 1.charField;	# Error
@@ -39,9 +33,10 @@ def checkDot(): void{
 	input s.notExistsField;	#Error
 	
 	input v_i.charField; 	#Error
+"""
 }	
 
 # Main function
 def main():void {
-  
+  checkDot();
 }

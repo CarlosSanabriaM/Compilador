@@ -22,6 +22,8 @@ import ast.statements.Return;
 import ast.statements.While;
 import ast.statements.Write;
 import ast.statementsAndExpressions.Invocation;
+import ast.statementsAndExpressions.PostArithmetic;
+import ast.statementsAndExpressions.PreArithmetic;
 import ast.types.ArrayType;
 import ast.types.CharType;
 import ast.types.ErrorType;
@@ -65,6 +67,8 @@ public interface Visitor {
 	
 	// Statements & Expressions
 	Object visit(Invocation invocation, Object param);
+	Object visit(PreArithmetic preArithmetic, Object param);
+	Object visit(PostArithmetic postArithmetic, Object param);
 	
 	// Types
 	Object visit(ArrayType arrayType, Object param);

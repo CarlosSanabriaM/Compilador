@@ -4,9 +4,9 @@ i: int;
 r: double;
 
 # Arrays
-v_c: [10]char;
-v_i: [10]int;
-v_r: [10]double;
+v_c: [21]char;
+v_i: [21]int;
+v_r: [21]double;
 
 # Structs
 s: struct{
@@ -15,19 +15,18 @@ s: struct{
   	realField: double;
 };
 
-# Functions
-def f_void(): void{}
-def f_char(): char{}
-def f_int():  int{}
-def f_real(): double{}
-
 def checkSquareBrackets(): void{
+	v_c[20] = 'a';
+	v_i[20] = 1;
+	v_r[20] = .4;
+	
 	r = v_c[20];
 	r = v_i[20];
 	r = v_r[20];
 
-	r = v_r['a'];
+	r = v_r['a' - 77];
 	
+"""
 	r = v_c[f_void()];	# Error (bad index)
 	r = v_i[4.5];		# Error (bad index)
 	r = v_r[f_real()];	# Error (bad index)
@@ -37,9 +36,10 @@ def checkSquareBrackets(): void{
 	r = r[20];			# Error (not array)
 	
 	r = notArray[20];	# Error (not defined)
+"""
 }
 
 # Main function
 def main():void {
-	
+	checkSquareBrackets();
 }
