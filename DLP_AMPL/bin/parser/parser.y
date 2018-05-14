@@ -45,7 +45,7 @@ import ast.types.*;
 %right '=' PLUS_EQUAL MINUS_EQUAL MUL_EQUAL DIV_EQUAL MOD_EQUAL
 %right TERNARY_OPERATOR '?'
 
-%left AND OR
+%left AND OR XOR
 %left '>' GREATER_OR_EQUAL '<' LESS_OR_EQUAL DISTINCT EQUALS
 %left '+' '-'
 %left '*' '/' '%'
@@ -361,8 +361,8 @@ return: RETURN {returnTempLine = scanner.getLine();} expression ';'	{	// stateme
 // Auxiliar.  Entre los () va una secuencia de expresiones separadas por comas (QUE PUEDE SER VACIA). 
 // Necesitamos 0+cs. Hacemos que expressions sea opcional.
 parameters_in_function_call: 											{$$ = new LinkedList<Expression>();}
-						| expressions								{$$ = (List<Expression>) $1;}
-						;
+							| expressions								{$$ = (List<Expression>) $1;}
+							;
 		
 function_call_as_statement: ID '(' parameters_in_function_call ')' ';' {	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
 																		Variable function = new Variable(scanner.getLine(), scanner.getColumn(), (String) $1);
@@ -437,6 +437,7 @@ post_minus_minus_as_statement: expression MINUS_MINUS ';'				{	// statement se e
 	 
 expression: expression AND expression								{$$ = new Logical(scanner.getLine(), scanner.getColumn(), (Expression) $1, (String) $2, (Expression) $3);}
 		 | expression OR expression									{$$ = new Logical(scanner.getLine(), scanner.getColumn(), (Expression) $1, (String) $2, (Expression) $3);}
+		 | xor_expression											{$$ = (Logical) $1;}
 		 | expression '>' expression									{$$ = new Comparison(scanner.getLine(), scanner.getColumn(), (Expression) $1, (String) $2, (Expression) $3);}
 		 | expression GREATER_OR_EQUAL expression					{$$ = new Comparison(scanner.getLine(), scanner.getColumn(), (Expression) $1, (String) $2, (Expression) $3);}
 		 | expression '<' expression									{$$ = new Comparison(scanner.getLine(), scanner.getColumn(), (Expression) $1, (String) $2, (Expression) $3);}
@@ -483,6 +484,15 @@ assignment_as_expression: expression '=' expression				 	{
 																		$$ = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, (Expression) $3);
 																	}
 						;      
+         
+xor_expression: expression XOR expression							{	// a ^^ b <-> (a || b) && !(a && b)
+																		Logical left  = new Logical(scanner.getLine(), scanner.getColumn(), (Expression) $1, "||", (Expression) $3);
+																		Logical right = new Logical(scanner.getLine(), scanner.getColumn(), (Expression) $1, "&&", (Expression) $3);
+																		UnaryNot notRight = new UnaryNot(scanner.getLine(), scanner.getColumn(), right);
+																		
+																		$$ = new Logical(scanner.getLine(), scanner.getColumn(), left, "&&", notRight);
+																	}
+			;
          
 %%
 

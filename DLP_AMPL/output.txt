@@ -1,5 +1,5 @@
 
-#source	"test_files/ampliaciones/asigMultiple/input.asigMultiple.txt"
+#source	"test_files/ampliaciones/xor/input.xor.txt"
 
 	' * CharType c (offset 0)
 	#global	c:char
@@ -7,266 +7,13 @@
 	#global	i:int
 	' * RealType r (offset 3)
 	#global	r:real
-	' * ArrayType[of: CharType, size: 10] v_c (offset 7)
-	#global	v_c:10 * char
-	' * ArrayType[of: IntType, size: 10] v_i (offset 17)
-	#global	v_i:10 * int
-	' * ArrayType[of: RealType, size: 10] v_r (offset 37)
-	#global	v_r:10 * real
-	' * RecordType[fields: [Field{name:charField, type:CharType, offset:0}, Field{name:intField, type:IntType, offset:1}, Field{name:realField, type:RealType, offset:3}]] s (offset 77)
-	#global	s:{
-		charField:char
-		intField:int
-		realField:real
-	}
 
 ' Invocation to the main function
 call main
 halt
 
 
-#line 18
-
- f:
-	#func	f
-	' * --- Parameters ---
-	' * IntType i (offset 4)
-	#param	i:int
-
-	#ret	void
-
-	' * --- Local variables ---
-
-	enter 0
-	ret	0, 0, 2
-
-#line 20
-
- checkPromotesTo:
-	#func	checkPromotesTo
-	' * --- Parameters ---
-
-	#ret	void
-
-	' * --- Local variables ---
-	' * IntType a (offset -2)
-	#local	a:int
-	' * IntType b (offset -4)
-	#local	b:int
-
-	enter 4
-
-#line 24
-	' * Assignment
-	pusha 1
-	pushi 1
-	storei
-
-#line 25
-	' * Assignment
-	push bp
-	pushi -2
-	addi
-	push bp
-	pushi -4
-	addi
-	pusha 1
-	loadi
-	storei
-	push bp
-	pushi -4
-	addi
-	loadi
-	storei
-
-#line 26
-	' * Assignment
-	push bp
-	pushi -2
-	addi
-	push bp
-	pushi -4
-	addi
-	pusha 1
-	pushi 100
-	storei
-	pusha 1
-	loadi
-	storei
-	push bp
-	pushi -4
-	addi
-	loadi
-	storei
-
-#line 27
-	' * Assignment
-	pusha 3
-	pusha 1
-	pusha 0
-	pushb 97
-	storeb
-	pusha 0
-	loadb
-	b2i
-	storei
-	pusha 1
-	loadi
-	i2f
-	storef
-
-#line 28
-	' * Assignment
-	pusha 1
-	pusha 0
-	pushb 97
-	storeb
-	pusha 0
-	loadb
-	b2i
-	storei
-
-#line 29
-	' * Assignment
-	pusha 0
-	pushb 97
-	storeb
-
-#line 31
-	' * Assignment
-	pusha 1
-	push bp
-	pushi -2
-	addi
-	pushi 10
-	pushi 6
-	subi
-	storei
-	push bp
-	pushi -2
-	addi
-	loadi
-	storei
-
-#line 32
-	' * Assignment
-	pusha 1
-	push bp
-	pushi -2
-	addi
-	pushi 10
-	storei
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 6
-	subi
-	storei
-
-#line 33
-	' * Assignment
-	pusha 1
-	push bp
-	pushi -2
-	addi
-	push bp
-	pushi -4
-	addi
-	loadi
-	storei
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 6
-	subi
-	storei
-
-#line 34
-	' * Assignment
-	pusha 1
-	push bp
-	pushi -2
-	addi
-	push bp
-	pushi -4
-	addi
-	pusha 0
-	loadb
-	b2i
-	storei
-	push bp
-	pushi -4
-	addi
-	loadi
-	storei
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 6
-	subi
-	storei
-
-#line 36
-	' * Invocation of function: f
-	pusha 1
-	pushi 100
-	storei
-	pusha 1
-	loadi
-	call f
-
-#line 37
-	' * Invocation of function: f
-	pusha 1
-	push bp
-	pushi -4
-	addi
-	loadi
-	storei
-	pusha 1
-	loadi
-	call f
-
-#line 38
-	' * Invocation of function: f
-	pusha 1
-	push bp
-	pushi -4
-	addi
-	pusha 0
-	loadb
-	b2i
-	storei
-	push bp
-	pushi -4
-	addi
-	loadi
-	storei
-	pusha 1
-	loadi
-	call f
-
-#line 40
-	' * Assignment
-	pusha 1
-	pusha 1
-	pusha 0
-	pusha 0
-	loadb
-	storeb
-	pusha 0
-	loadb
-	b2i
-	storei
-	pusha 1
-	loadi
-	storei
-	ret	0, 4, 0
-
-#line 45
+#line 7
 
  main:
 	#func	main
@@ -278,7 +25,447 @@ halt
 
 	enter 0
 
-#line 46
-	' * Invocation of function: checkPromotesTo
-	call checkPromotesTo
+#line 9
+	' * Write
+	pushi 1
+	pushi 1
+	or
+	pushi 1
+	pushi 1
+	and
+	not
+	and
+	outi
+
+#line 9
+	' * Write
+	pushb 10
+	outb
+
+#line 10
+	' * Write
+	pushi 1
+	pushi 0
+	or
+	pushi 1
+	pushi 0
+	and
+	not
+	and
+	outi
+
+#line 10
+	' * Write
+	pushb 10
+	outb
+
+#line 11
+	' * Write
+	pushi 0
+	pushi 1
+	or
+	pushi 0
+	pushi 1
+	and
+	not
+	and
+	outi
+
+#line 11
+	' * Write
+	pushb 10
+	outb
+
+#line 12
+	' * Write
+	pushi 0
+	pushi 0
+	or
+	pushi 0
+	pushi 0
+	and
+	not
+	and
+	outi
+
+#line 12
+	' * Write
+	pushb 10
+	outb
+
+#line 14
+	' * Write
+	pushb 32
+	outb
+
+#line 14
+	' * Write
+	pushb 10
+	outb
+
+#line 16
+	' * Write
+	pushi 1
+	pushi 1
+	or
+	pushi 1
+	or
+	pushi 1
+	pushi 1
+	or
+	pushi 1
+	and
+	not
+	and
+	outi
+
+#line 16
+	' * Write
+	pushb 10
+	outb
+
+#line 17
+	' * Write
+	pushi 1
+	pushi 0
+	or
+	pushi 1
+	or
+	pushi 1
+	pushi 0
+	or
+	pushi 1
+	and
+	not
+	and
+	outi
+
+#line 17
+	' * Write
+	pushb 10
+	outb
+
+#line 18
+	' * Write
+	pushi 0
+	pushi 1
+	or
+	pushi 1
+	or
+	pushi 0
+	pushi 1
+	or
+	pushi 1
+	and
+	not
+	and
+	outi
+
+#line 18
+	' * Write
+	pushb 10
+	outb
+
+#line 19
+	' * Write
+	pushi 0
+	pushi 0
+	or
+	pushi 1
+	or
+	pushi 0
+	pushi 0
+	or
+	pushi 1
+	and
+	not
+	and
+	outi
+
+#line 19
+	' * Write
+	pushb 10
+	outb
+
+#line 21
+	' * Write
+	pushb 32
+	outb
+
+#line 21
+	' * Write
+	pushb 10
+	outb
+
+#line 23
+	' * Write
+	pushi 1
+	pushi 1
+	and
+	pushi 1
+	or
+	pushi 1
+	pushi 1
+	and
+	pushi 1
+	and
+	not
+	and
+	outi
+
+#line 23
+	' * Write
+	pushb 10
+	outb
+
+#line 24
+	' * Write
+	pushi 1
+	pushi 0
+	and
+	pushi 1
+	or
+	pushi 1
+	pushi 0
+	and
+	pushi 1
+	and
+	not
+	and
+	outi
+
+#line 24
+	' * Write
+	pushb 10
+	outb
+
+#line 25
+	' * Write
+	pushi 0
+	pushi 1
+	and
+	pushi 1
+	or
+	pushi 0
+	pushi 1
+	and
+	pushi 1
+	and
+	not
+	and
+	outi
+
+#line 25
+	' * Write
+	pushb 10
+	outb
+
+#line 26
+	' * Write
+	pushi 0
+	pushi 0
+	and
+	pushi 1
+	or
+	pushi 0
+	pushi 0
+	and
+	pushi 1
+	and
+	not
+	and
+	outi
+
+#line 26
+	' * Write
+	pushb 10
+	outb
+
+#line 28
+	' * Write
+	pushb 32
+	outb
+
+#line 28
+	' * Write
+	pushb 10
+	outb
+
+#line 30
+	' * Write
+	pushi 1
+	pushi 1
+	pushi 1
+	or
+	or
+	pushi 1
+	pushi 1
+	pushi 1
+	or
+	and
+	not
+	and
+	outi
+
+#line 30
+	' * Write
+	pushb 10
+	outb
+
+#line 31
+	' * Write
+	pushi 1
+	pushi 1
+	pushi 0
+	or
+	or
+	pushi 1
+	pushi 1
+	pushi 0
+	or
+	and
+	not
+	and
+	outi
+
+#line 31
+	' * Write
+	pushb 10
+	outb
+
+#line 32
+	' * Write
+	pushi 1
+	pushi 0
+	pushi 1
+	or
+	or
+	pushi 1
+	pushi 0
+	pushi 1
+	or
+	and
+	not
+	and
+	outi
+
+#line 32
+	' * Write
+	pushb 10
+	outb
+
+#line 33
+	' * Write
+	pushi 1
+	pushi 0
+	pushi 0
+	or
+	or
+	pushi 1
+	pushi 0
+	pushi 0
+	or
+	and
+	not
+	and
+	outi
+
+#line 33
+	' * Write
+	pushb 10
+	outb
+
+#line 35
+	' * Write
+	pushb 32
+	outb
+
+#line 35
+	' * Write
+	pushb 10
+	outb
+
+#line 37
+	' * Write
+	pushi 1
+	pushi 1
+	pushi 1
+	and
+	or
+	pushi 1
+	pushi 1
+	pushi 1
+	and
+	and
+	not
+	and
+	outi
+
+#line 37
+	' * Write
+	pushb 10
+	outb
+
+#line 38
+	' * Write
+	pushi 1
+	pushi 1
+	pushi 0
+	and
+	or
+	pushi 1
+	pushi 1
+	pushi 0
+	and
+	and
+	not
+	and
+	outi
+
+#line 38
+	' * Write
+	pushb 10
+	outb
+
+#line 39
+	' * Write
+	pushi 1
+	pushi 0
+	pushi 1
+	and
+	or
+	pushi 1
+	pushi 0
+	pushi 1
+	and
+	and
+	not
+	and
+	outi
+
+#line 39
+	' * Write
+	pushb 10
+	outb
+
+#line 40
+	' * Write
+	pushi 1
+	pushi 0
+	pushi 0
+	and
+	or
+	pushi 1
+	pushi 0
+	pushi 0
+	and
+	and
+	not
+	and
+	outi
+
+#line 40
+	' * Write
+	pushb 10
+	outb
 	ret	0, 0, 0

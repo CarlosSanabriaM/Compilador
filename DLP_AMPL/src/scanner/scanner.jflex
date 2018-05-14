@@ -79,6 +79,7 @@ DivIgual 	= "/="
 ModIgual 	= "%="
 MasMas		= "++"
 MenosMenos	= "--"
+Xor			= "^^"
 
 %%
 // ********************  Acciones ********************
@@ -145,6 +146,9 @@ MenosMenos	= "--"
 {MenosMenos}						{ this.yylval = yytext();
 									return Parser.MINUS_MINUS; }
 									
+// ^^
+{Xor}							{ this.yylval = yytext();
+									return Parser.XOR; }									
 
 // * Constante Entera
 {ConstanteEntera}				{ this.yylval = new Integer(yytext());

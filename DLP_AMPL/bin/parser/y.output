@@ -127,40 +127,43 @@
 
   83  expression : expression AND expression
   84             | expression OR expression
-  85             | expression '>' expression
-  86             | expression GREATER_OR_EQUAL expression
-  87             | expression '<' expression
-  88             | expression LESS_OR_EQUAL expression
-  89             | expression DISTINCT expression
-  90             | expression EQUALS expression
-  91             | expression '+' expression
-  92             | expression '-' expression
-  93             | expression '*' expression
-  94             | expression '/' expression
-  95             | expression '%' expression
-  96             | '!' expression
-  97             | '-' expression
-  98             | '(' simple_type ')' expression
-  99             | expression '.' ID
- 100             | expression '[' expression ']'
- 101             | '(' expression ')'
- 102             | function_call_as_expression
- 103             | INT_CONSTANT
- 104             | REAL_CONSTANT
- 105             | CHAR_CONSTANT
- 106             | ID
- 107             | PLUS_PLUS expression
- 108             | MINUS_MINUS expression
- 109             | expression PLUS_PLUS
- 110             | expression MINUS_MINUS
- 111             | ternaryOperator
- 112             | assignment_as_expression
+  85             | xor_expression
+  86             | expression '>' expression
+  87             | expression GREATER_OR_EQUAL expression
+  88             | expression '<' expression
+  89             | expression LESS_OR_EQUAL expression
+  90             | expression DISTINCT expression
+  91             | expression EQUALS expression
+  92             | expression '+' expression
+  93             | expression '-' expression
+  94             | expression '*' expression
+  95             | expression '/' expression
+  96             | expression '%' expression
+  97             | '!' expression
+  98             | '-' expression
+  99             | '(' simple_type ')' expression
+ 100             | expression '.' ID
+ 101             | expression '[' expression ']'
+ 102             | '(' expression ')'
+ 103             | function_call_as_expression
+ 104             | INT_CONSTANT
+ 105             | REAL_CONSTANT
+ 106             | CHAR_CONSTANT
+ 107             | ID
+ 108             | PLUS_PLUS expression
+ 109             | MINUS_MINUS expression
+ 110             | expression PLUS_PLUS
+ 111             | expression MINUS_MINUS
+ 112             | ternaryOperator
+ 113             | assignment_as_expression
 
- 113  function_call_as_expression : ID '(' parameters_in_function_call ')'
+ 114  function_call_as_expression : ID '(' parameters_in_function_call ')'
 
- 114  ternaryOperator : expression '?' expression ':' expression
+ 115  ternaryOperator : expression '?' expression ':' expression
 
- 115  assignment_as_expression : expression '=' expression
+ 116  assignment_as_expression : expression '=' expression
+
+ 117  xor_expression : expression XOR expression
 
 state 0
 	$accept : . program $end  (0)
@@ -593,9 +596,10 @@ state 49
 	post_plus_plus_as_statement  goto 87
 	post_minus_minus_as_statement  goto 88
 	expression  goto 89
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
 state 50
@@ -607,7 +611,7 @@ state 50
 state 51
 	function_definition : DEF $$2 ID '(' parameters ')' ':' return_type . '{' function_body '}'  (11)
 
-	'{'  shift 93
+	'{'  shift 94
 	.  error
 
 
@@ -618,21 +622,21 @@ state 52
 
 
 state 53
-	expression : INT_CONSTANT .  (103)
-
-	.  reduce 103
-
-
-state 54
-	expression : REAL_CONSTANT .  (104)
+	expression : INT_CONSTANT .  (104)
 
 	.  reduce 104
 
 
-state 55
-	expression : CHAR_CONSTANT .  (105)
+state 54
+	expression : REAL_CONSTANT .  (105)
 
 	.  reduce 105
+
+
+state 55
+	expression : CHAR_CONSTANT .  (106)
+
+	.  reduce 106
 
 
 state 56
@@ -641,19 +645,20 @@ state 56
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
-	expression  goto 97
-	expressions  goto 98
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	expression  goto 98
+	expressions  goto 99
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
 state 57
@@ -662,7 +667,7 @@ state 57
 
 	.  reduce 55
 
-	$$3  goto 99
+	$$3  goto 100
 
 
 state 58
@@ -671,7 +676,7 @@ state 58
 
 	.  reduce 57
 
-	$$4  goto 100
+	$$4  goto 101
 
 
 state 59
@@ -681,18 +686,19 @@ state 59
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
-	expression  goto 101
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	expression  goto 102
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
 state 60
@@ -706,18 +712,19 @@ state 60
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
-	expression  goto 102
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	expression  goto 103
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
 state 61
@@ -726,129 +733,134 @@ state 61
 
 	.  reduce 69
 
-	$$5  goto 103
+	$$5  goto 104
 
 
 state 62
 	variables : ID .  (8)
 	function_call_as_statement : ID . '(' parameters_in_function_call ')' ';'  (73)
-	expression : ID .  (106)
-	function_call_as_expression : ID . '(' parameters_in_function_call ')'  (113)
+	expression : ID .  (107)
+	function_call_as_expression : ID . '(' parameters_in_function_call ')'  (114)
 
-	'('  shift 104
-	'='  reduce 106
-	PLUS_EQUAL  reduce 106
-	MINUS_EQUAL  reduce 106
-	MUL_EQUAL  reduce 106
-	DIV_EQUAL  reduce 106
-	MOD_EQUAL  reduce 106
-	'?'  reduce 106
-	AND  reduce 106
-	OR  reduce 106
-	'>'  reduce 106
-	GREATER_OR_EQUAL  reduce 106
-	'<'  reduce 106
-	LESS_OR_EQUAL  reduce 106
-	DISTINCT  reduce 106
-	EQUALS  reduce 106
-	'+'  reduce 106
-	'-'  reduce 106
-	'*'  reduce 106
-	'/'  reduce 106
-	'%'  reduce 106
-	PLUS_PLUS  reduce 106
-	MINUS_MINUS  reduce 106
-	'.'  reduce 106
-	'['  reduce 106
+	'('  shift 105
+	'='  reduce 107
+	PLUS_EQUAL  reduce 107
+	MINUS_EQUAL  reduce 107
+	MUL_EQUAL  reduce 107
+	DIV_EQUAL  reduce 107
+	MOD_EQUAL  reduce 107
+	'?'  reduce 107
+	AND  reduce 107
+	OR  reduce 107
+	XOR  reduce 107
+	'>'  reduce 107
+	GREATER_OR_EQUAL  reduce 107
+	'<'  reduce 107
+	LESS_OR_EQUAL  reduce 107
+	DISTINCT  reduce 107
+	EQUALS  reduce 107
+	'+'  reduce 107
+	'-'  reduce 107
+	'*'  reduce 107
+	'/'  reduce 107
+	'%'  reduce 107
+	PLUS_PLUS  reduce 107
+	MINUS_MINUS  reduce 107
+	'.'  reduce 107
+	'['  reduce 107
 	':'  reduce 8
 	','  reduce 8
 
 
 state 63
-	expression : '-' . expression  (97)
+	expression : '-' . expression  (98)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
-	'('  shift 67
-	.  error
-
-	expression  goto 105
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
-
-
-state 64
-	expression : '!' . expression  (96)
-
-	INT_CONSTANT  shift 53
-	REAL_CONSTANT  shift 54
-	CHAR_CONSTANT  shift 55
-	ID  shift 94
-	'-'  shift 63
-	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
 	expression  goto 106
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 65
-	pre_plus_plus_as_statement : PLUS_PLUS . expression ';'  (79)
-	expression : PLUS_PLUS . expression  (107)
+state 64
+	expression : '!' . expression  (97)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
 	expression  goto 107
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 66
-	pre_minus_minus_as_statement : MINUS_MINUS . expression ';'  (80)
-	expression : MINUS_MINUS . expression  (108)
+state 65
+	pre_plus_plus_as_statement : PLUS_PLUS . expression ';'  (79)
+	expression : PLUS_PLUS . expression  (108)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
 	expression  goto 108
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
+
+
+state 66
+	pre_minus_minus_as_statement : MINUS_MINUS . expression ';'  (80)
+	expression : MINUS_MINUS . expression  (109)
+
+	INT_CONSTANT  shift 53
+	REAL_CONSTANT  shift 54
+	CHAR_CONSTANT  shift 55
+	ID  shift 95
+	'-'  shift 63
+	'!'  shift 64
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
+	'('  shift 67
+	.  error
+
+	expression  goto 109
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
 state 67
-	expression : '(' . simple_type ')' expression  (98)
-	expression : '(' . expression ')'  (101)
+	expression : '(' . simple_type ')' expression  (99)
+	expression : '(' . expression ')'  (102)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
@@ -856,19 +868,20 @@ state 67
 	INT  shift 15
 	DOUBLE  shift 16
 	CHAR  shift 17
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
-	simple_type  goto 109
-	expression  goto 110
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	simple_type  goto 110
+	expression  goto 111
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
 state 68
@@ -880,7 +893,7 @@ state 68
 state 69
 	main : DEF $$1 MAIN '(' ')' ':' VOID '{' function_body . '}'  (6)
 
-	'}'  shift 111
+	'}'  shift 112
 	.  error
 
 
@@ -906,9 +919,9 @@ state 70
 	'('  shift 67
 	'}'  reduce 21
 
-	variable_definition  goto 112
+	variable_definition  goto 113
 	variables  goto 8
-	statements  goto 113
+	statements  goto 114
 	statement  goto 72
 	assignment_as_statement  goto 73
 	function_call_as_statement  goto 74
@@ -927,9 +940,10 @@ state 70
 	post_plus_plus_as_statement  goto 87
 	post_minus_minus_as_statement  goto 88
 	expression  goto 89
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
 state 71
@@ -945,7 +959,7 @@ state 71
 	WHILE  shift 59
 	IF  shift 60
 	RETURN  shift 61
-	ID  shift 114
+	ID  shift 115
 	'-'  shift 63
 	'!'  shift 64
 	PLUS_PLUS  shift 65
@@ -953,7 +967,7 @@ state 71
 	'('  shift 67
 	'}'  reduce 22
 
-	statement  goto 115
+	statement  goto 116
 	assignment_as_statement  goto 73
 	function_call_as_statement  goto 74
 	return  goto 75
@@ -971,9 +985,10 @@ state 71
 	post_plus_plus_as_statement  goto 87
 	post_minus_minus_as_statement  goto 88
 	expression  goto 89
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
 state 72
@@ -1089,70 +1104,78 @@ state 89
 	post_minus_minus_as_statement : expression . MINUS_MINUS ';'  (82)
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	'='  shift 116
-	PLUS_EQUAL  shift 117
-	MINUS_EQUAL  shift 118
-	MUL_EQUAL  shift 119
-	DIV_EQUAL  shift 120
-	MOD_EQUAL  shift 121
-	'?'  shift 122
-	AND  shift 123
-	OR  shift 124
-	'>'  shift 125
-	GREATER_OR_EQUAL  shift 126
-	'<'  shift 127
-	LESS_OR_EQUAL  shift 128
-	DISTINCT  shift 129
-	EQUALS  shift 130
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 136
-	MINUS_MINUS  shift 137
-	'.'  shift 138
-	'['  shift 139
+	'='  shift 117
+	PLUS_EQUAL  shift 118
+	MINUS_EQUAL  shift 119
+	MUL_EQUAL  shift 120
+	DIV_EQUAL  shift 121
+	MOD_EQUAL  shift 122
+	'?'  shift 123
+	AND  shift 124
+	OR  shift 125
+	XOR  shift 126
+	'>'  shift 127
+	GREATER_OR_EQUAL  shift 128
+	'<'  shift 129
+	LESS_OR_EQUAL  shift 130
+	DISTINCT  shift 131
+	EQUALS  shift 132
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 138
+	MINUS_MINUS  shift 139
+	'.'  shift 140
+	'['  shift 141
 	.  error
 
 
 state 90
-	expression : function_call_as_expression .  (102)
+	expression : xor_expression .  (85)
 
-	.  reduce 102
+	.  reduce 85
 
 
 state 91
-	expression : ternaryOperator .  (111)
+	expression : function_call_as_expression .  (103)
 
-	.  reduce 111
+	.  reduce 103
 
 
 state 92
-	expression : assignment_as_expression .  (112)
+	expression : ternaryOperator .  (112)
 
 	.  reduce 112
 
 
 state 93
+	expression : assignment_as_expression .  (113)
+
+	.  reduce 113
+
+
+state 94
 	function_definition : DEF $$2 ID '(' parameters ')' ':' return_type '{' . function_body '}'  (11)
 	function_body : .  (19)
 
@@ -1174,7 +1197,7 @@ state 93
 	'}'  reduce 19
 
 	variable_definition  goto 68
-	function_body  goto 140
+	function_body  goto 142
 	variables  goto 8
 	variable_definitions  goto 70
 	statements  goto 71
@@ -1196,231 +1219,241 @@ state 93
 	post_plus_plus_as_statement  goto 87
 	post_minus_minus_as_statement  goto 88
 	expression  goto 89
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
-
-
-state 94
-	expression : ID .  (106)
-	function_call_as_expression : ID . '(' parameters_in_function_call ')'  (113)
-
-	'('  shift 141
-	'='  reduce 106
-	PLUS_EQUAL  reduce 106
-	MINUS_EQUAL  reduce 106
-	MUL_EQUAL  reduce 106
-	DIV_EQUAL  reduce 106
-	MOD_EQUAL  reduce 106
-	'?'  reduce 106
-	AND  reduce 106
-	OR  reduce 106
-	'>'  reduce 106
-	GREATER_OR_EQUAL  reduce 106
-	'<'  reduce 106
-	LESS_OR_EQUAL  reduce 106
-	DISTINCT  reduce 106
-	EQUALS  reduce 106
-	'+'  reduce 106
-	'-'  reduce 106
-	'*'  reduce 106
-	'/'  reduce 106
-	'%'  reduce 106
-	PLUS_PLUS  reduce 106
-	MINUS_MINUS  reduce 106
-	'.'  reduce 106
-	'['  reduce 106
-	']'  reduce 106
-	')'  reduce 106
-	':'  reduce 106
-	';'  reduce 106
-	','  reduce 106
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
 state 95
-	expression : PLUS_PLUS . expression  (107)
+	expression : ID .  (107)
+	function_call_as_expression : ID . '(' parameters_in_function_call ')'  (114)
 
-	INT_CONSTANT  shift 53
-	REAL_CONSTANT  shift 54
-	CHAR_CONSTANT  shift 55
-	ID  shift 94
-	'-'  shift 63
-	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
-	'('  shift 67
-	.  error
-
-	expression  goto 142
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	'('  shift 143
+	'='  reduce 107
+	PLUS_EQUAL  reduce 107
+	MINUS_EQUAL  reduce 107
+	MUL_EQUAL  reduce 107
+	DIV_EQUAL  reduce 107
+	MOD_EQUAL  reduce 107
+	'?'  reduce 107
+	AND  reduce 107
+	OR  reduce 107
+	XOR  reduce 107
+	'>'  reduce 107
+	GREATER_OR_EQUAL  reduce 107
+	'<'  reduce 107
+	LESS_OR_EQUAL  reduce 107
+	DISTINCT  reduce 107
+	EQUALS  reduce 107
+	'+'  reduce 107
+	'-'  reduce 107
+	'*'  reduce 107
+	'/'  reduce 107
+	'%'  reduce 107
+	PLUS_PLUS  reduce 107
+	MINUS_MINUS  reduce 107
+	'.'  reduce 107
+	'['  reduce 107
+	']'  reduce 107
+	')'  reduce 107
+	':'  reduce 107
+	';'  reduce 107
+	','  reduce 107
 
 
 state 96
-	expression : MINUS_MINUS . expression  (108)
+	expression : PLUS_PLUS . expression  (108)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
-	expression  goto 143
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	expression  goto 144
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
 state 97
+	expression : MINUS_MINUS . expression  (109)
+
+	INT_CONSTANT  shift 53
+	REAL_CONSTANT  shift 54
+	CHAR_CONSTANT  shift 55
+	ID  shift 95
+	'-'  shift 63
+	'!'  shift 64
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
+	'('  shift 67
+	.  error
+
+	expression  goto 145
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
+
+
+state 98
 	expressions : expression .  (59)
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	'='  shift 144
-	'?'  shift 122
-	AND  shift 123
-	OR  shift 124
-	'>'  shift 125
-	GREATER_OR_EQUAL  shift 126
-	'<'  shift 127
-	LESS_OR_EQUAL  shift 128
-	DISTINCT  shift 129
-	EQUALS  shift 130
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
+	'='  shift 146
+	'?'  shift 123
+	AND  shift 124
+	OR  shift 125
+	XOR  shift 126
+	'>'  shift 127
+	GREATER_OR_EQUAL  shift 128
+	'<'  shift 129
+	LESS_OR_EQUAL  shift 130
+	DISTINCT  shift 131
+	EQUALS  shift 132
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
 	')'  reduce 59
 	';'  reduce 59
 	','  reduce 59
 
 
-state 98
+state 99
 	read : INPUT expressions . ';'  (54)
 	expressions : expressions . ',' expression  (60)
 
-	';'  shift 147
-	','  shift 148
+	';'  shift 149
+	','  shift 150
 	.  error
 
 
-state 99
+state 100
 	write : PRINT $$3 . expressions ';'  (56)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
-	expression  goto 97
-	expressions  goto 149
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	expression  goto 98
+	expressions  goto 151
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 100
+state 101
 	write : PRINTLN $$4 . expressions ';'  (58)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
-	expression  goto 97
-	expressions  goto 150
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	expression  goto 98
+	expressions  goto 152
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 101
+state 102
 	while : WHILE expression . ':' '{' statements '}'  (61)
 	while : WHILE expression . ':' statement  (62)
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	'='  shift 144
-	'?'  shift 122
-	AND  shift 123
-	OR  shift 124
-	'>'  shift 125
-	GREATER_OR_EQUAL  shift 126
-	'<'  shift 127
-	LESS_OR_EQUAL  shift 128
-	DISTINCT  shift 129
-	EQUALS  shift 130
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
-	':'  shift 151
+	'='  shift 146
+	'?'  shift 123
+	AND  shift 124
+	OR  shift 125
+	XOR  shift 126
+	'>'  shift 127
+	GREATER_OR_EQUAL  shift 128
+	'<'  shift 129
+	LESS_OR_EQUAL  shift 130
+	DISTINCT  shift 131
+	EQUALS  shift 132
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
+	':'  shift 153
 	.  error
 
 
-state 102
+state 103
 	if : IF expression . ':' '{' statements '}'  (63)
 	if : IF expression . ':' '{' statements '}' ELSE '{' statements '}'  (64)
 	if : IF expression . ':' '{' statements '}' ELSE statement  (65)
@@ -1429,117 +1462,177 @@ state 102
 	if : IF expression . ':' statement ELSE statement  (68)
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	'='  shift 144
-	'?'  shift 122
-	AND  shift 123
-	OR  shift 124
-	'>'  shift 125
-	GREATER_OR_EQUAL  shift 126
-	'<'  shift 127
-	LESS_OR_EQUAL  shift 128
-	DISTINCT  shift 129
-	EQUALS  shift 130
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
-	':'  shift 152
+	'='  shift 146
+	'?'  shift 123
+	AND  shift 124
+	OR  shift 125
+	XOR  shift 126
+	'>'  shift 127
+	GREATER_OR_EQUAL  shift 128
+	'<'  shift 129
+	LESS_OR_EQUAL  shift 130
+	DISTINCT  shift 131
+	EQUALS  shift 132
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
+	':'  shift 154
 	.  error
 
 
-state 103
+state 104
 	return : RETURN $$5 . expression ';'  (70)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
-	expression  goto 153
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	expression  goto 155
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 104
+state 105
 	function_call_as_statement : ID '(' . parameters_in_function_call ')' ';'  (73)
-	function_call_as_expression : ID '(' . parameters_in_function_call ')'  (113)
+	function_call_as_expression : ID '(' . parameters_in_function_call ')'  (114)
 	parameters_in_function_call : .  (71)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	')'  reduce 71
 
-	expression  goto 97
-	expressions  goto 154
-	parameters_in_function_call  goto 155
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	expression  goto 98
+	expressions  goto 156
+	parameters_in_function_call  goto 157
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 105
+state 106
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : '-' expression .  (97)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : '-' expression .  (98)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
+	'='  reduce 98
+	PLUS_EQUAL  reduce 98
+	MINUS_EQUAL  reduce 98
+	MUL_EQUAL  reduce 98
+	DIV_EQUAL  reduce 98
+	MOD_EQUAL  reduce 98
+	'?'  reduce 98
+	AND  reduce 98
+	OR  reduce 98
+	XOR  reduce 98
+	'>'  reduce 98
+	GREATER_OR_EQUAL  reduce 98
+	'<'  reduce 98
+	LESS_OR_EQUAL  reduce 98
+	DISTINCT  reduce 98
+	EQUALS  reduce 98
+	'+'  reduce 98
+	'-'  reduce 98
+	'*'  reduce 98
+	'/'  reduce 98
+	'%'  reduce 98
+	']'  reduce 98
+	')'  reduce 98
+	':'  reduce 98
+	';'  reduce 98
+	','  reduce 98
+
+
+state 107
+	expression : expression . AND expression  (83)
+	expression : expression . OR expression  (84)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : '!' expression .  (97)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
+
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
 	'='  reduce 97
 	PLUS_EQUAL  reduce 97
 	MINUS_EQUAL  reduce 97
@@ -1549,6 +1642,7 @@ state 105
 	'?'  reduce 97
 	AND  reduce 97
 	OR  reduce 97
+	XOR  reduce 97
 	'>'  reduce 97
 	GREATER_OR_EQUAL  reduce 97
 	'<'  reduce 97
@@ -1567,137 +1661,35 @@ state 105
 	','  reduce 97
 
 
-state 106
-	expression : expression . AND expression  (83)
-	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : '!' expression .  (96)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
-
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
-	'='  reduce 96
-	PLUS_EQUAL  reduce 96
-	MINUS_EQUAL  reduce 96
-	MUL_EQUAL  reduce 96
-	DIV_EQUAL  reduce 96
-	MOD_EQUAL  reduce 96
-	'?'  reduce 96
-	AND  reduce 96
-	OR  reduce 96
-	'>'  reduce 96
-	GREATER_OR_EQUAL  reduce 96
-	'<'  reduce 96
-	LESS_OR_EQUAL  reduce 96
-	DISTINCT  reduce 96
-	EQUALS  reduce 96
-	'+'  reduce 96
-	'-'  reduce 96
-	'*'  reduce 96
-	'/'  reduce 96
-	'%'  reduce 96
-	']'  reduce 96
-	')'  reduce 96
-	':'  reduce 96
-	';'  reduce 96
-	','  reduce 96
-
-
-state 107
+state 108
 	pre_plus_plus_as_statement : PLUS_PLUS expression . ';'  (79)
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : PLUS_PLUS expression .  (107)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : PLUS_PLUS expression .  (108)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
-	';'  shift 156
-	'='  reduce 107
-	PLUS_EQUAL  reduce 107
-	MINUS_EQUAL  reduce 107
-	MUL_EQUAL  reduce 107
-	DIV_EQUAL  reduce 107
-	MOD_EQUAL  reduce 107
-	'?'  reduce 107
-	AND  reduce 107
-	OR  reduce 107
-	'>'  reduce 107
-	GREATER_OR_EQUAL  reduce 107
-	'<'  reduce 107
-	LESS_OR_EQUAL  reduce 107
-	DISTINCT  reduce 107
-	EQUALS  reduce 107
-	'+'  reduce 107
-	'-'  reduce 107
-	'*'  reduce 107
-	'/'  reduce 107
-	'%'  reduce 107
-
-
-state 108
-	pre_minus_minus_as_statement : MINUS_MINUS expression . ';'  (80)
-	expression : expression . AND expression  (83)
-	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : MINUS_MINUS expression .  (108)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
-
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
-	';'  shift 157
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
+	';'  shift 158
 	'='  reduce 108
 	PLUS_EQUAL  reduce 108
 	MINUS_EQUAL  reduce 108
@@ -1707,6 +1699,7 @@ state 108
 	'?'  reduce 108
 	AND  reduce 108
 	OR  reduce 108
+	XOR  reduce 108
 	'>'  reduce 108
 	GREATER_OR_EQUAL  reduce 108
 	'<'  reduce 108
@@ -1721,70 +1714,124 @@ state 108
 
 
 state 109
-	expression : '(' simple_type . ')' expression  (98)
+	pre_minus_minus_as_statement : MINUS_MINUS expression . ';'  (80)
+	expression : expression . AND expression  (83)
+	expression : expression . OR expression  (84)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : MINUS_MINUS expression .  (109)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	')'  shift 158
-	.  error
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
+	';'  shift 159
+	'='  reduce 109
+	PLUS_EQUAL  reduce 109
+	MINUS_EQUAL  reduce 109
+	MUL_EQUAL  reduce 109
+	DIV_EQUAL  reduce 109
+	MOD_EQUAL  reduce 109
+	'?'  reduce 109
+	AND  reduce 109
+	OR  reduce 109
+	XOR  reduce 109
+	'>'  reduce 109
+	GREATER_OR_EQUAL  reduce 109
+	'<'  reduce 109
+	LESS_OR_EQUAL  reduce 109
+	DISTINCT  reduce 109
+	EQUALS  reduce 109
+	'+'  reduce 109
+	'-'  reduce 109
+	'*'  reduce 109
+	'/'  reduce 109
+	'%'  reduce 109
 
 
 state 110
-	expression : expression . AND expression  (83)
-	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : '(' expression . ')'  (101)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : '(' simple_type . ')' expression  (99)
 
-	'='  shift 144
-	'?'  shift 122
-	AND  shift 123
-	OR  shift 124
-	'>'  shift 125
-	GREATER_OR_EQUAL  shift 126
-	'<'  shift 127
-	LESS_OR_EQUAL  shift 128
-	DISTINCT  shift 129
-	EQUALS  shift 130
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
-	')'  shift 159
+	')'  shift 160
 	.  error
 
 
 state 111
+	expression : expression . AND expression  (83)
+	expression : expression . OR expression  (84)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : '(' expression . ')'  (102)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
+
+	'='  shift 146
+	'?'  shift 123
+	AND  shift 124
+	OR  shift 125
+	XOR  shift 126
+	'>'  shift 127
+	GREATER_OR_EQUAL  shift 128
+	'<'  shift 129
+	LESS_OR_EQUAL  shift 130
+	DISTINCT  shift 131
+	EQUALS  shift 132
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
+	')'  shift 161
+	.  error
+
+
+state 112
 	main : DEF $$1 MAIN '(' ')' ':' VOID '{' function_body '}' .  (6)
 
 	.  reduce 6
 
 
-state 112
+state 113
 	variable_definitions : variable_definitions variable_definition .  (24)
 
 	.  reduce 24
 
 
-state 113
+state 114
 	function_body : variable_definitions statements .  (20)
 	statements : statements . statement  (26)
 
@@ -1797,7 +1844,7 @@ state 113
 	WHILE  shift 59
 	IF  shift 60
 	RETURN  shift 61
-	ID  shift 114
+	ID  shift 115
 	'-'  shift 63
 	'!'  shift 64
 	PLUS_PLUS  shift 65
@@ -1805,7 +1852,7 @@ state 113
 	'('  shift 67
 	'}'  reduce 20
 
-	statement  goto 115
+	statement  goto 116
 	assignment_as_statement  goto 73
 	function_call_as_statement  goto 74
 	return  goto 75
@@ -1823,486 +1870,498 @@ state 113
 	post_plus_plus_as_statement  goto 87
 	post_minus_minus_as_statement  goto 88
 	expression  goto 89
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
-
-
-state 114
-	function_call_as_statement : ID . '(' parameters_in_function_call ')' ';'  (73)
-	expression : ID .  (106)
-	function_call_as_expression : ID . '(' parameters_in_function_call ')'  (113)
-
-	'('  shift 104
-	'='  reduce 106
-	PLUS_EQUAL  reduce 106
-	MINUS_EQUAL  reduce 106
-	MUL_EQUAL  reduce 106
-	DIV_EQUAL  reduce 106
-	MOD_EQUAL  reduce 106
-	'?'  reduce 106
-	AND  reduce 106
-	OR  reduce 106
-	'>'  reduce 106
-	GREATER_OR_EQUAL  reduce 106
-	'<'  reduce 106
-	LESS_OR_EQUAL  reduce 106
-	DISTINCT  reduce 106
-	EQUALS  reduce 106
-	'+'  reduce 106
-	'-'  reduce 106
-	'*'  reduce 106
-	'/'  reduce 106
-	'%'  reduce 106
-	PLUS_PLUS  reduce 106
-	MINUS_MINUS  reduce 106
-	'.'  reduce 106
-	'['  reduce 106
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
 state 115
+	function_call_as_statement : ID . '(' parameters_in_function_call ')' ';'  (73)
+	expression : ID .  (107)
+	function_call_as_expression : ID . '(' parameters_in_function_call ')'  (114)
+
+	'('  shift 105
+	'='  reduce 107
+	PLUS_EQUAL  reduce 107
+	MINUS_EQUAL  reduce 107
+	MUL_EQUAL  reduce 107
+	DIV_EQUAL  reduce 107
+	MOD_EQUAL  reduce 107
+	'?'  reduce 107
+	AND  reduce 107
+	OR  reduce 107
+	XOR  reduce 107
+	'>'  reduce 107
+	GREATER_OR_EQUAL  reduce 107
+	'<'  reduce 107
+	LESS_OR_EQUAL  reduce 107
+	DISTINCT  reduce 107
+	EQUALS  reduce 107
+	'+'  reduce 107
+	'-'  reduce 107
+	'*'  reduce 107
+	'/'  reduce 107
+	'%'  reduce 107
+	PLUS_PLUS  reduce 107
+	MINUS_MINUS  reduce 107
+	'.'  reduce 107
+	'['  reduce 107
+
+
+state 116
 	statements : statements statement .  (26)
 
 	.  reduce 26
 
 
-state 116
+state 117
 	assignment_as_statement : expression '=' . expression ';'  (53)
-	assignment_as_expression : expression '=' . expression  (115)
+	assignment_as_expression : expression '=' . expression  (116)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
-	expression  goto 160
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	expression  goto 162
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 117
+state 118
 	plus_equal : expression PLUS_EQUAL . expression ';'  (74)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
-	expression  goto 161
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	expression  goto 163
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 118
+state 119
 	minus_equal : expression MINUS_EQUAL . expression ';'  (75)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
-	expression  goto 162
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	expression  goto 164
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 119
+state 120
 	mul_equal : expression MUL_EQUAL . expression ';'  (76)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
-	expression  goto 163
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	expression  goto 165
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 120
+state 121
 	div_equal : expression DIV_EQUAL . expression ';'  (77)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
-	expression  goto 164
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	expression  goto 166
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 121
+state 122
 	mod_equal : expression MOD_EQUAL . expression ';'  (78)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
-	expression  goto 165
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	expression  goto 167
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 122
-	ternaryOperator : expression '?' . expression ':' expression  (114)
+state 123
+	ternaryOperator : expression '?' . expression ':' expression  (115)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
-	expression  goto 166
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	expression  goto 168
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 123
+state 124
 	expression : expression AND . expression  (83)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
-	expression  goto 167
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	expression  goto 169
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 124
+state 125
 	expression : expression OR . expression  (84)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
-	'('  shift 67
-	.  error
-
-	expression  goto 168
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
-
-
-state 125
-	expression : expression '>' . expression  (85)
-
-	INT_CONSTANT  shift 53
-	REAL_CONSTANT  shift 54
-	CHAR_CONSTANT  shift 55
-	ID  shift 94
-	'-'  shift 63
-	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
-	'('  shift 67
-	.  error
-
-	expression  goto 169
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
-
-
-state 126
-	expression : expression GREATER_OR_EQUAL . expression  (86)
-
-	INT_CONSTANT  shift 53
-	REAL_CONSTANT  shift 54
-	CHAR_CONSTANT  shift 55
-	ID  shift 94
-	'-'  shift 63
-	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
 	expression  goto 170
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 127
-	expression : expression '<' . expression  (87)
+state 126
+	xor_expression : expression XOR . expression  (117)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
 	expression  goto 171
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 128
-	expression : expression LESS_OR_EQUAL . expression  (88)
+state 127
+	expression : expression '>' . expression  (86)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
 	expression  goto 172
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 129
-	expression : expression DISTINCT . expression  (89)
+state 128
+	expression : expression GREATER_OR_EQUAL . expression  (87)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
 	expression  goto 173
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 130
-	expression : expression EQUALS . expression  (90)
+state 129
+	expression : expression '<' . expression  (88)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
 	expression  goto 174
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 131
-	expression : expression '+' . expression  (91)
+state 130
+	expression : expression LESS_OR_EQUAL . expression  (89)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
 	expression  goto 175
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 132
-	expression : expression '-' . expression  (92)
+state 131
+	expression : expression DISTINCT . expression  (90)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
 	expression  goto 176
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 133
-	expression : expression '*' . expression  (93)
+state 132
+	expression : expression EQUALS . expression  (91)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
 	expression  goto 177
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 134
-	expression : expression '/' . expression  (94)
+state 133
+	expression : expression '+' . expression  (92)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
 	expression  goto 178
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 135
-	expression : expression '%' . expression  (95)
+state 134
+	expression : expression '-' . expression  (93)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
 	expression  goto 179
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
+
+
+state 135
+	expression : expression '*' . expression  (94)
+
+	INT_CONSTANT  shift 53
+	REAL_CONSTANT  shift 54
+	CHAR_CONSTANT  shift 55
+	ID  shift 95
+	'-'  shift 63
+	'!'  shift 64
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
+	'('  shift 67
+	.  error
+
+	expression  goto 180
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
 state 136
-	post_plus_plus_as_statement : expression PLUS_PLUS . ';'  (81)
-	expression : expression PLUS_PLUS .  (109)
+	expression : expression '/' . expression  (95)
 
-	';'  shift 180
-	'='  reduce 109
-	PLUS_EQUAL  reduce 109
-	MINUS_EQUAL  reduce 109
-	MUL_EQUAL  reduce 109
-	DIV_EQUAL  reduce 109
-	MOD_EQUAL  reduce 109
-	'?'  reduce 109
-	AND  reduce 109
-	OR  reduce 109
-	'>'  reduce 109
-	GREATER_OR_EQUAL  reduce 109
-	'<'  reduce 109
-	LESS_OR_EQUAL  reduce 109
-	DISTINCT  reduce 109
-	EQUALS  reduce 109
-	'+'  reduce 109
-	'-'  reduce 109
-	'*'  reduce 109
-	'/'  reduce 109
-	'%'  reduce 109
-	PLUS_PLUS  reduce 109
-	MINUS_MINUS  reduce 109
-	'.'  reduce 109
-	'['  reduce 109
+	INT_CONSTANT  shift 53
+	REAL_CONSTANT  shift 54
+	CHAR_CONSTANT  shift 55
+	ID  shift 95
+	'-'  shift 63
+	'!'  shift 64
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
+	'('  shift 67
+	.  error
+
+	expression  goto 181
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
 state 137
-	post_minus_minus_as_statement : expression MINUS_MINUS . ';'  (82)
-	expression : expression MINUS_MINUS .  (110)
+	expression : expression '%' . expression  (96)
 
-	';'  shift 181
+	INT_CONSTANT  shift 53
+	REAL_CONSTANT  shift 54
+	CHAR_CONSTANT  shift 55
+	ID  shift 95
+	'-'  shift 63
+	'!'  shift 64
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
+	'('  shift 67
+	.  error
+
+	expression  goto 182
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
+
+
+state 138
+	post_plus_plus_as_statement : expression PLUS_PLUS . ';'  (81)
+	expression : expression PLUS_PLUS .  (110)
+
+	';'  shift 183
 	'='  reduce 110
 	PLUS_EQUAL  reduce 110
 	MINUS_EQUAL  reduce 110
@@ -2312,6 +2371,7 @@ state 137
 	'?'  reduce 110
 	AND  reduce 110
 	OR  reduce 110
+	XOR  reduce 110
 	'>'  reduce 110
 	GREATER_OR_EQUAL  reduce 110
 	'<'  reduce 110
@@ -2329,142 +2389,124 @@ state 137
 	'['  reduce 110
 
 
-state 138
-	expression : expression '.' . ID  (99)
-
-	ID  shift 182
-	.  error
-
-
 state 139
-	expression : expression '[' . expression ']'  (100)
+	post_minus_minus_as_statement : expression MINUS_MINUS . ';'  (82)
+	expression : expression MINUS_MINUS .  (111)
 
-	INT_CONSTANT  shift 53
-	REAL_CONSTANT  shift 54
-	CHAR_CONSTANT  shift 55
-	ID  shift 94
-	'-'  shift 63
-	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
-	'('  shift 67
-	.  error
-
-	expression  goto 183
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	';'  shift 184
+	'='  reduce 111
+	PLUS_EQUAL  reduce 111
+	MINUS_EQUAL  reduce 111
+	MUL_EQUAL  reduce 111
+	DIV_EQUAL  reduce 111
+	MOD_EQUAL  reduce 111
+	'?'  reduce 111
+	AND  reduce 111
+	OR  reduce 111
+	XOR  reduce 111
+	'>'  reduce 111
+	GREATER_OR_EQUAL  reduce 111
+	'<'  reduce 111
+	LESS_OR_EQUAL  reduce 111
+	DISTINCT  reduce 111
+	EQUALS  reduce 111
+	'+'  reduce 111
+	'-'  reduce 111
+	'*'  reduce 111
+	'/'  reduce 111
+	'%'  reduce 111
+	PLUS_PLUS  reduce 111
+	MINUS_MINUS  reduce 111
+	'.'  reduce 111
+	'['  reduce 111
 
 
 state 140
-	function_definition : DEF $$2 ID '(' parameters ')' ':' return_type '{' function_body . '}'  (11)
+	expression : expression '.' . ID  (100)
 
-	'}'  shift 184
+	ID  shift 185
 	.  error
 
 
 state 141
-	function_call_as_expression : ID '(' . parameters_in_function_call ')'  (113)
+	expression : expression '[' . expression ']'  (101)
+
+	INT_CONSTANT  shift 53
+	REAL_CONSTANT  shift 54
+	CHAR_CONSTANT  shift 55
+	ID  shift 95
+	'-'  shift 63
+	'!'  shift 64
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
+	'('  shift 67
+	.  error
+
+	expression  goto 186
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
+
+
+state 142
+	function_definition : DEF $$2 ID '(' parameters ')' ':' return_type '{' function_body . '}'  (11)
+
+	'}'  shift 187
+	.  error
+
+
+state 143
+	function_call_as_expression : ID '(' . parameters_in_function_call ')'  (114)
 	parameters_in_function_call : .  (71)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	')'  reduce 71
 
-	expression  goto 97
-	expressions  goto 154
-	parameters_in_function_call  goto 185
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	expression  goto 98
+	expressions  goto 156
+	parameters_in_function_call  goto 188
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 142
+state 144
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : PLUS_PLUS expression .  (107)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : PLUS_PLUS expression .  (108)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
-	'='  reduce 107
-	PLUS_EQUAL  reduce 107
-	MINUS_EQUAL  reduce 107
-	MUL_EQUAL  reduce 107
-	DIV_EQUAL  reduce 107
-	MOD_EQUAL  reduce 107
-	'?'  reduce 107
-	AND  reduce 107
-	OR  reduce 107
-	'>'  reduce 107
-	GREATER_OR_EQUAL  reduce 107
-	'<'  reduce 107
-	LESS_OR_EQUAL  reduce 107
-	DISTINCT  reduce 107
-	EQUALS  reduce 107
-	'+'  reduce 107
-	'-'  reduce 107
-	'*'  reduce 107
-	'/'  reduce 107
-	'%'  reduce 107
-	']'  reduce 107
-	')'  reduce 107
-	':'  reduce 107
-	';'  reduce 107
-	','  reduce 107
-
-
-state 143
-	expression : expression . AND expression  (83)
-	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : MINUS_MINUS expression .  (108)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
-
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
 	'='  reduce 108
 	PLUS_EQUAL  reduce 108
 	MINUS_EQUAL  reduce 108
@@ -2474,6 +2516,7 @@ state 143
 	'?'  reduce 108
 	AND  reduce 108
 	OR  reduce 108
+	XOR  reduce 108
 	'>'  reduce 108
 	GREATER_OR_EQUAL  reduce 108
 	'<'  reduce 108
@@ -2492,83 +2535,140 @@ state 143
 	','  reduce 108
 
 
-state 144
-	assignment_as_expression : expression '=' . expression  (115)
+state 145
+	expression : expression . AND expression  (83)
+	expression : expression . OR expression  (84)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : MINUS_MINUS expression .  (109)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
+
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
+	'='  reduce 109
+	PLUS_EQUAL  reduce 109
+	MINUS_EQUAL  reduce 109
+	MUL_EQUAL  reduce 109
+	DIV_EQUAL  reduce 109
+	MOD_EQUAL  reduce 109
+	'?'  reduce 109
+	AND  reduce 109
+	OR  reduce 109
+	XOR  reduce 109
+	'>'  reduce 109
+	GREATER_OR_EQUAL  reduce 109
+	'<'  reduce 109
+	LESS_OR_EQUAL  reduce 109
+	DISTINCT  reduce 109
+	EQUALS  reduce 109
+	'+'  reduce 109
+	'-'  reduce 109
+	'*'  reduce 109
+	'/'  reduce 109
+	'%'  reduce 109
+	']'  reduce 109
+	')'  reduce 109
+	':'  reduce 109
+	';'  reduce 109
+	','  reduce 109
+
+
+state 146
+	assignment_as_expression : expression '=' . expression  (116)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
-	expression  goto 186
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	expression  goto 189
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 145
-	expression : expression PLUS_PLUS .  (109)
-
-	.  reduce 109
-
-
-state 146
-	expression : expression MINUS_MINUS .  (110)
+state 147
+	expression : expression PLUS_PLUS .  (110)
 
 	.  reduce 110
 
 
-state 147
+state 148
+	expression : expression MINUS_MINUS .  (111)
+
+	.  reduce 111
+
+
+state 149
 	read : INPUT expressions ';' .  (54)
 
 	.  reduce 54
 
 
-state 148
+state 150
 	expressions : expressions ',' . expression  (60)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
-	expression  goto 187
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
-
-
-state 149
-	write : PRINT $$3 expressions . ';'  (56)
-	expressions : expressions . ',' expression  (60)
-
-	';'  shift 188
-	','  shift 148
-	.  error
-
-
-state 150
-	write : PRINTLN $$4 expressions . ';'  (58)
-	expressions : expressions . ',' expression  (60)
-
-	';'  shift 189
-	','  shift 148
-	.  error
+	expression  goto 190
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
 state 151
+	write : PRINT $$3 expressions . ';'  (56)
+	expressions : expressions . ',' expression  (60)
+
+	';'  shift 191
+	','  shift 150
+	.  error
+
+
+state 152
+	write : PRINTLN $$4 expressions . ';'  (58)
+	expressions : expressions . ',' expression  (60)
+
+	';'  shift 192
+	','  shift 150
+	.  error
+
+
+state 153
 	while : WHILE expression ':' . '{' statements '}'  (61)
 	while : WHILE expression ':' . statement  (62)
 
@@ -2581,16 +2681,16 @@ state 151
 	WHILE  shift 59
 	IF  shift 60
 	RETURN  shift 61
-	ID  shift 114
+	ID  shift 115
 	'-'  shift 63
 	'!'  shift 64
 	PLUS_PLUS  shift 65
 	MINUS_MINUS  shift 66
 	'('  shift 67
-	'{'  shift 190
+	'{'  shift 193
 	.  error
 
-	statement  goto 191
+	statement  goto 194
 	assignment_as_statement  goto 73
 	function_call_as_statement  goto 74
 	return  goto 75
@@ -2608,12 +2708,13 @@ state 151
 	post_plus_plus_as_statement  goto 87
 	post_minus_minus_as_statement  goto 88
 	expression  goto 89
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 152
+state 154
 	if : IF expression ':' . '{' statements '}'  (63)
 	if : IF expression ':' . '{' statements '}' ELSE '{' statements '}'  (64)
 	if : IF expression ':' . '{' statements '}' ELSE statement  (65)
@@ -2630,16 +2731,16 @@ state 152
 	WHILE  shift 59
 	IF  shift 60
 	RETURN  shift 61
-	ID  shift 114
+	ID  shift 115
 	'-'  shift 63
 	'!'  shift 64
 	PLUS_PLUS  shift 65
 	MINUS_MINUS  shift 66
 	'('  shift 67
-	'{'  shift 192
+	'{'  shift 195
 	.  error
 
-	statement  goto 193
+	statement  goto 196
 	assignment_as_statement  goto 73
 	function_call_as_statement  goto 74
 	return  goto 75
@@ -2657,467 +2758,486 @@ state 152
 	post_plus_plus_as_statement  goto 87
 	post_minus_minus_as_statement  goto 88
 	expression  goto 89
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
-
-
-state 153
-	return : RETURN $$5 expression . ';'  (70)
-	expression : expression . AND expression  (83)
-	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
-
-	'='  shift 144
-	'?'  shift 122
-	AND  shift 123
-	OR  shift 124
-	'>'  shift 125
-	GREATER_OR_EQUAL  shift 126
-	'<'  shift 127
-	LESS_OR_EQUAL  shift 128
-	DISTINCT  shift 129
-	EQUALS  shift 130
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
-	';'  shift 194
-	.  error
-
-
-state 154
-	expressions : expressions . ',' expression  (60)
-	parameters_in_function_call : expressions .  (72)
-
-	','  shift 148
-	')'  reduce 72
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
 state 155
-	function_call_as_statement : ID '(' parameters_in_function_call . ')' ';'  (73)
-	function_call_as_expression : ID '(' parameters_in_function_call . ')'  (113)
+	return : RETURN $$5 expression . ';'  (70)
+	expression : expression . AND expression  (83)
+	expression : expression . OR expression  (84)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	')'  shift 195
+	'='  shift 146
+	'?'  shift 123
+	AND  shift 124
+	OR  shift 125
+	XOR  shift 126
+	'>'  shift 127
+	GREATER_OR_EQUAL  shift 128
+	'<'  shift 129
+	LESS_OR_EQUAL  shift 130
+	DISTINCT  shift 131
+	EQUALS  shift 132
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
+	';'  shift 197
 	.  error
 
 
 state 156
+	expressions : expressions . ',' expression  (60)
+	parameters_in_function_call : expressions .  (72)
+
+	','  shift 150
+	')'  reduce 72
+
+
+state 157
+	function_call_as_statement : ID '(' parameters_in_function_call . ')' ';'  (73)
+	function_call_as_expression : ID '(' parameters_in_function_call . ')'  (114)
+
+	')'  shift 198
+	.  error
+
+
+state 158
 	pre_plus_plus_as_statement : PLUS_PLUS expression ';' .  (79)
 
 	.  reduce 79
 
 
-state 157
+state 159
 	pre_minus_minus_as_statement : MINUS_MINUS expression ';' .  (80)
 
 	.  reduce 80
 
 
-state 158
-	expression : '(' simple_type ')' . expression  (98)
+state 160
+	expression : '(' simple_type ')' . expression  (99)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
-	expression  goto 196
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
-
-
-state 159
-	expression : '(' expression ')' .  (101)
-
-	.  reduce 101
-
-
-state 160
-	assignment_as_statement : expression '=' expression . ';'  (53)
-	expression : expression . AND expression  (83)
-	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
-	assignment_as_expression : expression '=' expression .  (115)
-
-	'='  shift 144
-	'?'  shift 122
-	AND  shift 123
-	OR  shift 124
-	'>'  shift 125
-	GREATER_OR_EQUAL  shift 126
-	'<'  shift 127
-	LESS_OR_EQUAL  shift 128
-	DISTINCT  shift 129
-	EQUALS  shift 130
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
-	';'  shift 197
-	PLUS_EQUAL  reduce 115
-	MINUS_EQUAL  reduce 115
-	MUL_EQUAL  reduce 115
-	DIV_EQUAL  reduce 115
-	MOD_EQUAL  reduce 115
+	expression  goto 199
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
 state 161
-	plus_equal : expression PLUS_EQUAL expression . ';'  (74)
-	expression : expression . AND expression  (83)
-	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : '(' expression ')' .  (102)
 
-	'='  shift 144
-	'?'  shift 122
-	AND  shift 123
-	OR  shift 124
-	'>'  shift 125
-	GREATER_OR_EQUAL  shift 126
-	'<'  shift 127
-	LESS_OR_EQUAL  shift 128
-	DISTINCT  shift 129
-	EQUALS  shift 130
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
-	';'  shift 198
-	.  error
+	.  reduce 102
 
 
 state 162
-	minus_equal : expression MINUS_EQUAL expression . ';'  (75)
+	assignment_as_statement : expression '=' expression . ';'  (53)
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	assignment_as_expression : expression '=' expression .  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	'='  shift 144
-	'?'  shift 122
-	AND  shift 123
-	OR  shift 124
-	'>'  shift 125
-	GREATER_OR_EQUAL  shift 126
-	'<'  shift 127
-	LESS_OR_EQUAL  shift 128
-	DISTINCT  shift 129
-	EQUALS  shift 130
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
-	';'  shift 199
-	.  error
+	'='  shift 146
+	'?'  shift 123
+	AND  shift 124
+	OR  shift 125
+	XOR  shift 126
+	'>'  shift 127
+	GREATER_OR_EQUAL  shift 128
+	'<'  shift 129
+	LESS_OR_EQUAL  shift 130
+	DISTINCT  shift 131
+	EQUALS  shift 132
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
+	';'  shift 200
+	PLUS_EQUAL  reduce 116
+	MINUS_EQUAL  reduce 116
+	MUL_EQUAL  reduce 116
+	DIV_EQUAL  reduce 116
+	MOD_EQUAL  reduce 116
 
 
 state 163
-	mul_equal : expression MUL_EQUAL expression . ';'  (76)
+	plus_equal : expression PLUS_EQUAL expression . ';'  (74)
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	'='  shift 144
-	'?'  shift 122
-	AND  shift 123
-	OR  shift 124
-	'>'  shift 125
-	GREATER_OR_EQUAL  shift 126
-	'<'  shift 127
-	LESS_OR_EQUAL  shift 128
-	DISTINCT  shift 129
-	EQUALS  shift 130
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
-	';'  shift 200
-	.  error
-
-
-state 164
-	div_equal : expression DIV_EQUAL expression . ';'  (77)
-	expression : expression . AND expression  (83)
-	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
-
-	'='  shift 144
-	'?'  shift 122
-	AND  shift 123
-	OR  shift 124
-	'>'  shift 125
-	GREATER_OR_EQUAL  shift 126
-	'<'  shift 127
-	LESS_OR_EQUAL  shift 128
-	DISTINCT  shift 129
-	EQUALS  shift 130
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
+	'='  shift 146
+	'?'  shift 123
+	AND  shift 124
+	OR  shift 125
+	XOR  shift 126
+	'>'  shift 127
+	GREATER_OR_EQUAL  shift 128
+	'<'  shift 129
+	LESS_OR_EQUAL  shift 130
+	DISTINCT  shift 131
+	EQUALS  shift 132
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
 	';'  shift 201
 	.  error
 
 
-state 165
-	mod_equal : expression MOD_EQUAL expression . ';'  (78)
+state 164
+	minus_equal : expression MINUS_EQUAL expression . ';'  (75)
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	'='  shift 144
-	'?'  shift 122
-	AND  shift 123
-	OR  shift 124
-	'>'  shift 125
-	GREATER_OR_EQUAL  shift 126
-	'<'  shift 127
-	LESS_OR_EQUAL  shift 128
-	DISTINCT  shift 129
-	EQUALS  shift 130
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
+	'='  shift 146
+	'?'  shift 123
+	AND  shift 124
+	OR  shift 125
+	XOR  shift 126
+	'>'  shift 127
+	GREATER_OR_EQUAL  shift 128
+	'<'  shift 129
+	LESS_OR_EQUAL  shift 130
+	DISTINCT  shift 131
+	EQUALS  shift 132
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
 	';'  shift 202
 	.  error
 
 
-state 166
+state 165
+	mul_equal : expression MUL_EQUAL expression . ';'  (76)
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	ternaryOperator : expression '?' expression . ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	'='  shift 144
-	'?'  shift 122
-	AND  shift 123
-	OR  shift 124
-	'>'  shift 125
-	GREATER_OR_EQUAL  shift 126
-	'<'  shift 127
-	LESS_OR_EQUAL  shift 128
-	DISTINCT  shift 129
-	EQUALS  shift 130
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
-	':'  shift 203
+	'='  shift 146
+	'?'  shift 123
+	AND  shift 124
+	OR  shift 125
+	XOR  shift 126
+	'>'  shift 127
+	GREATER_OR_EQUAL  shift 128
+	'<'  shift 129
+	LESS_OR_EQUAL  shift 130
+	DISTINCT  shift 131
+	EQUALS  shift 132
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
+	';'  shift 203
+	.  error
+
+
+state 166
+	div_equal : expression DIV_EQUAL expression . ';'  (77)
+	expression : expression . AND expression  (83)
+	expression : expression . OR expression  (84)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
+
+	'='  shift 146
+	'?'  shift 123
+	AND  shift 124
+	OR  shift 125
+	XOR  shift 126
+	'>'  shift 127
+	GREATER_OR_EQUAL  shift 128
+	'<'  shift 129
+	LESS_OR_EQUAL  shift 130
+	DISTINCT  shift 131
+	EQUALS  shift 132
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
+	';'  shift 204
 	.  error
 
 
 state 167
+	mod_equal : expression MOD_EQUAL expression . ';'  (78)
+	expression : expression . AND expression  (83)
+	expression : expression . OR expression  (84)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
+
+	'='  shift 146
+	'?'  shift 123
+	AND  shift 124
+	OR  shift 125
+	XOR  shift 126
+	'>'  shift 127
+	GREATER_OR_EQUAL  shift 128
+	'<'  shift 129
+	LESS_OR_EQUAL  shift 130
+	DISTINCT  shift 131
+	EQUALS  shift 132
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
+	';'  shift 205
+	.  error
+
+
+state 168
+	expression : expression . AND expression  (83)
+	expression : expression . OR expression  (84)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	ternaryOperator : expression '?' expression . ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
+
+	'='  shift 146
+	'?'  shift 123
+	AND  shift 124
+	OR  shift 125
+	XOR  shift 126
+	'>'  shift 127
+	GREATER_OR_EQUAL  shift 128
+	'<'  shift 129
+	LESS_OR_EQUAL  shift 130
+	DISTINCT  shift 131
+	EQUALS  shift 132
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
+	':'  shift 206
+	.  error
+
+
+state 169
 	expression : expression . AND expression  (83)
 	expression : expression AND expression .  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	'>'  shift 125
-	GREATER_OR_EQUAL  shift 126
-	'<'  shift 127
-	LESS_OR_EQUAL  shift 128
-	DISTINCT  shift 129
-	EQUALS  shift 130
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
+	'>'  shift 127
+	GREATER_OR_EQUAL  shift 128
+	'<'  shift 129
+	LESS_OR_EQUAL  shift 130
+	DISTINCT  shift 131
+	EQUALS  shift 132
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
 	'='  reduce 83
 	PLUS_EQUAL  reduce 83
 	MINUS_EQUAL  reduce 83
@@ -3127,6 +3247,7 @@ state 167
 	'?'  reduce 83
 	AND  reduce 83
 	OR  reduce 83
+	XOR  reduce 83
 	']'  reduce 83
 	')'  reduce 83
 	':'  reduce 83
@@ -3134,43 +3255,44 @@ state 167
 	','  reduce 83
 
 
-state 168
+state 170
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
 	expression : expression OR expression .  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	'>'  shift 125
-	GREATER_OR_EQUAL  shift 126
-	'<'  shift 127
-	LESS_OR_EQUAL  shift 128
-	DISTINCT  shift 129
-	EQUALS  shift 130
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
+	'>'  shift 127
+	GREATER_OR_EQUAL  shift 128
+	'<'  shift 129
+	LESS_OR_EQUAL  shift 130
+	DISTINCT  shift 131
+	EQUALS  shift 132
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
 	'='  reduce 84
 	PLUS_EQUAL  reduce 84
 	MINUS_EQUAL  reduce 84
@@ -3180,6 +3302,7 @@ state 168
 	'?'  reduce 84
 	AND  reduce 84
 	OR  reduce 84
+	XOR  reduce 84
 	']'  reduce 84
 	')'  reduce 84
 	':'  reduce 84
@@ -3187,90 +3310,93 @@ state 168
 	','  reduce 84
 
 
-state 169
+state 171
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression '>' expression .  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
+	xor_expression : expression XOR expression .  (117)
 
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
-	'='  reduce 85
-	PLUS_EQUAL  reduce 85
-	MINUS_EQUAL  reduce 85
-	MUL_EQUAL  reduce 85
-	DIV_EQUAL  reduce 85
-	MOD_EQUAL  reduce 85
-	'?'  reduce 85
-	AND  reduce 85
-	OR  reduce 85
-	'>'  reduce 85
-	GREATER_OR_EQUAL  reduce 85
-	'<'  reduce 85
-	LESS_OR_EQUAL  reduce 85
-	DISTINCT  reduce 85
-	EQUALS  reduce 85
-	']'  reduce 85
-	')'  reduce 85
-	':'  reduce 85
-	';'  reduce 85
-	','  reduce 85
+	'>'  shift 127
+	GREATER_OR_EQUAL  shift 128
+	'<'  shift 129
+	LESS_OR_EQUAL  shift 130
+	DISTINCT  shift 131
+	EQUALS  shift 132
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
+	'='  reduce 117
+	PLUS_EQUAL  reduce 117
+	MINUS_EQUAL  reduce 117
+	MUL_EQUAL  reduce 117
+	DIV_EQUAL  reduce 117
+	MOD_EQUAL  reduce 117
+	'?'  reduce 117
+	AND  reduce 117
+	OR  reduce 117
+	XOR  reduce 117
+	']'  reduce 117
+	')'  reduce 117
+	':'  reduce 117
+	';'  reduce 117
+	','  reduce 117
 
 
-state 170
+state 172
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression GREATER_OR_EQUAL expression .  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression '>' expression .  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
 	'='  reduce 86
 	PLUS_EQUAL  reduce 86
 	MINUS_EQUAL  reduce 86
@@ -3280,6 +3406,7 @@ state 170
 	'?'  reduce 86
 	AND  reduce 86
 	OR  reduce 86
+	XOR  reduce 86
 	'>'  reduce 86
 	GREATER_OR_EQUAL  reduce 86
 	'<'  reduce 86
@@ -3293,37 +3420,38 @@ state 170
 	','  reduce 86
 
 
-state 171
+state 173
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression '<' expression .  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression GREATER_OR_EQUAL expression .  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
 	'='  reduce 87
 	PLUS_EQUAL  reduce 87
 	MINUS_EQUAL  reduce 87
@@ -3333,6 +3461,7 @@ state 171
 	'?'  reduce 87
 	AND  reduce 87
 	OR  reduce 87
+	XOR  reduce 87
 	'>'  reduce 87
 	GREATER_OR_EQUAL  reduce 87
 	'<'  reduce 87
@@ -3346,37 +3475,38 @@ state 171
 	','  reduce 87
 
 
-state 172
+state 174
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression LESS_OR_EQUAL expression .  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression '<' expression .  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
 	'='  reduce 88
 	PLUS_EQUAL  reduce 88
 	MINUS_EQUAL  reduce 88
@@ -3386,6 +3516,7 @@ state 172
 	'?'  reduce 88
 	AND  reduce 88
 	OR  reduce 88
+	XOR  reduce 88
 	'>'  reduce 88
 	GREATER_OR_EQUAL  reduce 88
 	'<'  reduce 88
@@ -3399,37 +3530,38 @@ state 172
 	','  reduce 88
 
 
-state 173
+state 175
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression DISTINCT expression .  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression LESS_OR_EQUAL expression .  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
 	'='  reduce 89
 	PLUS_EQUAL  reduce 89
 	MINUS_EQUAL  reduce 89
@@ -3439,6 +3571,7 @@ state 173
 	'?'  reduce 89
 	AND  reduce 89
 	OR  reduce 89
+	XOR  reduce 89
 	'>'  reduce 89
 	GREATER_OR_EQUAL  reduce 89
 	'<'  reduce 89
@@ -3452,37 +3585,38 @@ state 173
 	','  reduce 89
 
 
-state 174
+state 176
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression EQUALS expression .  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression DISTINCT expression .  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
 	'='  reduce 90
 	PLUS_EQUAL  reduce 90
 	MINUS_EQUAL  reduce 90
@@ -3492,6 +3626,7 @@ state 174
 	'?'  reduce 90
 	AND  reduce 90
 	OR  reduce 90
+	XOR  reduce 90
 	'>'  reduce 90
 	GREATER_OR_EQUAL  reduce 90
 	'<'  reduce 90
@@ -3505,35 +3640,38 @@ state 174
 	','  reduce 90
 
 
-state 175
+state 177
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression '+' expression .  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression EQUALS expression .  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
 	'='  reduce 91
 	PLUS_EQUAL  reduce 91
 	MINUS_EQUAL  reduce 91
@@ -3543,14 +3681,13 @@ state 175
 	'?'  reduce 91
 	AND  reduce 91
 	OR  reduce 91
+	XOR  reduce 91
 	'>'  reduce 91
 	GREATER_OR_EQUAL  reduce 91
 	'<'  reduce 91
 	LESS_OR_EQUAL  reduce 91
 	DISTINCT  reduce 91
 	EQUALS  reduce 91
-	'+'  reduce 91
-	'-'  reduce 91
 	']'  reduce 91
 	')'  reduce 91
 	':'  reduce 91
@@ -3558,35 +3695,36 @@ state 175
 	','  reduce 91
 
 
-state 176
+state 178
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression '-' expression .  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression '+' expression .  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
 	'='  reduce 92
 	PLUS_EQUAL  reduce 92
 	MINUS_EQUAL  reduce 92
@@ -3596,6 +3734,7 @@ state 176
 	'?'  reduce 92
 	AND  reduce 92
 	OR  reduce 92
+	XOR  reduce 92
 	'>'  reduce 92
 	GREATER_OR_EQUAL  reduce 92
 	'<'  reduce 92
@@ -3611,32 +3750,36 @@ state 176
 	','  reduce 92
 
 
-state 177
+state 179
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression '*' expression .  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression '-' expression .  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
 	'='  reduce 93
 	PLUS_EQUAL  reduce 93
 	MINUS_EQUAL  reduce 93
@@ -3646,6 +3789,7 @@ state 177
 	'?'  reduce 93
 	AND  reduce 93
 	OR  reduce 93
+	XOR  reduce 93
 	'>'  reduce 93
 	GREATER_OR_EQUAL  reduce 93
 	'<'  reduce 93
@@ -3654,9 +3798,6 @@ state 177
 	EQUALS  reduce 93
 	'+'  reduce 93
 	'-'  reduce 93
-	'*'  reduce 93
-	'/'  reduce 93
-	'%'  reduce 93
 	']'  reduce 93
 	')'  reduce 93
 	':'  reduce 93
@@ -3664,32 +3805,33 @@ state 177
 	','  reduce 93
 
 
-state 178
+state 180
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression '/' expression .  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression '*' expression .  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
 	'='  reduce 94
 	PLUS_EQUAL  reduce 94
 	MINUS_EQUAL  reduce 94
@@ -3699,6 +3841,7 @@ state 178
 	'?'  reduce 94
 	AND  reduce 94
 	OR  reduce 94
+	XOR  reduce 94
 	'>'  reduce 94
 	GREATER_OR_EQUAL  reduce 94
 	'<'  reduce 94
@@ -3717,32 +3860,33 @@ state 178
 	','  reduce 94
 
 
-state 179
+state 181
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression '%' expression .  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression '/' expression .  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
 	'='  reduce 95
 	PLUS_EQUAL  reduce 95
 	MINUS_EQUAL  reduce 95
@@ -3752,6 +3896,7 @@ state 179
 	'?'  reduce 95
 	AND  reduce 95
 	OR  reduce 95
+	XOR  reduce 95
 	'>'  reduce 95
 	GREATER_OR_EQUAL  reduce 95
 	'<'  reduce 95
@@ -3770,194 +3915,255 @@ state 179
 	','  reduce 95
 
 
-state 180
+state 182
+	expression : expression . AND expression  (83)
+	expression : expression . OR expression  (84)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression '%' expression .  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
+
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
+	'='  reduce 96
+	PLUS_EQUAL  reduce 96
+	MINUS_EQUAL  reduce 96
+	MUL_EQUAL  reduce 96
+	DIV_EQUAL  reduce 96
+	MOD_EQUAL  reduce 96
+	'?'  reduce 96
+	AND  reduce 96
+	OR  reduce 96
+	XOR  reduce 96
+	'>'  reduce 96
+	GREATER_OR_EQUAL  reduce 96
+	'<'  reduce 96
+	LESS_OR_EQUAL  reduce 96
+	DISTINCT  reduce 96
+	EQUALS  reduce 96
+	'+'  reduce 96
+	'-'  reduce 96
+	'*'  reduce 96
+	'/'  reduce 96
+	'%'  reduce 96
+	']'  reduce 96
+	')'  reduce 96
+	':'  reduce 96
+	';'  reduce 96
+	','  reduce 96
+
+
+state 183
 	post_plus_plus_as_statement : expression PLUS_PLUS ';' .  (81)
 
 	.  reduce 81
 
 
-state 181
+state 184
 	post_minus_minus_as_statement : expression MINUS_MINUS ';' .  (82)
 
 	.  reduce 82
 
 
-state 182
-	expression : expression '.' ID .  (99)
-
-	.  reduce 99
-
-
-state 183
-	expression : expression . AND expression  (83)
-	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression '[' expression . ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
-
-	'='  shift 144
-	'?'  shift 122
-	AND  shift 123
-	OR  shift 124
-	'>'  shift 125
-	GREATER_OR_EQUAL  shift 126
-	'<'  shift 127
-	LESS_OR_EQUAL  shift 128
-	DISTINCT  shift 129
-	EQUALS  shift 130
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
-	']'  shift 204
-	.  error
-
-
-state 184
-	function_definition : DEF $$2 ID '(' parameters ')' ':' return_type '{' function_body '}' .  (11)
-
-	.  reduce 11
-
-
 state 185
-	function_call_as_expression : ID '(' parameters_in_function_call . ')'  (113)
+	expression : expression '.' ID .  (100)
 
-	')'  shift 205
-	.  error
+	.  reduce 100
 
 
 state 186
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
-	assignment_as_expression : expression '=' expression .  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression '[' expression . ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	'='  shift 144
-	'?'  shift 122
-	AND  shift 123
-	OR  shift 124
-	'>'  shift 125
-	GREATER_OR_EQUAL  shift 126
-	'<'  shift 127
-	LESS_OR_EQUAL  shift 128
-	DISTINCT  shift 129
-	EQUALS  shift 130
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
-	PLUS_EQUAL  reduce 115
-	MINUS_EQUAL  reduce 115
-	MUL_EQUAL  reduce 115
-	DIV_EQUAL  reduce 115
-	MOD_EQUAL  reduce 115
-	']'  reduce 115
-	')'  reduce 115
-	':'  reduce 115
-	';'  reduce 115
-	','  reduce 115
+	'='  shift 146
+	'?'  shift 123
+	AND  shift 124
+	OR  shift 125
+	XOR  shift 126
+	'>'  shift 127
+	GREATER_OR_EQUAL  shift 128
+	'<'  shift 129
+	LESS_OR_EQUAL  shift 130
+	DISTINCT  shift 131
+	EQUALS  shift 132
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
+	']'  shift 207
+	.  error
 
 
 state 187
+	function_definition : DEF $$2 ID '(' parameters ')' ':' return_type '{' function_body '}' .  (11)
+
+	.  reduce 11
+
+
+state 188
+	function_call_as_expression : ID '(' parameters_in_function_call . ')'  (114)
+
+	')'  shift 208
+	.  error
+
+
+state 189
+	expression : expression . AND expression  (83)
+	expression : expression . OR expression  (84)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	assignment_as_expression : expression '=' expression .  (116)
+	xor_expression : expression . XOR expression  (117)
+
+	'='  shift 146
+	'?'  shift 123
+	AND  shift 124
+	OR  shift 125
+	XOR  shift 126
+	'>'  shift 127
+	GREATER_OR_EQUAL  shift 128
+	'<'  shift 129
+	LESS_OR_EQUAL  shift 130
+	DISTINCT  shift 131
+	EQUALS  shift 132
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
+	PLUS_EQUAL  reduce 116
+	MINUS_EQUAL  reduce 116
+	MUL_EQUAL  reduce 116
+	DIV_EQUAL  reduce 116
+	MOD_EQUAL  reduce 116
+	']'  reduce 116
+	')'  reduce 116
+	':'  reduce 116
+	';'  reduce 116
+	','  reduce 116
+
+
+state 190
 	expressions : expressions ',' expression .  (60)
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	'='  shift 144
-	'?'  shift 122
-	AND  shift 123
-	OR  shift 124
-	'>'  shift 125
-	GREATER_OR_EQUAL  shift 126
-	'<'  shift 127
-	LESS_OR_EQUAL  shift 128
-	DISTINCT  shift 129
-	EQUALS  shift 130
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
+	'='  shift 146
+	'?'  shift 123
+	AND  shift 124
+	OR  shift 125
+	XOR  shift 126
+	'>'  shift 127
+	GREATER_OR_EQUAL  shift 128
+	'<'  shift 129
+	LESS_OR_EQUAL  shift 130
+	DISTINCT  shift 131
+	EQUALS  shift 132
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
 	')'  reduce 60
 	';'  reduce 60
 	','  reduce 60
 
 
-state 188
+state 191
 	write : PRINT $$3 expressions ';' .  (56)
 
 	.  reduce 56
 
 
-state 189
+state 192
 	write : PRINTLN $$4 expressions ';' .  (58)
 
 	.  reduce 58
 
 
-state 190
+state 193
 	while : WHILE expression ':' '{' . statements '}'  (61)
 
 	INT_CONSTANT  shift 53
@@ -3969,7 +4175,7 @@ state 190
 	WHILE  shift 59
 	IF  shift 60
 	RETURN  shift 61
-	ID  shift 114
+	ID  shift 115
 	'-'  shift 63
 	'!'  shift 64
 	PLUS_PLUS  shift 65
@@ -3977,7 +4183,7 @@ state 190
 	'('  shift 67
 	.  error
 
-	statements  goto 206
+	statements  goto 209
 	statement  goto 72
 	assignment_as_statement  goto 73
 	function_call_as_statement  goto 74
@@ -3996,18 +4202,19 @@ state 190
 	post_plus_plus_as_statement  goto 87
 	post_minus_minus_as_statement  goto 88
 	expression  goto 89
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 191
+state 194
 	while : WHILE expression ':' statement .  (62)
 
 	.  reduce 62
 
 
-state 192
+state 195
 	if : IF expression ':' '{' . statements '}'  (63)
 	if : IF expression ':' '{' . statements '}' ELSE '{' statements '}'  (64)
 	if : IF expression ':' '{' . statements '}' ELSE statement  (65)
@@ -4021,7 +4228,7 @@ state 192
 	WHILE  shift 59
 	IF  shift 60
 	RETURN  shift 61
-	ID  shift 114
+	ID  shift 115
 	'-'  shift 63
 	'!'  shift 64
 	PLUS_PLUS  shift 65
@@ -4029,7 +4236,7 @@ state 192
 	'('  shift 67
 	.  error
 
-	statements  goto 207
+	statements  goto 210
 	statement  goto 72
 	assignment_as_statement  goto 73
 	function_call_as_statement  goto 74
@@ -4048,17 +4255,18 @@ state 192
 	post_plus_plus_as_statement  goto 87
 	post_minus_minus_as_statement  goto 88
 	expression  goto 89
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 193
+state 196
 	if : IF expression ':' statement .  (66)
 	if : IF expression ':' statement . ELSE '{' statements '}'  (67)
 	if : IF expression ':' statement . ELSE statement  (68)
 
-	ELSE  shift 208
+	ELSE  shift 211
 	INT_CONSTANT  reduce 66
 	REAL_CONSTANT  reduce 66
 	CHAR_CONSTANT  reduce 66
@@ -4077,165 +4285,169 @@ state 193
 	'}'  reduce 66
 
 
-state 194
+state 197
 	return : RETURN $$5 expression ';' .  (70)
 
 	.  reduce 70
 
 
-state 195
+state 198
 	function_call_as_statement : ID '(' parameters_in_function_call ')' . ';'  (73)
-	function_call_as_expression : ID '(' parameters_in_function_call ')' .  (113)
+	function_call_as_expression : ID '(' parameters_in_function_call ')' .  (114)
 
-	';'  shift 209
-	'='  reduce 113
-	PLUS_EQUAL  reduce 113
-	MINUS_EQUAL  reduce 113
-	MUL_EQUAL  reduce 113
-	DIV_EQUAL  reduce 113
-	MOD_EQUAL  reduce 113
-	'?'  reduce 113
-	AND  reduce 113
-	OR  reduce 113
-	'>'  reduce 113
-	GREATER_OR_EQUAL  reduce 113
-	'<'  reduce 113
-	LESS_OR_EQUAL  reduce 113
-	DISTINCT  reduce 113
-	EQUALS  reduce 113
-	'+'  reduce 113
-	'-'  reduce 113
-	'*'  reduce 113
-	'/'  reduce 113
-	'%'  reduce 113
-	PLUS_PLUS  reduce 113
-	MINUS_MINUS  reduce 113
-	'.'  reduce 113
-	'['  reduce 113
+	';'  shift 212
+	'='  reduce 114
+	PLUS_EQUAL  reduce 114
+	MINUS_EQUAL  reduce 114
+	MUL_EQUAL  reduce 114
+	DIV_EQUAL  reduce 114
+	MOD_EQUAL  reduce 114
+	'?'  reduce 114
+	AND  reduce 114
+	OR  reduce 114
+	XOR  reduce 114
+	'>'  reduce 114
+	GREATER_OR_EQUAL  reduce 114
+	'<'  reduce 114
+	LESS_OR_EQUAL  reduce 114
+	DISTINCT  reduce 114
+	EQUALS  reduce 114
+	'+'  reduce 114
+	'-'  reduce 114
+	'*'  reduce 114
+	'/'  reduce 114
+	'%'  reduce 114
+	PLUS_PLUS  reduce 114
+	MINUS_MINUS  reduce 114
+	'.'  reduce 114
+	'['  reduce 114
 
 
-state 196
+state 199
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : '(' simple_type ')' expression .  (98)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : '(' simple_type ')' expression .  (99)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	'.'  shift 138
-	'['  shift 139
-	'='  reduce 98
-	PLUS_EQUAL  reduce 98
-	MINUS_EQUAL  reduce 98
-	MUL_EQUAL  reduce 98
-	DIV_EQUAL  reduce 98
-	MOD_EQUAL  reduce 98
-	'?'  reduce 98
-	AND  reduce 98
-	OR  reduce 98
-	'>'  reduce 98
-	GREATER_OR_EQUAL  reduce 98
-	'<'  reduce 98
-	LESS_OR_EQUAL  reduce 98
-	DISTINCT  reduce 98
-	EQUALS  reduce 98
-	'+'  reduce 98
-	'-'  reduce 98
-	'*'  reduce 98
-	'/'  reduce 98
-	'%'  reduce 98
-	PLUS_PLUS  reduce 98
-	MINUS_MINUS  reduce 98
-	']'  reduce 98
-	')'  reduce 98
-	':'  reduce 98
-	';'  reduce 98
-	','  reduce 98
+	'.'  shift 140
+	'['  shift 141
+	'='  reduce 99
+	PLUS_EQUAL  reduce 99
+	MINUS_EQUAL  reduce 99
+	MUL_EQUAL  reduce 99
+	DIV_EQUAL  reduce 99
+	MOD_EQUAL  reduce 99
+	'?'  reduce 99
+	AND  reduce 99
+	OR  reduce 99
+	XOR  reduce 99
+	'>'  reduce 99
+	GREATER_OR_EQUAL  reduce 99
+	'<'  reduce 99
+	LESS_OR_EQUAL  reduce 99
+	DISTINCT  reduce 99
+	EQUALS  reduce 99
+	'+'  reduce 99
+	'-'  reduce 99
+	'*'  reduce 99
+	'/'  reduce 99
+	'%'  reduce 99
+	PLUS_PLUS  reduce 99
+	MINUS_MINUS  reduce 99
+	']'  reduce 99
+	')'  reduce 99
+	':'  reduce 99
+	';'  reduce 99
+	','  reduce 99
 
 
-state 197
+state 200
 	assignment_as_statement : expression '=' expression ';' .  (53)
 
 	.  reduce 53
 
 
-state 198
+state 201
 	plus_equal : expression PLUS_EQUAL expression ';' .  (74)
 
 	.  reduce 74
 
 
-state 199
+state 202
 	minus_equal : expression MINUS_EQUAL expression ';' .  (75)
 
 	.  reduce 75
 
 
-state 200
+state 203
 	mul_equal : expression MUL_EQUAL expression ';' .  (76)
 
 	.  reduce 76
 
 
-state 201
+state 204
 	div_equal : expression DIV_EQUAL expression ';' .  (77)
 
 	.  reduce 77
 
 
-state 202
+state 205
 	mod_equal : expression MOD_EQUAL expression ';' .  (78)
 
 	.  reduce 78
 
 
-state 203
-	ternaryOperator : expression '?' expression ':' . expression  (114)
+state 206
+	ternaryOperator : expression '?' expression ':' . expression  (115)
 
 	INT_CONSTANT  shift 53
 	REAL_CONSTANT  shift 54
 	CHAR_CONSTANT  shift 55
-	ID  shift 94
+	ID  shift 95
 	'-'  shift 63
 	'!'  shift 64
-	PLUS_PLUS  shift 95
-	MINUS_MINUS  shift 96
+	PLUS_PLUS  shift 96
+	MINUS_MINUS  shift 97
 	'('  shift 67
 	.  error
 
-	expression  goto 210
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	expression  goto 213
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 204
-	expression : expression '[' expression ']' .  (100)
+state 207
+	expression : expression '[' expression ']' .  (101)
 
-	.  reduce 100
-
-
-state 205
-	function_call_as_expression : ID '(' parameters_in_function_call ')' .  (113)
-
-	.  reduce 113
+	.  reduce 101
 
 
-state 206
+state 208
+	function_call_as_expression : ID '(' parameters_in_function_call ')' .  (114)
+
+	.  reduce 114
+
+
+state 209
 	statements : statements . statement  (26)
 	while : WHILE expression ':' '{' statements . '}'  (61)
 
@@ -4248,16 +4460,16 @@ state 206
 	WHILE  shift 59
 	IF  shift 60
 	RETURN  shift 61
-	ID  shift 114
+	ID  shift 115
 	'-'  shift 63
 	'!'  shift 64
 	PLUS_PLUS  shift 65
 	MINUS_MINUS  shift 66
 	'('  shift 67
-	'}'  shift 211
+	'}'  shift 214
 	.  error
 
-	statement  goto 115
+	statement  goto 116
 	assignment_as_statement  goto 73
 	function_call_as_statement  goto 74
 	return  goto 75
@@ -4275,12 +4487,13 @@ state 206
 	post_plus_plus_as_statement  goto 87
 	post_minus_minus_as_statement  goto 88
 	expression  goto 89
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 207
+state 210
 	statements : statements . statement  (26)
 	if : IF expression ':' '{' statements . '}'  (63)
 	if : IF expression ':' '{' statements . '}' ELSE '{' statements '}'  (64)
@@ -4295,16 +4508,16 @@ state 207
 	WHILE  shift 59
 	IF  shift 60
 	RETURN  shift 61
-	ID  shift 114
+	ID  shift 115
 	'-'  shift 63
 	'!'  shift 64
 	PLUS_PLUS  shift 65
 	MINUS_MINUS  shift 66
 	'('  shift 67
-	'}'  shift 212
+	'}'  shift 215
 	.  error
 
-	statement  goto 115
+	statement  goto 116
 	assignment_as_statement  goto 73
 	function_call_as_statement  goto 74
 	return  goto 75
@@ -4322,12 +4535,13 @@ state 207
 	post_plus_plus_as_statement  goto 87
 	post_minus_minus_as_statement  goto 88
 	expression  goto 89
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 208
+state 211
 	if : IF expression ':' statement ELSE . '{' statements '}'  (67)
 	if : IF expression ':' statement ELSE . statement  (68)
 
@@ -4340,16 +4554,16 @@ state 208
 	WHILE  shift 59
 	IF  shift 60
 	RETURN  shift 61
-	ID  shift 114
+	ID  shift 115
 	'-'  shift 63
 	'!'  shift 64
 	PLUS_PLUS  shift 65
 	MINUS_MINUS  shift 66
 	'('  shift 67
-	'{'  shift 213
+	'{'  shift 216
 	.  error
 
-	statement  goto 214
+	statement  goto 217
 	assignment_as_statement  goto 73
 	function_call_as_statement  goto 74
 	return  goto 75
@@ -4367,82 +4581,85 @@ state 208
 	post_plus_plus_as_statement  goto 87
 	post_minus_minus_as_statement  goto 88
 	expression  goto 89
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 209
+state 212
 	function_call_as_statement : ID '(' parameters_in_function_call ')' ';' .  (73)
 
 	.  reduce 73
 
 
-state 210
+state 213
 	expression : expression . AND expression  (83)
 	expression : expression . OR expression  (84)
-	expression : expression . '>' expression  (85)
-	expression : expression . GREATER_OR_EQUAL expression  (86)
-	expression : expression . '<' expression  (87)
-	expression : expression . LESS_OR_EQUAL expression  (88)
-	expression : expression . DISTINCT expression  (89)
-	expression : expression . EQUALS expression  (90)
-	expression : expression . '+' expression  (91)
-	expression : expression . '-' expression  (92)
-	expression : expression . '*' expression  (93)
-	expression : expression . '/' expression  (94)
-	expression : expression . '%' expression  (95)
-	expression : expression . '.' ID  (99)
-	expression : expression . '[' expression ']'  (100)
-	expression : expression . PLUS_PLUS  (109)
-	expression : expression . MINUS_MINUS  (110)
-	ternaryOperator : expression . '?' expression ':' expression  (114)
-	ternaryOperator : expression '?' expression ':' expression .  (114)
-	assignment_as_expression : expression . '=' expression  (115)
+	expression : expression . '>' expression  (86)
+	expression : expression . GREATER_OR_EQUAL expression  (87)
+	expression : expression . '<' expression  (88)
+	expression : expression . LESS_OR_EQUAL expression  (89)
+	expression : expression . DISTINCT expression  (90)
+	expression : expression . EQUALS expression  (91)
+	expression : expression . '+' expression  (92)
+	expression : expression . '-' expression  (93)
+	expression : expression . '*' expression  (94)
+	expression : expression . '/' expression  (95)
+	expression : expression . '%' expression  (96)
+	expression : expression . '.' ID  (100)
+	expression : expression . '[' expression ']'  (101)
+	expression : expression . PLUS_PLUS  (110)
+	expression : expression . MINUS_MINUS  (111)
+	ternaryOperator : expression . '?' expression ':' expression  (115)
+	ternaryOperator : expression '?' expression ':' expression .  (115)
+	assignment_as_expression : expression . '=' expression  (116)
+	xor_expression : expression . XOR expression  (117)
 
-	'?'  shift 122
-	AND  shift 123
-	OR  shift 124
-	'>'  shift 125
-	GREATER_OR_EQUAL  shift 126
-	'<'  shift 127
-	LESS_OR_EQUAL  shift 128
-	DISTINCT  shift 129
-	EQUALS  shift 130
-	'+'  shift 131
-	'-'  shift 132
-	'*'  shift 133
-	'/'  shift 134
-	'%'  shift 135
-	PLUS_PLUS  shift 145
-	MINUS_MINUS  shift 146
-	'.'  shift 138
-	'['  shift 139
-	'='  reduce 114
-	PLUS_EQUAL  reduce 114
-	MINUS_EQUAL  reduce 114
-	MUL_EQUAL  reduce 114
-	DIV_EQUAL  reduce 114
-	MOD_EQUAL  reduce 114
-	']'  reduce 114
-	')'  reduce 114
-	':'  reduce 114
-	';'  reduce 114
-	','  reduce 114
+	'?'  shift 123
+	AND  shift 124
+	OR  shift 125
+	XOR  shift 126
+	'>'  shift 127
+	GREATER_OR_EQUAL  shift 128
+	'<'  shift 129
+	LESS_OR_EQUAL  shift 130
+	DISTINCT  shift 131
+	EQUALS  shift 132
+	'+'  shift 133
+	'-'  shift 134
+	'*'  shift 135
+	'/'  shift 136
+	'%'  shift 137
+	PLUS_PLUS  shift 147
+	MINUS_MINUS  shift 148
+	'.'  shift 140
+	'['  shift 141
+	'='  reduce 115
+	PLUS_EQUAL  reduce 115
+	MINUS_EQUAL  reduce 115
+	MUL_EQUAL  reduce 115
+	DIV_EQUAL  reduce 115
+	MOD_EQUAL  reduce 115
+	']'  reduce 115
+	')'  reduce 115
+	':'  reduce 115
+	';'  reduce 115
+	','  reduce 115
 
 
-state 211
+state 214
 	while : WHILE expression ':' '{' statements '}' .  (61)
 
 	.  reduce 61
 
 
-state 212
+state 215
 	if : IF expression ':' '{' statements '}' .  (63)
 	if : IF expression ':' '{' statements '}' . ELSE '{' statements '}'  (64)
 	if : IF expression ':' '{' statements '}' . ELSE statement  (65)
 
-	ELSE  shift 215
+	ELSE  shift 218
 	INT_CONSTANT  reduce 63
 	REAL_CONSTANT  reduce 63
 	CHAR_CONSTANT  reduce 63
@@ -4461,7 +4678,7 @@ state 212
 	'}'  reduce 63
 
 
-state 213
+state 216
 	if : IF expression ':' statement ELSE '{' . statements '}'  (67)
 
 	INT_CONSTANT  shift 53
@@ -4473,7 +4690,7 @@ state 213
 	WHILE  shift 59
 	IF  shift 60
 	RETURN  shift 61
-	ID  shift 114
+	ID  shift 115
 	'-'  shift 63
 	'!'  shift 64
 	PLUS_PLUS  shift 65
@@ -4481,7 +4698,7 @@ state 213
 	'('  shift 67
 	.  error
 
-	statements  goto 216
+	statements  goto 219
 	statement  goto 72
 	assignment_as_statement  goto 73
 	function_call_as_statement  goto 74
@@ -4500,18 +4717,19 @@ state 213
 	post_plus_plus_as_statement  goto 87
 	post_minus_minus_as_statement  goto 88
 	expression  goto 89
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 214
+state 217
 	if : IF expression ':' statement ELSE statement .  (68)
 
 	.  reduce 68
 
 
-state 215
+state 218
 	if : IF expression ':' '{' statements '}' ELSE . '{' statements '}'  (64)
 	if : IF expression ':' '{' statements '}' ELSE . statement  (65)
 
@@ -4524,16 +4742,16 @@ state 215
 	WHILE  shift 59
 	IF  shift 60
 	RETURN  shift 61
-	ID  shift 114
+	ID  shift 115
 	'-'  shift 63
 	'!'  shift 64
 	PLUS_PLUS  shift 65
 	MINUS_MINUS  shift 66
 	'('  shift 67
-	'{'  shift 217
+	'{'  shift 220
 	.  error
 
-	statement  goto 218
+	statement  goto 221
 	assignment_as_statement  goto 73
 	function_call_as_statement  goto 74
 	return  goto 75
@@ -4551,12 +4769,13 @@ state 215
 	post_plus_plus_as_statement  goto 87
 	post_minus_minus_as_statement  goto 88
 	expression  goto 89
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 216
+state 219
 	statements : statements . statement  (26)
 	if : IF expression ':' statement ELSE '{' statements . '}'  (67)
 
@@ -4569,16 +4788,16 @@ state 216
 	WHILE  shift 59
 	IF  shift 60
 	RETURN  shift 61
-	ID  shift 114
+	ID  shift 115
 	'-'  shift 63
 	'!'  shift 64
 	PLUS_PLUS  shift 65
 	MINUS_MINUS  shift 66
 	'('  shift 67
-	'}'  shift 219
+	'}'  shift 222
 	.  error
 
-	statement  goto 115
+	statement  goto 116
 	assignment_as_statement  goto 73
 	function_call_as_statement  goto 74
 	return  goto 75
@@ -4596,12 +4815,13 @@ state 216
 	post_plus_plus_as_statement  goto 87
 	post_minus_minus_as_statement  goto 88
 	expression  goto 89
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 217
+state 220
 	if : IF expression ':' '{' statements '}' ELSE '{' . statements '}'  (64)
 
 	INT_CONSTANT  shift 53
@@ -4613,7 +4833,7 @@ state 217
 	WHILE  shift 59
 	IF  shift 60
 	RETURN  shift 61
-	ID  shift 114
+	ID  shift 115
 	'-'  shift 63
 	'!'  shift 64
 	PLUS_PLUS  shift 65
@@ -4621,7 +4841,7 @@ state 217
 	'('  shift 67
 	.  error
 
-	statements  goto 220
+	statements  goto 223
 	statement  goto 72
 	assignment_as_statement  goto 73
 	function_call_as_statement  goto 74
@@ -4640,24 +4860,25 @@ state 217
 	post_plus_plus_as_statement  goto 87
 	post_minus_minus_as_statement  goto 88
 	expression  goto 89
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 218
+state 221
 	if : IF expression ':' '{' statements '}' ELSE statement .  (65)
 
 	.  reduce 65
 
 
-state 219
+state 222
 	if : IF expression ':' statement ELSE '{' statements '}' .  (67)
 
 	.  reduce 67
 
 
-state 220
+state 223
 	statements : statements . statement  (26)
 	if : IF expression ':' '{' statements '}' ELSE '{' statements . '}'  (64)
 
@@ -4670,16 +4891,16 @@ state 220
 	WHILE  shift 59
 	IF  shift 60
 	RETURN  shift 61
-	ID  shift 114
+	ID  shift 115
 	'-'  shift 63
 	'!'  shift 64
 	PLUS_PLUS  shift 65
 	MINUS_MINUS  shift 66
 	'('  shift 67
-	'}'  shift 221
+	'}'  shift 224
 	.  error
 
-	statement  goto 115
+	statement  goto 116
 	assignment_as_statement  goto 73
 	function_call_as_statement  goto 74
 	return  goto 75
@@ -4697,16 +4918,17 @@ state 220
 	post_plus_plus_as_statement  goto 87
 	post_minus_minus_as_statement  goto 88
 	expression  goto 89
-	function_call_as_expression  goto 90
-	ternaryOperator  goto 91
-	assignment_as_expression  goto 92
+	xor_expression  goto 90
+	function_call_as_expression  goto 91
+	ternaryOperator  goto 92
+	assignment_as_expression  goto 93
 
 
-state 221
+state 224
 	if : IF expression ':' '{' statements '}' ELSE '{' statements '}' .  (64)
 
 	.  reduce 64
 
 
-59 terminals, 47 nonterminals
-116 grammar rules, 222 states
+60 terminals, 48 nonterminals
+118 grammar rules, 225 states
