@@ -7,6 +7,7 @@ import ast.Program;
 import ast.definitions.Definition;
 import ast.definitions.FunDefinition;
 import ast.definitions.VarDefinition;
+import ast.statements.DoWhile;
 import ast.statements.IfStatement;
 import ast.statements.Read;
 import ast.statements.Return;
@@ -194,7 +195,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		int labelNum = cg.getLabelNum();
 		
 		cg.label("while" + labelNum);
-		_while.condition.accept(valueCGVisitor, param);	// VALUE[[condition]]
+		_while.condition.accept(valueCGVisitor, param);			// VALUE[[condition]]
 		cg.convert(_while.condition.getType(), IntType.getInstance());
 		cg.jz("end_while" + labelNum);
 		
@@ -202,6 +203,23 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		_while.body.forEach( (stm) -> stm.accept(this, param) );	// EXECUTE[[stmi]]
 		cg.jmp("while" + labelNum);
 		cg.label("end_while" + labelNum);
+		
+		return null;
+	}
+	
+	@Override
+	public Object visit(DoWhile doWhile, Object param) {
+		cg.lineDirective(doWhile.condition.getLine());
+		cg.comment("Do While");
+		
+		int labelNum = cg.getLabelNum();
+		
+		cg.label("do_while" + labelNum);
+		doWhile.body.forEach( (stm) -> stm.accept(this, param) );	// EXECUTE[[stmi]]
+		
+		doWhile.condition.accept(valueCGVisitor, param);			// VALUE[[condition]]
+		cg.convert(doWhile.condition.getType(), IntType.getInstance());
+		cg.jnz("do_while" + labelNum);
 		
 		return null;
 	}

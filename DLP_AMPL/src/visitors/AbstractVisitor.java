@@ -18,6 +18,7 @@ import ast.expressions.TernaryOperator;
 import ast.expressions.UnaryMinus;
 import ast.expressions.UnaryNot;
 import ast.expressions.Variable;
+import ast.statements.DoWhile;
 import ast.statements.IfStatement;
 import ast.statements.Read;
 import ast.statements.Return;
@@ -114,6 +115,14 @@ public abstract class AbstractVisitor implements Visitor {
 		_while.condition.accept(this, param);
 		_while.body.forEach( (stm) -> stm.accept(this, param) );
 
+		return null;
+	}
+	
+	@Override
+	public Object visit(DoWhile doWhile, Object param) {
+		doWhile.condition.accept(this, param);
+		doWhile.body.forEach( (stm) -> stm.accept(this, param) );
+		
 		return null;
 	}
 

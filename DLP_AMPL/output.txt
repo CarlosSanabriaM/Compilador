@@ -1,5 +1,5 @@
 
-#source	"test_files/ampliaciones/xor/input.xor.txt"
+#source	"test_files/ampliaciones/doWhile/input.doWhile.txt"
 
 	' * CharType c (offset 0)
 	#global	c:char
@@ -26,98 +26,59 @@ halt
 	enter 0
 
 #line 9
-	' * Write
-	pushi 1
-	pushi 1
-	or
-	pushi 1
-	pushi 1
-	and
-	not
-	and
-	outi
+	' * Assignment
+	pusha 0
+	pushb 97
+	storeb
 
-#line 9
-	' * Write
-	pushb 10
-	outb
+#line 13
+	' * Do While
 
-#line 10
-	' * Write
-	pushi 1
-	pushi 0
-	or
-	pushi 1
-	pushi 0
-	and
-	not
-	and
-	outi
-
-#line 10
-	' * Write
-	pushb 10
-	outb
-
-#line 11
-	' * Write
-	pushi 0
-	pushi 1
-	or
-	pushi 0
-	pushi 1
-	and
-	not
-	and
-	outi
-
-#line 11
-	' * Write
-	pushb 10
-	outb
+ do_while1:
 
 #line 12
 	' * Write
-	pushi 0
-	pushi 0
-	or
-	pushi 0
-	pushi 0
-	and
-	not
-	and
-	outi
+	pusha 0
+	loadb
+	pusha 0
+	pusha 0
+	loadb
+	b2i
+	pushi 1
+	addi
+	i2b
+	storeb
+	outb
 
 #line 12
 	' * Write
 	pushb 10
 	outb
+	pusha 0
+	loadb
+	b2i
+	pushi 100
+	lti
+	jnz do_while1
 
-#line 14
-	' * Write
-	pushb 32
-	outb
+#line 18
+	' * Do While
 
-#line 14
-	' * Write
-	pushb 10
-	outb
+ do_while2:
 
 #line 16
 	' * Write
+	pusha 0
+	pusha 0
+	loadb
+	b2i
 	pushi 1
-	pushi 1
-	or
-	pushi 1
-	or
-	pushi 1
-	pushi 1
-	or
-	pushi 1
-	and
-	not
-	and
-	outi
+	addi
+	i2b
+	storeb
+	pusha 0
+	loadb
+	outb
 
 #line 16
 	' * Write
@@ -126,346 +87,26 @@ halt
 
 #line 17
 	' * Write
+	pusha 0
+	loadb
+	pusha 0
+	pusha 0
+	loadb
+	b2i
 	pushi 1
-	pushi 0
-	or
-	pushi 1
-	or
-	pushi 1
-	pushi 0
-	or
-	pushi 1
-	and
-	not
-	and
-	outi
+	addi
+	i2b
+	storeb
+	outb
 
 #line 17
 	' * Write
 	pushb 10
 	outb
-
-#line 18
-	' * Write
-	pushi 0
-	pushi 1
-	or
-	pushi 1
-	or
-	pushi 0
-	pushi 1
-	or
-	pushi 1
-	and
-	not
-	and
-	outi
-
-#line 18
-	' * Write
-	pushb 10
-	outb
-
-#line 19
-	' * Write
-	pushi 0
-	pushi 0
-	or
-	pushi 1
-	or
-	pushi 0
-	pushi 0
-	or
-	pushi 1
-	and
-	not
-	and
-	outi
-
-#line 19
-	' * Write
-	pushb 10
-	outb
-
-#line 21
-	' * Write
-	pushb 32
-	outb
-
-#line 21
-	' * Write
-	pushb 10
-	outb
-
-#line 23
-	' * Write
-	pushi 1
-	pushi 1
-	and
-	pushi 1
-	or
-	pushi 1
-	pushi 1
-	and
-	pushi 1
-	and
-	not
-	and
-	outi
-
-#line 23
-	' * Write
-	pushb 10
-	outb
-
-#line 24
-	' * Write
-	pushi 1
-	pushi 0
-	and
-	pushi 1
-	or
-	pushi 1
-	pushi 0
-	and
-	pushi 1
-	and
-	not
-	and
-	outi
-
-#line 24
-	' * Write
-	pushb 10
-	outb
-
-#line 25
-	' * Write
-	pushi 0
-	pushi 1
-	and
-	pushi 1
-	or
-	pushi 0
-	pushi 1
-	and
-	pushi 1
-	and
-	not
-	and
-	outi
-
-#line 25
-	' * Write
-	pushb 10
-	outb
-
-#line 26
-	' * Write
-	pushi 0
-	pushi 0
-	and
-	pushi 1
-	or
-	pushi 0
-	pushi 0
-	and
-	pushi 1
-	and
-	not
-	and
-	outi
-
-#line 26
-	' * Write
-	pushb 10
-	outb
-
-#line 28
-	' * Write
-	pushb 32
-	outb
-
-#line 28
-	' * Write
-	pushb 10
-	outb
-
-#line 30
-	' * Write
-	pushi 1
-	pushi 1
-	pushi 1
-	or
-	or
-	pushi 1
-	pushi 1
-	pushi 1
-	or
-	and
-	not
-	and
-	outi
-
-#line 30
-	' * Write
-	pushb 10
-	outb
-
-#line 31
-	' * Write
-	pushi 1
-	pushi 1
-	pushi 0
-	or
-	or
-	pushi 1
-	pushi 1
-	pushi 0
-	or
-	and
-	not
-	and
-	outi
-
-#line 31
-	' * Write
-	pushb 10
-	outb
-
-#line 32
-	' * Write
-	pushi 1
-	pushi 0
-	pushi 1
-	or
-	or
-	pushi 1
-	pushi 0
-	pushi 1
-	or
-	and
-	not
-	and
-	outi
-
-#line 32
-	' * Write
-	pushb 10
-	outb
-
-#line 33
-	' * Write
-	pushi 1
-	pushi 0
-	pushi 0
-	or
-	or
-	pushi 1
-	pushi 0
-	pushi 0
-	or
-	and
-	not
-	and
-	outi
-
-#line 33
-	' * Write
-	pushb 10
-	outb
-
-#line 35
-	' * Write
-	pushb 32
-	outb
-
-#line 35
-	' * Write
-	pushb 10
-	outb
-
-#line 37
-	' * Write
-	pushi 1
-	pushi 1
-	pushi 1
-	and
-	or
-	pushi 1
-	pushi 1
-	pushi 1
-	and
-	and
-	not
-	and
-	outi
-
-#line 37
-	' * Write
-	pushb 10
-	outb
-
-#line 38
-	' * Write
-	pushi 1
-	pushi 1
-	pushi 0
-	and
-	or
-	pushi 1
-	pushi 1
-	pushi 0
-	and
-	and
-	not
-	and
-	outi
-
-#line 38
-	' * Write
-	pushb 10
-	outb
-
-#line 39
-	' * Write
-	pushi 1
-	pushi 0
-	pushi 1
-	and
-	or
-	pushi 1
-	pushi 0
-	pushi 1
-	and
-	and
-	not
-	and
-	outi
-
-#line 39
-	' * Write
-	pushb 10
-	outb
-
-#line 40
-	' * Write
-	pushi 1
-	pushi 0
-	pushi 0
-	and
-	or
-	pushi 1
-	pushi 0
-	pushi 0
-	and
-	and
-	not
-	and
-	outi
-
-#line 40
-	' * Write
-	pushb 10
-	outb
+	pusha 0
+	loadb
+	b2i
+	pushi 110
+	lti
+	jnz do_while2
 	ret	0, 0, 0

@@ -16,6 +16,7 @@ import ast.expressions.TernaryOperator;
 import ast.expressions.UnaryMinus;
 import ast.expressions.UnaryNot;
 import ast.expressions.Variable;
+import ast.statements.DoWhile;
 import ast.statements.IfStatement;
 import ast.statements.Read;
 import ast.statements.Return;
@@ -50,6 +51,7 @@ public interface Visitor {
 	Object visit(Read read, Object param);
 	Object visit(Return _return, Object param);
 	Object visit(While _while, Object param);
+	Object visit(DoWhile doWhile, Object param);
 	Object visit(Write write, Object param);
 	
 	// Expressions

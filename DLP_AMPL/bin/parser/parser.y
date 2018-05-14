@@ -35,6 +35,7 @@ import ast.types.*;
 %token VOID
 %token ID
 %token MAIN
+%token DO
 
 
 // ** Tokens con prioridades (los de mas abajo son mas prioritarios) **
@@ -167,6 +168,7 @@ statement: assignment_as_statement									{$$ = (List<Statement>) $1;}
 		| function_call_as_statement									{$$ = (List<Statement>) $1;}
 		| return														{$$ = (List<Statement>) $1;}
 		| while														{$$ = (List<Statement>) $1;}
+		| do_while													{$$ = (List<Statement>) $1;}
 		| if															{$$ = (List<Statement>) $1;}
 		| read														{$$ = (List<Statement>) $1;}
 		| write														{$$ = (List<Statement>) $1;}
@@ -178,7 +180,7 @@ statement: assignment_as_statement									{$$ = (List<Statement>) $1;}
 		| pre_plus_plus_as_statement									{$$ = (List<Statement>) $1;}
         	| pre_minus_minus_as_statement								{$$ = (List<Statement>) $1;}
        	| post_plus_plus_as_statement								{$$ = (List<Statement>) $1;}
-        	| post_minus_minus_as_statement								{$$ = (List<Statement>) $1;}		
+        	| post_minus_minus_as_statement								{$$ = (List<Statement>) $1;}				
 		;
 
 // Tipos		
@@ -291,6 +293,23 @@ while: WHILE expression ':' '{' statements '}'						{	// statement se espera una
 
 																		While _while = new While(expression.getLine(), expression.getColumn(), expression, body);
   																		$$ = asStatementList(_while);
+																	}
+	;
+	
+do_while: DO ':' '{' statements '}' WHILE expression ';'				{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
+																		List<Statement> body = new LinkedList<Statement>(); body.addAll((List<Statement>) $4);
+																		Expression expression = (Expression) $7;
+
+																		DoWhile doWhile = new DoWhile(expression.getLine(), expression.getColumn(), expression, body);
+  																		$$ = asStatementList(doWhile);
+																	}
+
+	| DO ':' statement WHILE expression ';'							{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+																		List<Statement> body = new LinkedList<Statement>(); body.addAll((List<Statement>) $3);
+																		Expression expression = (Expression) $5;
+
+																		DoWhile doWhile = new DoWhile(expression.getLine(), expression.getColumn(), expression, body);
+  																		$$ = asStatementList(doWhile);
 																	}
 	;
 

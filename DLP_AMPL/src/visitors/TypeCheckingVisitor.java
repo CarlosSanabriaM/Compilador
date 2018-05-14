@@ -17,6 +17,7 @@ import ast.expressions.TernaryOperator;
 import ast.expressions.UnaryMinus;
 import ast.expressions.UnaryNot;
 import ast.expressions.Variable;
+import ast.statements.DoWhile;
 import ast.statements.IfStatement;
 import ast.statements.Read;
 import ast.statements.Return;
@@ -132,6 +133,20 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 					"Semantical error: The while condition '"+ _while.condition +"' is not logical."));
 		
 		_while.body.forEach( (stm) -> stm.accept(this, param) );
+		
+		return null;
+	}
+	
+	@Override
+	public Object visit(DoWhile doWhile, Object param) {
+		doWhile.condition.accept(this, param);
+		
+		//predicate (doWhile.condition.getType().isLogical())
+		if(! doWhile.condition.getType().isLogical() && ! (doWhile.condition.getType() instanceof ErrorType) )
+			doWhile.condition.setType( new ErrorType(doWhile.condition, 
+					"Semantical error: The do while condition '"+ doWhile.condition +"' is not logical."));
+		
+		doWhile.body.forEach( (stm) -> stm.accept(this, param) );
 		
 		return null;
 	}

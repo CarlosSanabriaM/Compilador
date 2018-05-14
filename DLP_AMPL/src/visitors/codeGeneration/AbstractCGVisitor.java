@@ -16,6 +16,7 @@ import ast.expressions.TernaryOperator;
 import ast.expressions.UnaryMinus;
 import ast.expressions.UnaryNot;
 import ast.expressions.Variable;
+import ast.statements.DoWhile;
 import ast.statements.IfStatement;
 import ast.statements.Read;
 import ast.statements.Return;
@@ -77,6 +78,11 @@ public abstract class AbstractCGVisitor implements Visitor {
 
 	@Override
 	public Object visit(While _while, Object param) {
+		throw new IllegalStateException(ERROR_MESSAGE);
+	}
+	
+	@Override
+	public Object visit(DoWhile doWhile, Object param) {
 		throw new IllegalStateException(ERROR_MESSAGE);
 	}
 
