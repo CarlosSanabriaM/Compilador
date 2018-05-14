@@ -1,13 +1,56 @@
 
-#source	"old_files/ampliaciones/println/input.println.txt"
+#source	"old_files/ampliaciones/ternaryOperator/input.ternaryOperator.txt"
 
+	' * CharType c (offset 0)
+	#global	c:char
+	' * IntType i (offset 1)
+	#global	i:int
+	' * RealType r (offset 3)
+	#global	r:real
+	' * ArrayType[of: CharType, size: 10] v_c (offset 7)
+	#global	v_c:10 * char
+	' * ArrayType[of: IntType, size: 10] v_i (offset 17)
+	#global	v_i:10 * int
+	' * ArrayType[of: RealType, size: 10] v_r (offset 37)
+	#global	v_r:10 * real
+	' * RecordType[fields: [Field{name:charField, type:CharType, offset:0}, Field{name:intField, type:IntType, offset:1}, Field{name:realField, type:RealType, offset:3}]] s (offset 77)
+	#global	s:{
+		charField:char
+		intField:int
+		realField:real
+	}
 
 ' Invocation to the main function
 call main
 halt
 
 
-#line 2
+#line 18
+
+ f:
+	#func	f
+	' * --- Parameters ---
+	' * RealType r (offset 4)
+	#param	r:real
+
+	#ret	int
+
+	' * --- Local variables ---
+
+	enter 0
+
+#line 18
+	' * Return
+	push bp
+	pushi 4
+	addi
+	loadf
+	f2i
+	pushi 2
+	muli
+	ret	2, 0, 4
+
+#line 21
 
  main:
 	#func	main
@@ -19,178 +62,440 @@ halt
 
 	enter 0
 
-#line 5
+#line 23
+	' * Assignment
+	pusha 1
+	pushi 0
+	jz terOp_false_exp1
+	pushi 1
+	jmp end_terOp1
+
+ terOp_false_exp1:
+	pushi 2
+	pushi 6
+	addi
+
+ end_terOp1:
+	storei
+
+#line 24
 	' * Write
-	pushb 104
+	pusha 1
+	loadi
+	outi
+
+#line 24
+	' * Write
+	pushb 10
 	outb
 
-#line 5
+#line 26
+	' * Assignment
+	pusha 1
+	pushi 0
+	jz terOp_false_exp2
+	pushi 1
+	jmp end_terOp2
+
+ terOp_false_exp2:
+	pushi 0
+	jz terOp_false_exp3
+	pushi 7
+	jmp end_terOp3
+
+ terOp_false_exp3:
+	pushi 6
+
+ end_terOp3:
+
+ end_terOp2:
+	storei
+
+#line 27
 	' * Write
-	pushb 111
+	pusha 1
+	loadi
+	outi
+
+#line 27
+	' * Write
+	pushb 10
 	outb
 
-#line 5
+#line 29
+	' * Assignment
+	pusha 1
+	pushi 0
+	jz terOp_false_exp4
+	pushi 1
+	jmp end_terOp4
+
+ terOp_false_exp4:
+	pushi 1
+	jz terOp_false_exp5
+	pushi 7
+	jmp end_terOp5
+
+ terOp_false_exp5:
+	pushi 6
+
+ end_terOp5:
+
+ end_terOp4:
+	storei
+
+#line 30
 	' * Write
-	pushb 108
+	pusha 1
+	loadi
+	outi
+
+#line 30
+	' * Write
+	pushb 10
 	outb
 
-#line 5
+#line 32
+	' * Assignment
+	pusha 1
+	pushi 0
+	jz terOp_false_exp6
+	pushi 1
+	jmp end_terOp6
+
+ terOp_false_exp6:
+	pushi 0
+	jz terOp_false_exp7
+	pushi 7
+	jmp end_terOp7
+
+ terOp_false_exp7:
+	pushi 0
+	jz terOp_false_exp8
+	pushi 10
+	jmp end_terOp8
+
+ terOp_false_exp8:
+	pushi 11
+
+ end_terOp8:
+
+ end_terOp7:
+
+ end_terOp6:
+	storei
+
+#line 33
 	' * Write
+	pusha 1
+	loadi
+	outi
+
+#line 33
+	' * Write
+	pushb 10
+	outb
+
+#line 35
+	' * Assignment
+	pusha 1
+	pushi 0
+	jz terOp_false_exp9
+	pushi 1
+	jmp end_terOp9
+
+ terOp_false_exp9:
+	pushi 1
+	jz terOp_false_exp10
+	pushi 7
+	jz terOp_false_exp11
+	pushi 16
+	jmp end_terOp11
+
+ terOp_false_exp11:
+	pushi 15
+
+ end_terOp11:
+	jmp end_terOp10
+
+ terOp_false_exp10:
+	pushi 6
+
+ end_terOp10:
+
+ end_terOp9:
+	storei
+
+#line 36
+	' * Write
+	pusha 1
+	loadi
+	outi
+
+#line 36
+	' * Write
+	pushb 10
+	outb
+
+#line 41
+	' * Assignment
+	pusha 3
 	pushb 97
+	b2i
+	jz terOp_false_exp12
+	pushf 1.3
+	jmp end_terOp12
+
+ terOp_false_exp12:
+	pushf 1.4
+
+ end_terOp12:
+	storef
+
+#line 43
+	' * Assignment
+	pusha 3
+	pushi 0
+	jz terOp_false_exp13
+	pushf 1.3
+	jmp end_terOp13
+
+ terOp_false_exp13:
+	pushi 1
+	jz terOp_false_exp14
+	pushi 7
+	i2f
+	jmp end_terOp14
+
+ terOp_false_exp14:
+	pushf 6.0
+
+ end_terOp14:
+	call f
+	i2f
+
+ end_terOp13:
+	storef
+
+#line 44
+	' * Write
+	pusha 3
+	loadf
+	outf
+
+#line 44
+	' * Write
+	pushb 10
 	outb
 
-#line 7
+#line 45
+	' * Assignment
+	pusha 3
+	pushi 0
+	jz terOp_false_exp15
+	pushf 1.3
+	jmp end_terOp15
+
+ terOp_false_exp15:
+	pushi 0
+	jz terOp_false_exp16
+	pushi 7
+	i2f
+	jmp end_terOp16
+
+ terOp_false_exp16:
+	pushf 6.0
+
+ end_terOp16:
+	call f
+	i2f
+
+ end_terOp15:
+	storef
+
+#line 46
 	' * Write
-	pushb 104
+	pusha 3
+	loadf
+	outf
+
+#line 46
+	' * Write
+	pushb 10
 	outb
 
-#line 7
+#line 47
+	' * Assignment
+	pusha 3
+	pushi 1
+	jz terOp_false_exp17
+	pushf 1.3
+	jmp end_terOp17
+
+ terOp_false_exp17:
+	pushi 0
+	jz terOp_false_exp18
+	pushi 7
+	i2f
+	jmp end_terOp18
+
+ terOp_false_exp18:
+	pushf 6.0
+
+ end_terOp18:
+	call f
+	i2f
+
+ end_terOp17:
+	storef
+
+#line 48
 	' * Write
-	pushb 111
+	pusha 3
+	loadf
+	outf
+
+#line 48
+	' * Write
+	pushb 10
 	outb
 
-#line 7
-	' * Write
-	pushb 108
-	outb
-
-#line 7
-	' * Write
+#line 51
+	' * Assignment
+	pusha 3
+	pushi 0
+	jz terOp_false_exp19
 	pushb 97
-	outb
+	jmp end_terOp19
 
-#line 7
-	' * Write
-	pushb 10
-	outb
+ terOp_false_exp19:
+	pushb 98
 
-#line 9
-	' * Write
-	pushb 104
-	outb
+ end_terOp19:
+	b2i
+	i2f
+	storef
 
-#line 9
-	' * Write
-	pushb 111
-	outb
-
-#line 9
-	' * Write
-	pushb 108
-	outb
-
-#line 9
-	' * Write
+#line 52
+	' * Assignment
+	pusha 3
+	pushi 0
+	jz terOp_false_exp20
 	pushb 97
-	outb
+	b2i
+	jmp end_terOp20
 
-#line 12
-	' * Write
-	pushb 104
-	outb
+ terOp_false_exp20:
+	pushi 1
 
-#line 12
-	' * Write
-	pushb 111
-	outb
+ end_terOp20:
+	i2f
+	storef
 
-#line 12
-	' * Write
-	pushb 108
-	outb
-
-#line 12
-	' * Write
+#line 53
+	' * Assignment
+	pusha 3
+	pushi 0
+	jz terOp_false_exp21
 	pushb 97
-	outb
+	b2i
+	i2f
+	jmp end_terOp21
 
-#line 12
-	' * Write
-	pushb 10
-	outb
+ terOp_false_exp21:
+	pushf 1.0
 
-#line 14
-	' * Write
-	pushb 104
-	outb
+ end_terOp21:
+	storef
 
-#line 14
-	' * Write
-	pushb 111
-	outb
+#line 55
+	' * Assignment
+	pusha 3
+	pushi 0
+	jz terOp_false_exp22
+	pushi 1
+	jmp end_terOp22
 
-#line 14
-	' * Write
-	pushb 108
-	outb
+ terOp_false_exp22:
+	pushb 98
+	b2i
 
-#line 14
-	' * Write
-	pushb 97
-	outb
+ end_terOp22:
+	i2f
+	storef
 
-#line 14
-	' * Write
-	pushb 10
-	outb
+#line 56
+	' * Assignment
+	pusha 3
+	pushi 0
+	jz terOp_false_exp23
+	pushi 1
+	jmp end_terOp23
 
-#line 16
-	' * Write
-	pushb 49
-	outb
+ terOp_false_exp23:
+	pushi 1
 
-#line 16
-	' * Write
-	pushb 10
-	outb
+ end_terOp23:
+	i2f
+	storef
 
-#line 17
-	' * Write
-	pushb 50
-	outb
+#line 57
+	' * Assignment
+	pusha 3
+	pushi 0
+	jz terOp_false_exp24
+	pushi 1
+	i2f
+	jmp end_terOp24
 
-#line 17
-	' * Write
-	pushb 10
-	outb
+ terOp_false_exp24:
+	pushf 1.0
 
-#line 18
-	' * Write
-	pushb 51
-	outb
+ end_terOp24:
+	storef
 
-#line 18
-	' * Write
-	pushb 10
-	outb
+#line 59
+	' * Assignment
+	pusha 3
+	pushi 0
+	jz terOp_false_exp25
+	pushf 1.0
+	jmp end_terOp25
 
-#line 19
-	' * Write
-	pushb 52
-	outb
+ terOp_false_exp25:
+	pushb 98
+	b2i
+	i2f
 
-#line 19
-	' * Write
-	pushb 10
-	outb
+ end_terOp25:
+	storef
 
-#line 21
-	' * Write
-	pushb 32
-	outb
+#line 60
+	' * Assignment
+	pusha 3
+	pushi 0
+	jz terOp_false_exp26
+	pushf 1.0
+	jmp end_terOp26
 
-#line 21
-	' * Write
-	pushb 10
-	outb
+ terOp_false_exp26:
+	pushi 1
+	i2f
 
-#line 22
-	' * Write
-	pushb 53
-	outb
+ end_terOp26:
+	storef
 
-#line 22
-	' * Write
-	pushb 10
-	outb
+#line 61
+	' * Assignment
+	pusha 3
+	pushi 0
+	jz terOp_false_exp27
+	pushf 1.0
+	jmp end_terOp27
+
+ terOp_false_exp27:
+	pushf 1.0
+
+ end_terOp27:
+	storef
 	ret	0, 0, 0

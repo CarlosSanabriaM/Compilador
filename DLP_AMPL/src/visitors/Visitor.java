@@ -12,6 +12,7 @@ import ast.expressions.Indexing;
 import ast.expressions.IntLiteral;
 import ast.expressions.Logical;
 import ast.expressions.RealLiteral;
+import ast.expressions.TernaryOperator;
 import ast.expressions.UnaryMinus;
 import ast.expressions.UnaryNot;
 import ast.expressions.Variable;
@@ -64,6 +65,7 @@ public interface Visitor {
 	Object visit(UnaryMinus unaryMinus, Object param);
 	Object visit(UnaryNot unaryNot, Object param);
 	Object visit(Variable variable, Object param);
+	Object visit(TernaryOperator ternaryOperator, Object param);
 	
 	// Statements & Expressions
 	Object visit(Invocation invocation, Object param);

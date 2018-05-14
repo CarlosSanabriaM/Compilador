@@ -43,6 +43,7 @@ import ast.types.*;
 
 // Igual es siempre el que menos prioridad tiene
 %right '=' PLUS_EQUAL MINUS_EQUAL MUL_EQUAL DIV_EQUAL MOD_EQUAL
+%right TERNARY_OPERATOR '?'
 
 %left AND OR
 %left '>' GREATER_OR_EQUAL '<' LESS_OR_EQUAL DISTINCT EQUALS
@@ -433,13 +434,7 @@ post_minus_minus_as_statement: expression MINUS_MINUS ';'				{	// statement se e
 			
 		
 // ########### Expresiones (Expressions)  ###########
-
-function_call_as_expression: ID '(' parameters_in_function_call ')'  	{	
-																		Variable function = new Variable(scanner.getLine(), scanner.getColumn(), (String) $1);
-																		$$ = new Invocation(scanner.getLine(), scanner.getColumn(), function, (List<Expression>) $3);
-																	}
-						;
- 
+	 
 expression: expression AND expression								{$$ = new Logical(scanner.getLine(), scanner.getColumn(), (Expression) $1, (String) $2, (Expression) $3);}
 		 | expression OR expression									{$$ = new Logical(scanner.getLine(), scanner.getColumn(), (Expression) $1, (String) $2, (Expression) $3);}
 		 | expression '>' expression									{$$ = new Comparison(scanner.getLine(), scanner.getColumn(), (Expression) $1, (String) $2, (Expression) $3);}
@@ -468,8 +463,20 @@ expression: expression AND expression								{$$ = new Logical(scanner.getLine()
          | MINUS_MINUS expression			%prec PRE_ARITHMETIC		{$$ = new PreArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $2, "--");}
          | expression PLUS_PLUS										{$$ = new PostArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "++");}
          | expression MINUS_MINUS									{$$ = new PostArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "--");}
+         | ternaryOperator											{$$ = (TernaryOperator) $1;}
          ;
-          
+   
+function_call_as_expression: ID '(' parameters_in_function_call ')'  	{	
+																		Variable function = new Variable(scanner.getLine(), scanner.getColumn(), (String) $1);
+																		$$ = new Invocation(scanner.getLine(), scanner.getColumn(), function, (List<Expression>) $3);
+																	}
+						;
+						
+ternaryOperator: expression '?' expression ':' expression		%prec TERNARY_OPERATOR 	{
+																						$$ = new TernaryOperator(scanner.getLine(), scanner.getColumn(), 
+																												(Expression) $1, (Expression) $3, (Expression) $5);
+																					}
+				;      
          
 %%
 
@@ -493,7 +500,6 @@ private int yylex () {
 		token=scanner.yylex(); 	
 		this.yylval = scanner.getYylval();
     } catch(Throwable e) {
-	    // System.err.println ("Lexical error at line " + scanner.getLine() + " and column "+scanner.getColumn()+":\n\t"+e);
 	    // Esto es cuando se produce un error en el lexico. Cuando casca, no cuando detecta un error lexico.
 	    new ErrorType(scanner.getLine(), scanner.getColumn(), "Lexical error: " + e); 
     }
@@ -502,7 +508,6 @@ private int yylex () {
 
 // * Manejo de Errores Sintácticos
 public void yyerror (String error) {
-    // System.err.println ("Syntactical error at line " + scanner.getLine() + " and column "+scanner.getColumn()+":\n\t"+error);
     new ErrorType(scanner.getLine(), scanner.getColumn(), "Syntactical error: " + error);
 }
 

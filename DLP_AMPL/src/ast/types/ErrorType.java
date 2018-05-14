@@ -93,4 +93,9 @@ public class ErrorType extends AbstractType {
 		return this;
 	} 
 
+	@Override
+	public Type rightfulSuperType(Type type) {		
+		return this;
+	}
+	
 }

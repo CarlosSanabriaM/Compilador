@@ -14,6 +14,7 @@ import ast.expressions.Indexing;
 import ast.expressions.IntLiteral;
 import ast.expressions.Logical;
 import ast.expressions.RealLiteral;
+import ast.expressions.TernaryOperator;
 import ast.expressions.UnaryMinus;
 import ast.expressions.UnaryNot;
 import ast.expressions.Variable;
@@ -202,6 +203,15 @@ public abstract class AbstractVisitor implements Visitor {
 
 	@Override
 	public Object visit(Variable variable, Object param) {		
+		return null;
+	}
+
+	@Override
+	public Object visit(TernaryOperator ternaryOperator, Object param) {
+		ternaryOperator.condition.accept(this, param);
+		ternaryOperator.trueExpression.accept(this, param);
+		ternaryOperator.falseExpression.accept(this, param);
+		
 		return null;
 	}
 

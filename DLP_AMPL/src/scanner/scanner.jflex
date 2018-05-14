@@ -105,8 +105,8 @@ MenosMenos	= "--"
 "void"							{ return Parser.VOID; }
 "main"							{ return Parser.MAIN; }
 
-// * Operadores, paréntesis, corchetes, llaves, coma, punto, punto y coma, dos puntos
-[+\-/*%><=()!\[\]{},;.:]			{ this.yylval = yytext();
+// * Operadores, paréntesis, corchetes, llaves, coma, punto, punto y coma, dos puntos, interrogacion
+[+\-/*%><=()!\[\]{},;.:?]			{ this.yylval = yytext();
 									return yytext().charAt(0); }
 									
 {IgualIgual}						{ this.yylval = yytext();

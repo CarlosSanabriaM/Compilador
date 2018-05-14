@@ -13,6 +13,7 @@ import ast.expressions.Indexing;
 import ast.expressions.IntLiteral;
 import ast.expressions.Logical;
 import ast.expressions.RealLiteral;
+import ast.expressions.TernaryOperator;
 import ast.expressions.UnaryMinus;
 import ast.expressions.UnaryNot;
 import ast.expressions.Variable;
@@ -158,7 +159,7 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		arithmetic.setType( arithmetic.leftOp.getType().arithmetic( arithmetic.rightOp.getType() ) );
 		if(arithmetic.getType() == null)
 			arithmetic.setType( new ErrorType(arithmetic, 
-					"Semantical error: At least one of the types of this expressions '" + arithmetic.leftOp +"', '"
+					"Semantical error: At least one of the types of these expressions '" + arithmetic.leftOp +"', '"
 							+ arithmetic.rightOp +"' can't be used in a arithmetic expression.") );
 		
 		return null;
@@ -200,7 +201,7 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		comparison.setType( comparison.leftOp.getType().comparison(comparison.rightOp.getType()) );
 		if(comparison.getType() == null)
 			comparison.setType( new ErrorType(comparison, 
-					"Semantical error: At least one of the types of this expressions '" + comparison.leftOp +"', '"
+					"Semantical error: At least one of the types of these expressions '" + comparison.leftOp +"', '"
 							+ comparison.rightOp +"' can't be used in a comparison expression.") );
 		
 		return null;
@@ -259,7 +260,7 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		logical.setType( logical.leftOp.getType().logical( logical.rightOp.getType() ) );
 		if(logical.getType() == null)
 			logical.setType( new ErrorType(logical, 
-					"Semantical error: At least one of the types of this expressions '" + logical.leftOp +"', '"
+					"Semantical error: At least one of the types of these expressions '" + logical.leftOp +"', '"
 							+ logical.rightOp +"' can't be used in a logical expression.") );
 		
 		return null;
@@ -313,6 +314,31 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		return null;
 	}
 
+	@Override
+	public Object visit(TernaryOperator ternaryOperator, Object param) {
+		ternaryOperator.condition.accept(this, param);
+		ternaryOperator.trueExpression.accept(this, param);
+		ternaryOperator.falseExpression.accept(this, param);
+		
+		ternaryOperator.setLValue(false);
+		
+		// predicate (condition.type.isLogical())
+		if(! ternaryOperator.condition.getType().isLogical() && ! (ternaryOperator.condition.getType() instanceof ErrorType) )
+			ternaryOperator.setType( new ErrorType(ternaryOperator.condition, 
+					"Semantical error: The ternary operator condition '"+ ternaryOperator.condition +"' is not logical."));
+		
+		else {
+			// predicate (trueExpression.type.rightfulSuperType(falseExpression.type) != null)
+			ternaryOperator.setType( ternaryOperator.trueExpression.getType().rightfulSuperType(ternaryOperator.falseExpression.getType()) );
+			if(ternaryOperator.getType() == null)
+				ternaryOperator.setType( new ErrorType(ternaryOperator, 
+						"Semantical error: At least one of the types of these expressions '" + ternaryOperator.trueExpression +"', '"
+								+ ternaryOperator.falseExpression +"' can't be used in a ternary operator expression.") );
+		}
+		
+		return null;
+	}
+
 	// Statements & Expressions
 	@Override
 	public Object visit(Invocation invocation, Object param) {
@@ -338,22 +364,21 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 	public Object visit(PreArithmetic preArithmetic, Object param) {
 		preArithmetic.expression.accept(this, param);
 
-		// predicate (preArithmetic.expression.getLValue() == true)		
-		if(preArithmetic.expression.getLValue() == false) {
-			preArithmetic.setType( new ErrorType(preArithmetic.expression, 
-					"Semantical error: The expression of an Pre Arithmetic element must be an lValue expression.") );
-			
-			return null;
-		}
-		
 		preArithmetic.setLValue(false);
 		
-		// predicate (preArithmetic.expression.getType().pArithmetic() != null)
-		preArithmetic.setType(preArithmetic.expression.getType().pArithmetic());
-		if(preArithmetic.getType() == null)
+		// predicate (preArithmetic.expression.getLValue() == true)		
+		if(preArithmetic.expression.getLValue() == false)
 			preArithmetic.setType( new ErrorType(preArithmetic.expression, 
-					"Semantical error: The type of this expression '" + preArithmetic.expression + "' "
-							+ "can't be used in a Pre Arithmetic element.") );
+					"Semantical error: The expression of an Pre Arithmetic element must be an lValue expression.") );
+		
+		else {
+			// predicate (preArithmetic.expression.getType().pArithmetic() != null)
+			preArithmetic.setType(preArithmetic.expression.getType().pArithmetic());
+			if(preArithmetic.getType() == null)
+				preArithmetic.setType( new ErrorType(preArithmetic.expression, 
+						"Semantical error: The type of this expression '" + preArithmetic.expression + "' "
+								+ "can't be used in a Pre Arithmetic element.") );
+		}
 		
 		return null;
 	}
@@ -362,22 +387,21 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 	public Object visit(PostArithmetic postArithmetic, Object param) {
 		postArithmetic.expression.accept(this, param);
 
-		// predicate (postArithmetic.expression.getLValue() == true)		
-		if(postArithmetic.expression.getLValue() == false) {
-			postArithmetic.setType( new ErrorType(postArithmetic.expression, 
-					"Semantical error: The expression of an Post Arithmetic element must be an lValue expression.") );
-			
-			return null;
-		}
-		
 		postArithmetic.setLValue(false);
 		
-		// predicate (postArithmetic.expression.getType().pArithmetic() != null)
-		postArithmetic.setType(postArithmetic.expression.getType().pArithmetic());
-		if(postArithmetic.getType() == null)
+		// predicate (postArithmetic.expression.getLValue() == true)		
+		if(postArithmetic.expression.getLValue() == false)
 			postArithmetic.setType( new ErrorType(postArithmetic.expression, 
-					"Semantical error: The type of this expression '" + postArithmetic.expression + "' "
-							+ "can't be used in a Post Arithmetic element.") );
+					"Semantical error: The expression of an Post Arithmetic element must be an lValue expression.") );
+		
+		else {
+			// predicate (postArithmetic.expression.getType().pArithmetic() != null)
+			postArithmetic.setType(postArithmetic.expression.getType().pArithmetic());
+			if(postArithmetic.getType() == null)
+				postArithmetic.setType( new ErrorType(postArithmetic.expression, 
+						"Semantical error: The type of this expression '" + postArithmetic.expression + "' "
+								+ "can't be used in a Post Arithmetic element.") );
+		}	
 		
 		return null;
 	}

@@ -10,6 +10,7 @@ import ast.expressions.Indexing;
 import ast.expressions.IntLiteral;
 import ast.expressions.Logical;
 import ast.expressions.RealLiteral;
+import ast.expressions.TernaryOperator;
 import ast.expressions.UnaryMinus;
 import ast.expressions.UnaryNot;
 import ast.expressions.Variable;
@@ -219,6 +220,27 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 			cg.convert(IntType.getInstance(), CharType.getInstance());
 		
 		cg.store(postArithmetic.getType());
+		
+		return null;
+	}
+
+	@Override
+	public Object visit(TernaryOperator ternaryOperator, Object param) {
+		int labelNum = cg.getLabelNum();
+		
+		ternaryOperator.condition.accept(this, param);			// VALUE[[condition]]
+		cg.convert(ternaryOperator.condition.getType(), IntType.getInstance());
+		cg.jz("terOp_false_exp" + labelNum);
+		
+		ternaryOperator.trueExpression.accept(this, param);		// VALUE[[trueExpression]]
+		cg.convert(ternaryOperator.trueExpression.getType(), ternaryOperator.getType());
+		cg.jmp("end_terOp" + labelNum);
+		
+		cg.label("terOp_false_exp" + labelNum);
+		ternaryOperator.falseExpression.accept(this, param);		// VALUE[[falseExpression]]
+		cg.convert(ternaryOperator.falseExpression.getType(), ternaryOperator.getType());
+		
+		cg.label("end_terOp" + labelNum);
 		
 		return null;
 	}

@@ -99,6 +99,14 @@ public interface Type extends ASTNode{
 	 */
 	Type superType(Type type);
 	
+	/**
+	 * If the type who calls the function and the type passed as parameter
+	 * are compatible, returns the greater of the two types. If not, returns null.
+	 * 
+	 * Works like {@link #superType}, but with 2 CharTypes, it doesn't return IntType,
+	 * it returns CharType.
+	 */
+	Type rightfulSuperType(Type type);
 	
 	/**
 	 * Returns the number of bytes occupied by the type in memory.

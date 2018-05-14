@@ -93,7 +93,11 @@ public class RealType extends AbstractType {
 		
 		return null;
 	}
-	
+
+	@Override
+	public Type rightfulSuperType(Type type) {		
+		return this.superType(type);
+	}
 	
 	@Override
 	public int numBytes() {

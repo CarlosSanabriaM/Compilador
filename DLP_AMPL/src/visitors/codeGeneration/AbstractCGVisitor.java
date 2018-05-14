@@ -12,6 +12,7 @@ import ast.expressions.Indexing;
 import ast.expressions.IntLiteral;
 import ast.expressions.Logical;
 import ast.expressions.RealLiteral;
+import ast.expressions.TernaryOperator;
 import ast.expressions.UnaryMinus;
 import ast.expressions.UnaryNot;
 import ast.expressions.Variable;
@@ -141,6 +142,11 @@ public abstract class AbstractCGVisitor implements Visitor {
 
 	@Override
 	public Object visit(Variable variable, Object param) {
+		throw new IllegalStateException(ERROR_MESSAGE);
+	}
+	
+	@Override
+	public Object visit(TernaryOperator ternaryOperator, Object param) {
 		throw new IllegalStateException(ERROR_MESSAGE);
 	}
 

@@ -16,6 +16,7 @@ import ast.statements.While;
 import ast.statements.Write;
 import ast.statementsAndExpressions.Invocation;
 import ast.types.FunctionType;
+import ast.types.IntType;
 import ast.types.VoidType;
 import codeGeneration.CodeGenerator;
 
@@ -192,6 +193,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		
 		cg.label("while" + labelNum);
 		_while.condition.accept(valueCGVisitor, param);	// VALUE[[condition]]
+		cg.convert(_while.condition.getType(), IntType.getInstance());
 		cg.jz("end_while" + labelNum);
 		
 		cg.comment("While body");
@@ -210,6 +212,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		int labelNum = cg.getLabelNum();
 		
 		ifStatement.condition.accept(valueCGVisitor, param);	// VALUE[[condition]]
+		cg.convert(ifStatement.condition.getType(), IntType.getInstance());
 		cg.jz("else" + labelNum);
 		
 		cg.comment("If body");
