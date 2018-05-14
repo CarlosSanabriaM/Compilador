@@ -1,9 +1,11 @@
-package ast.statements;
+package ast.statementsAndExpressions;
 
+import ast.expressions.AbstractExpression;
 import ast.expressions.Expression;
+import ast.statements.Statement;
 import visitors.Visitor;
 
-public class Assignment extends AbstractStatement {
+public class Assignment extends AbstractExpression implements Statement{
 
 	public Expression left, right;
 	
@@ -15,7 +17,7 @@ public class Assignment extends AbstractStatement {
 
 	@Override
 	public String toString() {
-		return left + " = " + right + ";";
+		return left + " = " + right;
 	}
 
 	// Visitor

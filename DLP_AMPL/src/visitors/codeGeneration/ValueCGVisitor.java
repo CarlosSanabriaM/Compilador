@@ -14,6 +14,7 @@ import ast.expressions.TernaryOperator;
 import ast.expressions.UnaryMinus;
 import ast.expressions.UnaryNot;
 import ast.expressions.Variable;
+import ast.statementsAndExpressions.Assignment;
 import ast.statementsAndExpressions.Invocation;
 import ast.statementsAndExpressions.PostArithmetic;
 import ast.statementsAndExpressions.PreArithmetic;
@@ -241,6 +242,22 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 		cg.convert(ternaryOperator.falseExpression.getType(), ternaryOperator.getType());
 		
 		cg.label("end_terOp" + labelNum);
+		
+		return null;
+	}
+
+	@Override
+	public Object visit(Assignment assignment, Object param) {
+		assignment.left.accept(addressCGVisitor, param); 	// ADDRESS[[left]]
+		assignment.right.accept(this, param); 			// VALUE[[right]]
+		
+		// En caso de que sea necesario transformar el tipo de la derecha
+		// al tipo de la izquierda, se añaden las conversiones necesarias
+		cg.convert(assignment.right.getType(), assignment.left.getType());
+		
+		cg.store(assignment.left.getType());
+		
+		assignment.left.accept(this, param); 			// VALUE[[left]]
 		
 		return null;
 	}

@@ -163,7 +163,7 @@ statements: statement												{List<Statement> statements = new LinkedList<St
 		;
 
 // Tipos de sentencias		
-statement: assignment												{$$ = (List<Statement>) $1;}
+statement: assignment_as_statement									{$$ = (List<Statement>) $1;}
 		| function_call_as_statement									{$$ = (List<Statement>) $1;}
 		| return														{$$ = (List<Statement>) $1;}
 		| while														{$$ = (List<Statement>) $1;}
@@ -229,7 +229,7 @@ struct_body: variable_definition 									{
 		;
 
 // ########### Sentencias (Statements)  ########### 
-assignment: expression '=' expression ';'							{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+assignment_as_statement: expression '=' expression ';'				{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
 																		Assignment assignment = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, (Expression) $3);
   																		$$ = asStatementList(assignment);
 																	}
@@ -464,6 +464,7 @@ expression: expression AND expression								{$$ = new Logical(scanner.getLine()
          | expression PLUS_PLUS										{$$ = new PostArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "++");}
          | expression MINUS_MINUS									{$$ = new PostArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "--");}
          | ternaryOperator											{$$ = (TernaryOperator) $1;}
+         | assignment_as_expression									{$$ = (Assignment) $1;}
          ;
    
 function_call_as_expression: ID '(' parameters_in_function_call ')'  	{	
@@ -477,6 +478,11 @@ ternaryOperator: expression '?' expression ':' expression		%prec TERNARY_OPERATO
 																												(Expression) $1, (Expression) $3, (Expression) $5);
 																					}
 				;      
+						
+assignment_as_expression: expression '=' expression				 	{
+																		$$ = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, (Expression) $3);
+																	}
+						;      
          
 %%
 

@@ -17,12 +17,12 @@ import ast.expressions.TernaryOperator;
 import ast.expressions.UnaryMinus;
 import ast.expressions.UnaryNot;
 import ast.expressions.Variable;
-import ast.statements.Assignment;
 import ast.statements.IfStatement;
 import ast.statements.Read;
 import ast.statements.Return;
 import ast.statements.While;
 import ast.statements.Write;
+import ast.statementsAndExpressions.Assignment;
 import ast.statementsAndExpressions.Invocation;
 import ast.statementsAndExpressions.PostArithmetic;
 import ast.statementsAndExpressions.PreArithmetic;
@@ -55,13 +55,15 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		assignment.left.accept(this, param);
 		assignment.right.accept(this, param);
 		
+		assignment.setLValue(false);
+		
 		predicate(assignment.left.getLValue(), assignment, 
 				"Semantical error: The left value of an assignment must be an lValue expression.");
 		
 		// predicate (assignment.right.getType().promotesTo(assignment.left.getType()) != null)
-		assignment.left.setType( assignment.right.getType().promotesTo(assignment.left.getType()) );
-		if(assignment.left.getType() == null)
-			assignment.left.setType( new ErrorType(assignment, 
+		assignment.setType( assignment.right.getType().promotesTo(assignment.left.getType()) );
+		if(assignment.getType() == null)
+			assignment.setType( new ErrorType(assignment, 
 					"Semantical error: The expression '"+ assignment.right +"' can't be assisgned to '"+ assignment.left +
 					"' because their types are not compatible "
 					+ "(the right type doesn't promote to the left type).") );
