@@ -1,0 +1,57 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+v_i: [10] int;
+
+# Main program
+def main():void {
+	
+	v_i[0] = 0;
+	v_i[1] = 1;
+	
+	# Only two expressions
+	if 0 || v_i[0] :
+		 println 'T';
+	else
+		println 'F';	
+	
+	if 0 || v_i[1] :
+		 println 'T';
+	else
+		println 'F';	
+	
+	if 1 || v_i[0] :
+		 println 'T';
+	else
+		println 'F';	
+	
+	if 1 || v_i[1] :
+		 println 'T';
+	else
+		println 'F';	
+	
+
+	# More than two expressions
+	if 0 || v_i[1] || v_i[1] || v_i[0] :
+		 println 'T';
+	else
+		println 'F';	
+	
+	if 1 || v_i[0] || v_i[1] || v_i[0] :
+		 println 'T';
+	else
+		println 'F';	
+	
+	if 0 || v_i[0] || v_i[0] || v_i[0] :
+		 println 'T';
+	else
+		println 'F';	
+	
+	if 0 || v_i[0] || v_i[0] || v_i[1] :
+		 println 'T';
+	else
+		println 'F';	
+		
+}

@@ -1,5 +1,5 @@
 
-#source	"test_files/ampliaciones/doWhile/input.doWhile.txt"
+#source	"test_files/ampliaciones/logical_cortocircuito/input.logical.cortocircuito.andYOr.txt"
 
 	' * CharType c (offset 0)
 	#global	c:char
@@ -26,87 +26,354 @@ halt
 	enter 0
 
 #line 9
-	' * Assignment
-	pusha 0
-	pushb 97
-	storeb
+	' * If
+	pushi 0
+	dupi
+	jz end_logical3
+	pushi 1
+	and
 
-#line 13
-	' * Do While
+ end_logical3:
+	dupi
+	jnz end_logical2
+	pushi 1
+	or
 
- do_while1:
+ end_logical2:
+	jz else1
+	' * If body
+
+#line 10
+	' * Write
+	pushb 84
+	outb
+
+#line 10
+	' * Write
+	pushb 10
+	outb
+	jmp end_if1
+
+ else1:
+	' * Else body
 
 #line 12
 	' * Write
-	pusha 0
-	loadb
-	pusha 0
-	pusha 0
-	loadb
-	b2i
-	pushi 1
-	addi
-	i2b
-	storeb
+	pushb 70
 	outb
 
 #line 12
 	' * Write
 	pushb 10
 	outb
-	pusha 0
-	loadb
-	b2i
-	pushi 100
-	lti
-	jnz do_while1
 
-#line 18
-	' * Do While
+ end_if1:
 
- do_while2:
-
-#line 16
-	' * Write
-	pusha 0
-	pusha 0
-	loadb
-	b2i
+#line 14
+	' * If
 	pushi 1
-	addi
-	i2b
-	storeb
-	pusha 0
-	loadb
+	dupi
+	jz end_logical6
+	pushi 0
+	and
+
+ end_logical6:
+	dupi
+	jnz end_logical5
+	pushi 1
+	or
+
+ end_logical5:
+	jz else4
+	' * If body
+
+#line 15
+	' * Write
+	pushb 84
 	outb
 
-#line 16
+#line 15
 	' * Write
 	pushb 10
+	outb
+	jmp end_if4
+
+ else4:
+	' * Else body
+
+#line 17
+	' * Write
+	pushb 70
 	outb
 
 #line 17
 	' * Write
-	pusha 0
-	loadb
-	pusha 0
-	pusha 0
-	loadb
-	b2i
-	pushi 1
-	addi
-	i2b
-	storeb
+	pushb 10
 	outb
 
-#line 17
+ end_if4:
+
+#line 19
+	' * If
+	pushi 0
+	dupi
+	jz end_logical9
+	pushi 0
+	and
+
+ end_logical9:
+	dupi
+	jnz end_logical8
+	pushi 1
+	or
+
+ end_logical8:
+	jz else7
+	' * If body
+
+#line 20
+	' * Write
+	pushb 84
+	outb
+
+#line 20
 	' * Write
 	pushb 10
 	outb
-	pusha 0
-	loadb
-	b2i
-	pushi 110
-	lti
-	jnz do_while2
+	jmp end_if7
+
+ else7:
+	' * Else body
+
+#line 22
+	' * Write
+	pushb 70
+	outb
+
+#line 22
+	' * Write
+	pushb 10
+	outb
+
+ end_if7:
+
+#line 24
+	' * If
+	pushi 1
+	dupi
+	jz end_logical12
+	pushi 1
+	and
+
+ end_logical12:
+	dupi
+	jnz end_logical11
+	pushi 1
+	or
+
+ end_logical11:
+	jz else10
+	' * If body
+
+#line 25
+	' * Write
+	pushb 84
+	outb
+
+#line 25
+	' * Write
+	pushb 10
+	outb
+	jmp end_if10
+
+ else10:
+	' * Else body
+
+#line 27
+	' * Write
+	pushb 70
+	outb
+
+#line 27
+	' * Write
+	pushb 10
+	outb
+
+ end_if10:
+
+#line 31
+	' * If
+	pushi 0
+	dupi
+	jz end_logical15
+	pushi 1
+	and
+
+ end_logical15:
+	dupi
+	jnz end_logical14
+	pushi 0
+	or
+
+ end_logical14:
+	jz else13
+	' * If body
+
+#line 32
+	' * Write
+	pushb 84
+	outb
+
+#line 32
+	' * Write
+	pushb 10
+	outb
+	jmp end_if13
+
+ else13:
+	' * Else body
+
+#line 34
+	' * Write
+	pushb 70
+	outb
+
+#line 34
+	' * Write
+	pushb 10
+	outb
+
+ end_if13:
+
+#line 36
+	' * If
+	pushi 1
+	dupi
+	jz end_logical18
+	pushi 0
+	and
+
+ end_logical18:
+	dupi
+	jnz end_logical17
+	pushi 0
+	or
+
+ end_logical17:
+	jz else16
+	' * If body
+
+#line 37
+	' * Write
+	pushb 84
+	outb
+
+#line 37
+	' * Write
+	pushb 10
+	outb
+	jmp end_if16
+
+ else16:
+	' * Else body
+
+#line 39
+	' * Write
+	pushb 70
+	outb
+
+#line 39
+	' * Write
+	pushb 10
+	outb
+
+ end_if16:
+
+#line 41
+	' * If
+	pushi 0
+	dupi
+	jz end_logical21
+	pushi 0
+	and
+
+ end_logical21:
+	dupi
+	jnz end_logical20
+	pushi 0
+	or
+
+ end_logical20:
+	jz else19
+	' * If body
+
+#line 42
+	' * Write
+	pushb 84
+	outb
+
+#line 42
+	' * Write
+	pushb 10
+	outb
+	jmp end_if19
+
+ else19:
+	' * Else body
+
+#line 44
+	' * Write
+	pushb 70
+	outb
+
+#line 44
+	' * Write
+	pushb 10
+	outb
+
+ end_if19:
+
+#line 46
+	' * If
+	pushi 1
+	dupi
+	jz end_logical24
+	pushi 1
+	and
+
+ end_logical24:
+	dupi
+	jnz end_logical23
+	pushi 0
+	or
+
+ end_logical23:
+	jz else22
+	' * If body
+
+#line 47
+	' * Write
+	pushb 84
+	outb
+
+#line 47
+	' * Write
+	pushb 10
+	outb
+	jmp end_if22
+
+ else22:
+	' * Else body
+
+#line 49
+	' * Write
+	pushb 70
+	outb
+
+#line 49
+	' * Write
+	pushb 10
+	outb
+
+ end_if22:
 	ret	0, 0, 0

@@ -104,6 +104,10 @@ public class CodeGenerator {
 		printlnt("pop" + type.suffix());
 	}
 	
+	public void dup(Type type) {
+		printlnt("dup" + type.suffix());
+	}
+	
 	public void call(String functionName) {
 		printlnt("call " + functionName);
 	}

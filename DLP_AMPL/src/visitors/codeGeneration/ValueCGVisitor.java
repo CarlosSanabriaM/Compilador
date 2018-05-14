@@ -98,13 +98,41 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 	
 	@Override
 	public Object visit(Logical logic, Object param) {
+		// Las operaciones lógicas se evaluan en cortocircuito
+		
+		int labelNum = cg.getLabelNum();
+		
+		// Se calcula el valor de la expresión de la izquierda
 		logic.leftOp.accept(this, param);	// VALUE[[leftOp]]
 		cg.convert(logic.leftOp.getType(), logic.getType());
 		
+		if(logic.operator.equals("&&")) {
+			// Si es una op AND y el valor de la izquierda es falso,
+			// la expresión de la derecha NO se evalua (se salta a la etiqueta),
+			// ya que la expresión lógica es falsa
+			
+			cg.dup(logic.getType());	// se duplica el valor de la exp de la izquierda, para que no se pierda con el jz 
+			cg.jz("end_logical" + labelNum);
+			
+		}else if(logic.operator.equals("||")) {
+			// Si es una op OR y el valor de la derecha es cierto,
+			// la expresión de la derecha NO se evalua (se salta a la etiqueta),
+			// ya que la expresión lógica es cierta
+			
+			cg.dup(logic.getType());	// se duplica el valor de la exp de la izquierda, para que no se pierda con el jnz
+			cg.jnz("end_logical" + labelNum);
+		}
+		
+		// Se calcula el valor de la expresión de la derecha
 		logic.rightOp.accept(this, param);	// VALUE[[rightOp]]
 		cg.convert(logic.rightOp.getType(), logic.getType());
 		
+		// Se realiza la operación logica entre el valor de la izquierda y el de la derecha
 		cg.logical(logic.operator);
+		
+		
+		// Etiqueta a la que se salta si se realiza el cortocircuito
+		cg.label("end_logical" + labelNum);
 		
 		return null;
 	}

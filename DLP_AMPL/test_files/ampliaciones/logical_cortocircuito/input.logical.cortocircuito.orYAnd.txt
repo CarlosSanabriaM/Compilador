@@ -1,0 +1,39 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+# Main program
+def main():void {
+	
+	if 0 || 1 && 1 :
+		 println 'T';
+	else
+		println 'F';	
+	
+	if 1 || 0 && 1 :
+		 println 'T';
+	else
+		println 'F';	
+	
+	if 0 || 1 && 0 :
+		 println 'T';
+	else
+		println 'F';	
+	
+	if 1 || 0 && 0 :
+		 println 'T';
+	else
+		println 'F';	
+	
+	if 0 || 0 && 1 :
+		 println 'T';
+	else
+		println 'F';	
+	
+	if 0 || 0 && 0 :
+		 println 'T';
+	else
+		println 'F';	
+		
+}
