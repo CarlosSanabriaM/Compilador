@@ -226,22 +226,31 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 
 	@Override
 	public Object visit(IfStatement ifStatement, Object param) {
+		boolean hasElse = ! ifStatement.elseBody.isEmpty();
+		
 		cg.lineDirective(ifStatement.condition.getLine());
 		cg.comment("If");
 		
 		int labelNum = cg.getLabelNum();
 		
-		ifStatement.condition.accept(valueCGVisitor, param);	// VALUE[[condition]]
+		ifStatement.condition.accept(valueCGVisitor, param);					// VALUE[[condition]]
 		cg.convert(ifStatement.condition.getType(), IntType.getInstance());
-		cg.jz("else" + labelNum);
+		// Si hay else, saltamos al principio del else, si no, saltamos al final del ifStatement 
+		String jzLabel = hasElse ? "else" : "end_if" ;
+		cg.jz(jzLabel + labelNum);
 		
 		cg.comment("If body");
-		ifStatement.ifBody.forEach( (stm) -> stm.accept(this, param) );	// EXECUTE[[ifBodyi]]
-		cg.jmp("end_if" + labelNum);
+		ifStatement.ifBody.forEach( (stm) -> stm.accept(this, param) );		// EXECUTE[[ifBodyi]]
 		
-		cg.label("else" + labelNum);
-		cg.comment("Else body");
-		ifStatement.elseBody.forEach( (stm) -> stm.accept(this, param) );	// EXECUTE[[elseBodyi]]
+		// Solo saltamos al cuerpo del else y ejecutamos sus sentencias si lo hay
+		if(hasElse) {
+			cg.jmp("end_if" + labelNum);
+			
+			cg.label("else" + labelNum);
+			cg.comment("Else body");
+			ifStatement.elseBody.forEach( (stm) -> stm.accept(this, param) );	// EXECUTE[[elseBodyi]]
+		}
+		
 		cg.label("end_if" + labelNum);
 		
 		return null;

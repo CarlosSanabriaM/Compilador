@@ -1,0 +1,28 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+# Main program
+def main():void {
+	
+	# Sin else	
+	if 1:
+		println 'T';
+	
+	if 0:
+		println 'T';
+
+
+	# Con else
+	if 1:
+		println 'T';
+	else
+		println 'F';
+		
+	if 0:
+		println 'T';
+	else
+		println 'F';
+
+}
