@@ -6,11 +6,12 @@ r: double;
 # Main program
 def main():void {
 	
-	c = 'a';
-	
+	a, b, c : int;
+	a = b = c;
+	"""
 	for(a=1 ; 1 ; c++;) :
 		println c++;
-	
+	"""
 	
 	"""
 	for(a=1 ; b<10 ; c++) :

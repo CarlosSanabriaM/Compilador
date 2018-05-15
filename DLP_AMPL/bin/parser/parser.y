@@ -165,28 +165,34 @@ statements: statement												{List<Statement> statements = new LinkedList<St
 		| statements statement										{List<Statement> statements = (List<Statement>) $1; statements.addAll((List<Statement>) $2); $$ = statements;}
 		;
 
-// Tipos de sentencias		
-statement: assignment_as_statement									{$$ = (List<Statement>) $1;}
-		| function_call_as_statement									{$$ = (List<Statement>) $1;}
-		| return														{$$ = (List<Statement>) $1;}
-		| while														{$$ = (List<Statement>) $1;}
-		| do_while													{$$ = (List<Statement>) $1;}
-		| for														{$$ = (List<Statement>) $1;}
-		| if															{$$ = (List<Statement>) $1;}
-		| read														{$$ = (List<Statement>) $1;}
-		| write														{$$ = (List<Statement>) $1;}
-		| plus_equal													{$$ = (List<Statement>) $1;}
-		| minus_equal												{$$ = (List<Statement>) $1;}
-		| mul_equal													{$$ = (List<Statement>) $1;}
-		| div_equal													{$$ = (List<Statement>) $1;}
-		| mod_equal													{$$ = (List<Statement>) $1;}
-		| pre_plus_plus_as_statement									{$$ = (List<Statement>) $1;}
-        	| pre_minus_minus_as_statement								{$$ = (List<Statement>) $1;}
-       	| post_plus_plus_as_statement								{$$ = (List<Statement>) $1;}
-        	| post_minus_minus_as_statement								{$$ = (List<Statement>) $1;}				
+// ~~~~~~~~~~~ Tipos de sentencias ~~~~~~~~~~~
+statement: statement_without_semicolon ';'							{$$ = (List<Statement>) $1;}
+		| while														{$$ = asStatementList((Statement) $1);}
+		| do_while													{$$ = asStatementList((Statement) $1);}
+		| for														{$$ = asStatementList((Statement) $1);}
+		| if															{$$ = asStatementList((Statement) $1);}
 		;
 
-// Tipos		
+// ~~~~~ Sentencias que llevan ';', pero aún no lo tienen ~~~~~
+statement_without_semicolon: assignment_as_expression					{$$ = asStatementList((Statement) $1);}
+							| function_call_as_expression			{$$ = asStatementList((Statement) $1);}
+							| return									{$$ = asStatementList((Statement) $1);}
+							| read									{$$ = (List<Statement>) $1;} 			// Read  ya devuelve una lista
+							| write									{$$ = (List<Statement>) $1;} 			// Write ya devuelve una lista
+							| plus_equal								{$$ = asStatementList((Statement) $1);}
+							| minus_equal							{$$ = asStatementList((Statement) $1);}
+							| mul_equal								{$$ = asStatementList((Statement) $1);}
+							| div_equal								{$$ = asStatementList((Statement) $1);}
+							| mod_equal								{$$ = asStatementList((Statement) $1);}
+							| pre_plus_plus_as_expression			{$$ = asStatementList((Statement) $1);}
+					        	| pre_minus_minus_as_expression			{$$ = asStatementList((Statement) $1);}
+					       	| post_plus_plus_as_expression			{$$ = asStatementList((Statement) $1);}
+					        	| post_minus_minus_as_expression			{$$ = asStatementList((Statement) $1);}				
+							;
+
+
+
+// ~~~~~~~~~~~ Tipos ~~~~~~~~~~~
 type: simple_type													{$$ = (Type) $1;}
 	| array															{$$ = (Type) $1;}
 	| struct															{$$ = (Type) $1;}			
@@ -234,13 +240,7 @@ struct_body: variable_definition 									{
 		;
 
 // ########### Sentencias (Statements)  ########### 
-assignment_as_statement: expression '=' expression ';'				{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
-																		Assignment assignment = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, (Expression) $3);
-  																		$$ = asStatementList(assignment);
-																	}
-		;
-		
-read: INPUT expressions ';'											{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
+read: INPUT expressions												{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
 																		List<Statement> statements = new LinkedList<Statement>();
 																		
 																		List<Expression> expressions = (List<Expression>) $2;
@@ -251,7 +251,7 @@ read: INPUT expressions ';'											{	// statement se espera una lista (hay qu
 																	}
 	;
 	
-write: PRINT {writeTempLine = scanner.getLine();} expressions ';'		{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
+write: PRINT {writeTempLine = scanner.getLine();} expressions			{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
 																		List<Statement> statements = new LinkedList<Statement>();
 																		
 																		List<Expression> expressions = (List<Expression>) $3;
@@ -260,7 +260,7 @@ write: PRINT {writeTempLine = scanner.getLine();} expressions ';'		{	// statemen
 																		}
 																		$$ = statements;
 																	}
-	| PRINTLN {writeTempLine = scanner.getLine();} expressions ';'	{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
+	| PRINTLN {writeTempLine = scanner.getLine();} expressions		{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
 																		List<Statement> statements = new LinkedList<Statement>();
 																		
 																		List<Expression> expressions = (List<Expression>) $3;
@@ -282,123 +282,110 @@ expressions: expression												{List<Expression> expressions = new LinkedLis
 		;
 
 
-while: WHILE expression ':' '{' statements '}'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
+while: WHILE expression ':' '{' statements '}'						{
 																		List<Statement> body = new LinkedList<Statement>(); body.addAll((List<Statement>) $5);
 																		Expression expression = (Expression) $2;
 
-																		While _while = new While(expression.getLine(), expression.getColumn(), expression, body);
-  																		$$ = asStatementList(_while);
+																		$$ = new While(expression.getLine(), expression.getColumn(), expression, body);
 																	}
 
-	| WHILE expression ':' statement									{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+	| WHILE expression ':' statement									{																		
 																		List<Statement> body = new LinkedList<Statement>(); body.addAll((List<Statement>) $4);
 																		Expression expression = (Expression) $2;
 
-																		While _while = new While(expression.getLine(), expression.getColumn(), expression, body);
-  																		$$ = asStatementList(_while);
+																		$$ = new While(expression.getLine(), expression.getColumn(), expression, body);
 																	}
 	;
 	
-do_while: DO ':' '{' statements '}' WHILE expression ';'				{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
+do_while: DO ':' '{' statements '}' WHILE expression ';'				{
 																		List<Statement> body = new LinkedList<Statement>(); body.addAll((List<Statement>) $4);
 																		Expression expression = (Expression) $7;
 
-																		DoWhile doWhile = new DoWhile(expression.getLine(), expression.getColumn(), expression, body);
-  																		$$ = asStatementList(doWhile);
+																		$$ = new DoWhile(expression.getLine(), expression.getColumn(), expression, body);
 																	}
 
-	| DO ':' statement WHILE expression ';'							{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+	| DO ':' statement WHILE expression ';'							{																		
 																		List<Statement> body = new LinkedList<Statement>(); body.addAll((List<Statement>) $3);
 																		Expression expression = (Expression) $5;
 
-																		DoWhile doWhile = new DoWhile(expression.getLine(), expression.getColumn(), expression, body);
-  																		$$ = asStatementList(doWhile);
+																		$$ = new DoWhile(expression.getLine(), expression.getColumn(), expression, body);
 																	}
 	;
 
-for: FOR '(' for_parenthesis_body ')' ':' '{' statements '}'			{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
+for: FOR '(' for_parenthesis_body ')' ':' '{' statements '}'			{
 																		List<Statement> body = new LinkedList<Statement>(); body.addAll((List<Statement>) $7);
 																		ForParenthesisBody forParenthesisBody = (ForParenthesisBody) $3;
 																		
-																		For _for = new For(forParenthesisBody.condition.getLine(), forParenthesisBody.condition.getColumn(), 
+																		$$ = new For(forParenthesisBody.condition.getLine(), forParenthesisBody.condition.getColumn(), 
 																								forParenthesisBody.initializationStatements, forParenthesisBody.condition, 
 																								forParenthesisBody.incrementStatements, body);
-  																		$$ = asStatementList(_for);
 																	}
 
-	| FOR '(' for_parenthesis_body ')' ':' statement					{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+	| FOR '(' for_parenthesis_body ')' ':' statement					{																		
 																		ForParenthesisBody forParenthesisBody = (ForParenthesisBody) $3;
 																		List<Statement> body = new LinkedList<Statement>(); body.addAll((List<Statement>) $6);
 
-																		For _for = new For(forParenthesisBody.condition.getLine(), forParenthesisBody.condition.getColumn(), 
+																		$$ = new For(forParenthesisBody.condition.getLine(), forParenthesisBody.condition.getColumn(), 
 																								forParenthesisBody.initializationStatements, forParenthesisBody.condition, 
 																								forParenthesisBody.incrementStatements, body);
-  																		$$ = asStatementList(_for);
 																	}
 	;
 	
 for_parenthesis_body: statement expression ';' statement				{	$$ = new ForParenthesisBody((List<Statement>) $1, (Expression) $2, (List<Statement>) $4); }
 					;
 	
-if: IF expression ':' '{' statements '}' 	%prec MENOR_QUE_ELSE		{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+if: IF expression ':' '{' statements '}' 	%prec MENOR_QUE_ELSE		{																		
 																		List<Statement> ifBody = new LinkedList<Statement>(); ifBody.addAll((List<Statement>) $5);
   																		List<Statement> elseBody = new LinkedList<Statement>();
   																		Expression expression = (Expression) $2;
 
-																		IfStatement ifStatement = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody);
-  																		$$ = asStatementList(ifStatement);
+																		$$ = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody);
   																	}
 
-  | IF expression ':' '{' statements '}' ELSE '{' statements '}'		{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
+  | IF expression ':' '{' statements '}' ELSE '{' statements '}'		{
 																		List<Statement> ifBody = new LinkedList<Statement>(); ifBody.addAll((List<Statement>) $5);
   																		List<Statement> elseBody = new LinkedList<Statement>(); elseBody.addAll((List<Statement>) $9);
   																		Expression expression = (Expression) $2;
 																		
-																		IfStatement ifStatement = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody);
-  																		$$ = asStatementList(ifStatement);
+																		$$ = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody);
   																	}
   
-  | IF expression ':' '{' statements '}' ELSE statement				{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+  | IF expression ':' '{' statements '}' ELSE statement				{																		
 																		List<Statement> ifBody = new LinkedList<Statement>(); ifBody.addAll((List<Statement>) $5);
   																		List<Statement> elseBody = new LinkedList<Statement>(); elseBody.addAll((List<Statement>) $8);
   																		Expression expression = (Expression) $2;
 
-																		IfStatement ifStatement = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody);
-  																		$$ = asStatementList(ifStatement);
+																		$$ = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody);
   																	}
   
-  | IF expression ':' statement				%prec MENOR_QUE_ELSE		{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
+  | IF expression ':' statement				%prec MENOR_QUE_ELSE		{
 																		List<Statement> ifBody = new LinkedList<Statement>(); ifBody.addAll((List<Statement>) $4);
   																		List<Statement> elseBody = new LinkedList<Statement>();
   																		Expression expression = (Expression) $2;
 																		
-																		IfStatement ifStatement = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody);
-  																		$$ = asStatementList(ifStatement);
+																		$$ = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody);
   																	}
   																		
-  | IF expression ':' statement ELSE '{' statements '}'				{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+  | IF expression ':' statement ELSE '{' statements '}'				{																		
   																		List<Statement> ifBody = new LinkedList<Statement>(); ifBody.addAll((List<Statement>) $4);
   																		List<Statement> elseBody = new LinkedList<Statement>(); elseBody.addAll((List<Statement>) $7);
   																		Expression expression = (Expression) $2;
 																		
-																		IfStatement ifStatement = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody); 
-  																		$$ = asStatementList(ifStatement);
+																		$$ = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody); 
   																	}
   																		
-  | IF expression ':' statement ELSE statement						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+  | IF expression ':' statement ELSE statement						{																		
   																		List<Statement> ifBody = new LinkedList<Statement>(); ifBody.addAll((List<Statement>) $4);
   																		List<Statement> elseBody = new LinkedList<Statement>(); elseBody.addAll((List<Statement>) $6);
   																		Expression expression = (Expression) $2;
 																		
-																		IfStatement ifStatement = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody);
-																		$$ = asStatementList(ifStatement);
+																		$$ = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody);
 																	}
   ;
 
 
-return: RETURN {returnTempLine = scanner.getLine();} expression ';'	{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
-																		Return _return = new Return(returnTempLine, scanner.getColumn(), (Expression) $3);
-																		$$ = asStatementList(_return);
+return: RETURN {returnTempLine = scanner.getLine();} expression		{																		
+																		$$ = new Return(returnTempLine, scanner.getColumn(), (Expression) $3);
 																	}
 	;
 	
@@ -408,72 +395,35 @@ return: RETURN {returnTempLine = scanner.getLine();} expression ';'	{	// stateme
 parameters_in_function_call: 											{$$ = new LinkedList<Expression>();}
 							| expressions								{$$ = (List<Expression>) $1;}
 							;
-		
-function_call_as_statement: ID '(' parameters_in_function_call ')' ';' {	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
-																		Variable function = new Variable(scanner.getLine(), scanner.getColumn(), (String) $1);
-																		Invocation invocation = new Invocation(scanner.getLine(), scanner.getColumn(), function, (List<Expression>) $3); 
-																		$$ = asStatementList(invocation);	 
-																	}
-						; 
-		
+				
 // * +=, -=, *=, /= y %=				
-plus_equal: expression PLUS_EQUAL expression ';'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
-																		Assignment assignment = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, 
-																			new Arithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "+", (Expression) $3));
-  																		$$ = asStatementList(assignment);
+plus_equal: expression PLUS_EQUAL expression							{																		
+																		$$ = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, 
+																				new Arithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "+", (Expression) $3));
 																	}
 		;
 		
-minus_equal: expression MINUS_EQUAL expression ';'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
-																		Assignment assignment = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, 
-																			new Arithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "-", (Expression) $3));
-  																		$$ = asStatementList(assignment);
+minus_equal: expression MINUS_EQUAL expression						{																		
+																		$$ = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, 
+																				new Arithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "-", (Expression) $3));
 																	}
 		;
 		
-mul_equal: expression MUL_EQUAL expression ';'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
-																		Assignment assignment = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, 
-																			new Arithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "*", (Expression) $3));
-  																		$$ = asStatementList(assignment);
+mul_equal: expression MUL_EQUAL expression							{																		
+																		$$ = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, 
+																				new Arithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "*", (Expression) $3));
 																	}
 		;
 		
-div_equal: expression DIV_EQUAL expression ';'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
-																		Assignment assignment = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, 
-																			new Arithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "/", (Expression) $3));
-  																		$$ = asStatementList(assignment);
+div_equal: expression DIV_EQUAL expression							{																		
+																		$$ = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, 
+																				new Arithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "/", (Expression) $3));
 																	}
 		;
 		
-mod_equal: expression MOD_EQUAL expression ';'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
-																		Assignment assignment = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, 
-																			new Arithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "%", (Expression) $3));
-  																		$$ = asStatementList(assignment);
-																	}
-		;
-
-// ++ y --				
-pre_plus_plus_as_statement: PLUS_PLUS expression ';'					{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
-																		PreArithmetic preArithmetic = new PreArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $2, "++");
-  																		$$ = asStatementList(preArithmetic);
-																	}
-		;
-
-pre_minus_minus_as_statement: MINUS_MINUS expression ';'				{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
-																		PreArithmetic preArithmetic = new PreArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $2, "--");
-  																		$$ = asStatementList(preArithmetic);
-																	}
-		;
-
-post_plus_plus_as_statement: expression PLUS_PLUS ';'					{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
-																		PostArithmetic postArithmetic = new PostArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "++");
-  																		$$ = asStatementList(postArithmetic);
-																	}
-		;
-
-post_minus_minus_as_statement: expression MINUS_MINUS ';'				{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
-																		PostArithmetic postArithmetic = new PostArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "--");
-  																		$$ = asStatementList(postArithmetic);
+mod_equal: expression MOD_EQUAL expression							{																		
+																		$$ = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, 
+																				new Arithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "%", (Expression) $3));
 																	}
 		;
 			
@@ -505,10 +455,10 @@ expression: expression AND expression								{$$ = new Logical(scanner.getLine()
          | REAL_CONSTANT												{$$ = new RealLiteral(scanner.getLine(), scanner.getColumn(), (double) $1);}
          | CHAR_CONSTANT												{$$ = new CharLiteral(scanner.getLine(), scanner.getColumn(), (char) $1);}
          | ID														{$$ = new Variable(scanner.getLine(), scanner.getColumn(), (String) $1);}
-         | PLUS_PLUS expression				%prec PRE_ARITHMETIC		{$$ = new PreArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $2, "++");}
-         | MINUS_MINUS expression			%prec PRE_ARITHMETIC		{$$ = new PreArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $2, "--");}
-         | expression PLUS_PLUS										{$$ = new PostArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "++");}
-         | expression MINUS_MINUS									{$$ = new PostArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "--");}
+         | pre_plus_plus_as_expression								{$$ = (PreArithmetic) $1;}
+         | pre_minus_minus_as_expression								{$$ = (PreArithmetic) $1;}
+         | post_plus_plus_as_expression								{$$ = (PostArithmetic) $1;}
+         | post_minus_minus_as_expression							{$$ = (PostArithmetic) $1;}
          | ternaryOperator											{$$ = (TernaryOperator) $1;}
          | assignment_as_expression									{$$ = (Assignment) $1;}
          ;
@@ -518,6 +468,11 @@ function_call_as_expression: ID '(' parameters_in_function_call ')'  	{
 																		$$ = new Invocation(scanner.getLine(), scanner.getColumn(), function, (List<Expression>) $3);
 																	}
 						;
+						
+pre_plus_plus_as_expression: 	PLUS_PLUS expression		%prec PRE_ARITHMETIC		{$$ = new PreArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $2, "++");}
+pre_minus_minus_as_expression:	MINUS_MINUS expression	%prec PRE_ARITHMETIC		{$$ = new PreArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $2, "--");}
+post_plus_plus_as_expression: 	expression PLUS_PLUS								{$$ = new PostArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "++");}
+post_minus_minus_as_expression:	expression MINUS_MINUS							{$$ = new PostArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $1, "--");}
 						
 ternaryOperator: expression '?' expression ':' expression		%prec TERNARY_OPERATOR 	{
 																						$$ = new TernaryOperator(scanner.getLine(), scanner.getColumn(), 
