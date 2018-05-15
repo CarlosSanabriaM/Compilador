@@ -9,6 +9,7 @@ public class PostArithmetic extends AbstractExpression implements Statement{
 
 	public Expression expression;
 	public String operator;
+	private boolean assignsValue;
 	
 	public PostArithmetic(int line, int column, Expression expression, String operator) {
 		super(line, column);
@@ -21,6 +22,16 @@ public class PostArithmetic extends AbstractExpression implements Statement{
 		return expression + operator;
 	}
 
+	@Override
+	public void setAssignsValue(boolean assignsValue) {
+		this.assignsValue = assignsValue;
+	}
+
+	@Override
+	public boolean getAssignsValue() {
+		return this.assignsValue;
+	}
+	
 	// Visitor
 	@Override
 	public Object accept(Visitor v, Object param) {

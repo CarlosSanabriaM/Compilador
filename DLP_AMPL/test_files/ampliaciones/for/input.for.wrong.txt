@@ -1,0 +1,22 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+s: struct{
+	charField: char;
+	intField:  int;
+  	realField: double;
+};
+
+
+# Main program
+def main():void {
+	
+	a, b, c : int;
+	a = b = c = 0;
+
+	for(print 'a' ; 1.2 ; print 'b') :
+		println c++;
+
+}

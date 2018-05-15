@@ -8,6 +8,7 @@ import visitors.Visitor;
 public class Assignment extends AbstractExpression implements Statement{
 
 	public Expression left, right;
+	private boolean assignsValue;
 	
 	public Assignment(int line, int column, Expression left, Expression right) {
 		super(line,column);
@@ -20,6 +21,16 @@ public class Assignment extends AbstractExpression implements Statement{
 		return left + " = " + right;
 	}
 
+	@Override
+	public void setAssignsValue(boolean assignsValue) {
+		this.assignsValue = assignsValue;
+	}
+
+	@Override
+	public boolean getAssignsValue() {
+		return this.assignsValue;
+	}
+	
 	// Visitor
 	@Override
 	public Object accept(Visitor v, Object param) {

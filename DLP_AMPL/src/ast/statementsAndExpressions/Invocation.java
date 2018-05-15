@@ -13,6 +13,7 @@ public class Invocation extends AbstractExpression implements Statement{
 
 	public Variable function;
 	public List<Expression> arguments;
+	private boolean assignsValue;
 	
 	public Invocation(int line, int column, Variable function, List<Expression> arguments) {
 		super(line, column);
@@ -37,6 +38,16 @@ public class Invocation extends AbstractExpression implements Statement{
 		return  out; 
 	}
 
+	@Override
+	public void setAssignsValue(boolean assignsValue) {
+		this.assignsValue = assignsValue;
+	}
+
+	@Override
+	public boolean getAssignsValue() {
+		return this.assignsValue;
+	}
+	
 	// Visitor
 	@Override
 	public Object accept(Visitor v, Object param) {

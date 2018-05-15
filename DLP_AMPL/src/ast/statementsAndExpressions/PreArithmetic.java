@@ -9,6 +9,7 @@ public class PreArithmetic extends AbstractExpression implements Statement{
 
 	public Expression expression;
 	public String operator;
+	private boolean assignsValue;
 	
 	public PreArithmetic(int line, int column, Expression expression, String operator) {
 		super(line, column);
@@ -19,6 +20,16 @@ public class PreArithmetic extends AbstractExpression implements Statement{
 	@Override
 	public String toString() {
 		return operator + expression;
+	}
+	
+	@Override
+	public void setAssignsValue(boolean assignsValue) {
+		this.assignsValue = assignsValue;
+	}
+
+	@Override
+	public boolean getAssignsValue() {
+		return this.assignsValue;
 	}
 
 	// Visitor

@@ -1,0 +1,26 @@
+[15/05/2018 19:03:06] (RunToInstructionUserAction) System.NullReferenceException: Object reference not set to an instance of an object
+  at (wrapper managed-to-native) System.Windows.Forms.XplatUICarbon.ShowWindow(intptr)
+  at System.Windows.Forms.XplatUICarbon.CreateWindow (System.Windows.Forms.CreateParams cp) [0x00526] in <fb1a963a33744b45b030149b1a89dcfe>:0 
+  at System.Windows.Forms.XplatUI.CreateWindow (System.Windows.Forms.CreateParams cp) [0x00000] in <fb1a963a33744b45b030149b1a89dcfe>:0 
+  at System.Windows.Forms.NativeWindow.CreateHandle (System.Windows.Forms.CreateParams cp) [0x00009] in <fb1a963a33744b45b030149b1a89dcfe>:0 
+  at System.Windows.Forms.Control.CreateHandle () [0x00031] in <fb1a963a33744b45b030149b1a89dcfe>:0 
+  at System.Windows.Forms.Form.CreateHandle () [0x00000] in <fb1a963a33744b45b030149b1a89dcfe>:0 
+  at System.Windows.Forms.Control.CreateControl () [0x00039] in <fb1a963a33744b45b030149b1a89dcfe>:0 
+  at System.Windows.Forms.Control.SetVisibleCore (System.Boolean value) [0x0003a] in <fb1a963a33744b45b030149b1a89dcfe>:0 
+  at System.Windows.Forms.Form.SetVisibleCore (System.Boolean value) [0x00065] in <fb1a963a33744b45b030149b1a89dcfe>:0 
+  at System.Windows.Forms.Control.set_Visible (System.Boolean value) [0x00009] in <fb1a963a33744b45b030149b1a89dcfe>:0 
+  at (wrapper remoting-invoke-with-check) System.Windows.Forms.Control.set_Visible(bool)
+  at System.Windows.Forms.Application.RunLoop (System.Boolean Modal, System.Windows.Forms.ApplicationContext context) [0x00059] in <fb1a963a33744b45b030149b1a89dcfe>:0 
+  at System.Windows.Forms.Form.ShowDialog (System.Windows.Forms.IWin32Window owner) [0x001b7] in <fb1a963a33744b45b030149b1a89dcfe>:0 
+  at System.Windows.Forms.Form.ShowDialog () [0x00000] in <fb1a963a33744b45b030149b1a89dcfe>:0 
+  at (wrapper remoting-invoke-with-check) System.Windows.Forms.Form.ShowDialog()
+  at Microsoft.VisualBasic.Interaction+InputForm.Run () [0x00001] in <60127472bfd74434b835437c93f87537>:0 
+  at (wrapper remoting-invoke-with-check) Microsoft.VisualBasic.Interaction+InputForm.Run()
+  at Microsoft.VisualBasic.Interaction.InputBox (System.String Prompt, System.String Title, System.String DefaultResponse, System.Int32 XPos, System.Int32 YPos) [0x00012] in <60127472bfd74434b835437c93f87537>:0 
+  at GVM.Views.ViewESManager.AskUser (System.String prompt, System.String title, System.String defaultValue) [0x00000] in <e990ac09123445878b6fe9593de5d063>:0 
+  at GVM.Views.ViewESManager.ReadInt () [0x0003c] in <e990ac09123445878b6fe9593de5d063>:0 
+  at GVM.Instructions.InStateChanges.DoChange (GVM.StateModule.State state) [0x0001e] in <a7e356bca0534114a49ed31e8b2a881c>:0 
+  at GVM.StateModule.VirtualMachine.DoStep () [0x00006] in <a7e356bca0534114a49ed31e8b2a881c>:0 
+  at GVM.StateModule.VirtualMachine.RunTo (GVM.StateModule.PauseCondition condition) [0x0000a] in <a7e356bca0534114a49ed31e8b2a881c>:0 
+  at GVM.Actions.RunToInstruction.<DoExec>b__2_0 () [0x00000] in <e990ac09123445878b6fe9593de5d063>:0 
+  at GVM.Actions.TraceExceptionsThread.TryCode (System.Threading.ThreadStart code) [0x00000] in <e990ac09123445878b6fe9593de5d063>:0 

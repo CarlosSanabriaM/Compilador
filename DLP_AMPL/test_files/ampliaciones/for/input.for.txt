@@ -3,31 +3,40 @@ c: char;
 i: int;
 r: double;
 
+s: struct{
+	charField: char;
+	intField:  int;
+  	realField: double;
+};
+
+
 # Main program
 def main():void {
 	
 	a, b, c : int;
-	a = b = c;
-	"""
-	for(a=1 ; 1 ; c++;) :
+	a = b = c = 0;
+
+	for(a=1, b=2 ; 1 ; c++, b++) :
 		println c++;
-	"""
+
+	for(a=1 ; 1 ; c++) :
+		println c++;
 	
-	"""
-	for(a=1 ; b<10 ; c++) :
+	for(input a ; b<10 ; c+=1) :
 		println c++;
 		
-	for(a=1 ; b<10 ; c++) : {
+	for(input a ; b<10 ; c+=1) :
+		println c++;
+		
+	for(input a,b,c ; b<10 ; c+=1) :
+		println c++;
+		
+	for(c=2 ; b<10 ;input a,b,c) :
+		println c++;
+		
+	for(a++ ; b<10 && 1 ; input c) : {
 		println ++c;
 		println c++;		
 	}
-	"""
-	
-"""
-	# Errors
-	do :
-		println c++;
-	while 1.0;
-"""
 
 }

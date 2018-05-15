@@ -44,6 +44,9 @@ import ast.types.*;
 %nonassoc MENOR_QUE_ELSE
 %nonassoc ELSE
 
+%nonassoc MENOR_QUE_COMA
+%nonassoc ','
+
 // Igual es siempre el que menos prioridad tiene
 %right '=' PLUS_EQUAL MINUS_EQUAL MUL_EQUAL DIV_EQUAL MOD_EQUAL
 %right TERNARY_OPERATOR '?'
@@ -240,7 +243,7 @@ struct_body: variable_definition 									{
 		;
 
 // ########### Sentencias (Statements)  ########### 
-read: INPUT expressions												{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
+read: INPUT expressions			%prec MENOR_QUE_COMA					{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
 																		List<Statement> statements = new LinkedList<Statement>();
 																		
 																		List<Expression> expressions = (List<Expression>) $2;
@@ -251,7 +254,8 @@ read: INPUT expressions												{	// statement se espera una lista (hay que m
 																	}
 	;
 	
-write: PRINT {writeTempLine = scanner.getLine();} expressions			{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
+write: PRINT {writeTempLine = scanner.getLine();} expressions		%prec MENOR_QUE_COMA	
+																	{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
 																		List<Statement> statements = new LinkedList<Statement>();
 																		
 																		List<Expression> expressions = (List<Expression>) $3;
@@ -260,7 +264,8 @@ write: PRINT {writeTempLine = scanner.getLine();} expressions			{	// statement s
 																		}
 																		$$ = statements;
 																	}
-	| PRINTLN {writeTempLine = scanner.getLine();} expressions		{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
+	| PRINTLN {writeTempLine = scanner.getLine();} expressions	%prec MENOR_QUE_COMA
+																	{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
 																		List<Statement> statements = new LinkedList<Statement>();
 																		
 																		List<Expression> expressions = (List<Expression>) $3;
@@ -331,8 +336,18 @@ for: FOR '(' for_parenthesis_body ')' ':' '{' statements '}'			{
 																	}
 	;
 	
-for_parenthesis_body: statement expression ';' statement				{	$$ = new ForParenthesisBody((List<Statement>) $1, (Expression) $2, (List<Statement>) $4); }
+// Al usar statement_without_semicolon ya nos quitamos de en medio if, while, ...
+for_parenthesis_body: statement_without_semicolon_1mcs ';' expression ';' statement_without_semicolon_1mcs
+																	{	
+																		$$ = new ForParenthesisBody((List<Statement>) $1, (Expression) $3, (List<Statement>) $5); 
+																	}
 					;
+
+// Auxiliar (1+cs)				
+statement_without_semicolon_1mcs: statement_without_semicolon					{$$ = (List<Statement>) $1;} // Retornamos directamente la lista de sentencias
+		| statement_without_semicolon_1mcs ',' statement_without_semicolon	{List<Statement> statements = (List<Statement>) $1; statements.addAll((List<Statement>) $3); $$ = statements;}
+		;
+
 	
 if: IF expression ':' '{' statements '}' 	%prec MENOR_QUE_ELSE		{																		
 																		List<Statement> ifBody = new LinkedList<Statement>(); ifBody.addAll((List<Statement>) $5);

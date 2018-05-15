@@ -8,6 +8,7 @@ public class VarDefinition extends AbstractDefinition implements Statement{
 
 	public int scope;
 	public int offset;
+	private boolean assignsValue;
 	
 	public VarDefinition(int line, int column, String name, Type type) {
 		super(line, column, name, type);
@@ -32,6 +33,16 @@ public class VarDefinition extends AbstractDefinition implements Statement{
 	@Override
 	public String toString() {
 		return getName() + ": " + getType() + ";";
+	}
+	
+	@Override
+	public void setAssignsValue(boolean assignsValue) {
+		this.assignsValue = assignsValue;
+	}
+
+	@Override
+	public boolean getAssignsValue() {
+		return this.assignsValue;
 	}
 
 	// Visitor

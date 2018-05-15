@@ -25,6 +25,7 @@ public class For extends AbstractStatement {
 	public String toString() {
 		String initStmsString = getParenthesisBodyStatementsAsString(initializationStatements);
 		String incrStmsString = getParenthesisBodyStatementsAsString(incrementStatements);
+		incrStmsString = incrStmsString.substring(0, incrStmsString.length()-1);
 		
 		String forParenthesisBody = initStmsString + " " + condition + "; " + incrStmsString;
 		
@@ -46,8 +47,8 @@ public class For extends AbstractStatement {
 				out += ";";
 		}
 			
-		out.replaceAll(";", ",");
-		out.substring(0, out.length()-1);
+		out = out.replaceAll(";", ",");
+		out = out.substring(0, out.length()-1);
 		out += ";";
 		
 		return out;

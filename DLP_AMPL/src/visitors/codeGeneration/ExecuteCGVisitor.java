@@ -8,6 +8,7 @@ import ast.definitions.Definition;
 import ast.definitions.FunDefinition;
 import ast.definitions.VarDefinition;
 import ast.statements.DoWhile;
+import ast.statements.For;
 import ast.statements.IfStatement;
 import ast.statements.Read;
 import ast.statements.Return;
@@ -200,8 +201,9 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		cg.jz("end_while" + labelNum);
 		
 		cg.comment("While body");
-		_while.body.forEach( (stm) -> stm.accept(this, param) );	// EXECUTE[[stmi]]
+		_while.body.forEach( (stm) -> stm.accept(this, param) );	// EXECUTE[[bodyi]]
 		cg.jmp("while" + labelNum);
+		
 		cg.label("end_while" + labelNum);
 		
 		return null;
@@ -215,11 +217,35 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		int labelNum = cg.getLabelNum();
 		
 		cg.label("do_while" + labelNum);
-		doWhile.body.forEach( (stm) -> stm.accept(this, param) );	// EXECUTE[[stmi]]
+		doWhile.body.forEach( (stm) -> stm.accept(this, param) );	// EXECUTE[[bodyi]]
 		
 		doWhile.condition.accept(valueCGVisitor, param);			// VALUE[[condition]]
 		cg.convert(doWhile.condition.getType(), IntType.getInstance());
 		cg.jnz("do_while" + labelNum);
+		
+		return null;
+	}
+	
+	@Override
+	public Object visit(For _for, Object param) {
+		cg.lineDirective(_for.condition.getLine());
+		cg.comment("For");
+		
+		int labelNum = cg.getLabelNum();
+		
+		_for.initializationStatements.forEach( (stm) -> stm.accept(this, param) );	// EXECUTE[[initializationStatementsi]]
+		
+		cg.label("for" + labelNum);
+		_for.condition.accept(valueCGVisitor, param);								// VALUE[[condition]]
+		cg.convert(_for.condition.getType(), IntType.getInstance());
+		cg.jz("end_for" + labelNum);
+		
+		cg.comment("For body");
+		_for.body.forEach( (stm) -> stm.accept(this, param) );						// EXECUTE[[bodyi]]
+		_for.incrementStatements.forEach( (stm) -> stm.accept(this, param) );			// EXECUTE[[incrementStatementsi]]
+		cg.jmp("for" + labelNum);
+		
+		cg.label("end_for" + labelNum);
 		
 		return null;
 	}
