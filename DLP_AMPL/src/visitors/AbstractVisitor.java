@@ -19,6 +19,7 @@ import ast.expressions.UnaryMinus;
 import ast.expressions.UnaryNot;
 import ast.expressions.Variable;
 import ast.statements.DoWhile;
+import ast.statements.For;
 import ast.statements.IfStatement;
 import ast.statements.Read;
 import ast.statements.Return;
@@ -126,6 +127,17 @@ public abstract class AbstractVisitor implements Visitor {
 		return null;
 	}
 
+	@Override
+	public Object visit(For _for, Object param) {
+		_for.initializationStatements.forEach( (stm) -> stm.accept(this, param) );
+		_for.condition.accept(this, param);
+		_for.incrementStatements.forEach( (stm) -> stm.accept(this, param) );
+		
+		_for.body.forEach( (stm) -> stm.accept(this, param) );
+
+		return null;
+	}
+	
 	@Override
 	public Object visit(Write write, Object param) {
 		write.expression.accept(this, param);

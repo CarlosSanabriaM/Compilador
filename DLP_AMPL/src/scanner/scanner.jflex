@@ -106,6 +106,7 @@ Xor			= "^^"
 "void"							{ return Parser.VOID; }
 "main"							{ return Parser.MAIN; }
 "do"								{ return Parser.DO; }
+"for"							{ return Parser.FOR; }
 
 // * Operadores, paréntesis, corchetes, llaves, coma, punto, punto y coma, dos puntos, interrogacion
 [+\-/*%><=()!\[\]{},;.:?]			{ this.yylval = yytext();

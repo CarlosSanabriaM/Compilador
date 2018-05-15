@@ -6,6 +6,7 @@ import scanner.Scanner;
 import java.io.Reader;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.ArrayList;
 
 import ast.*;
 import ast.definitions.*;
@@ -36,6 +37,7 @@ import ast.types.*;
 %token ID
 %token MAIN
 %token DO
+%token FOR
 
 
 // ** Tokens con prioridades (los de mas abajo son mas prioritarios) **
@@ -169,6 +171,7 @@ statement: assignment_as_statement									{$$ = (List<Statement>) $1;}
 		| return														{$$ = (List<Statement>) $1;}
 		| while														{$$ = (List<Statement>) $1;}
 		| do_while													{$$ = (List<Statement>) $1;}
+		| for														{$$ = (List<Statement>) $1;}
 		| if															{$$ = (List<Statement>) $1;}
 		| read														{$$ = (List<Statement>) $1;}
 		| write														{$$ = (List<Statement>) $1;}
@@ -313,6 +316,29 @@ do_while: DO ':' '{' statements '}' WHILE expression ';'				{	// statement se es
 																	}
 	;
 
+for: FOR '(' for_parenthesis_body ')' ':' '{' statements '}'			{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
+																		List<Statement> body = new LinkedList<Statement>(); body.addAll((List<Statement>) $7);
+																		ForParenthesisBody forParenthesisBody = (ForParenthesisBody) $3;
+																		
+																		For _for = new For(forParenthesisBody.condition.getLine(), forParenthesisBody.condition.getColumn(), 
+																								forParenthesisBody.initializationStatements, forParenthesisBody.condition, 
+																								forParenthesisBody.incrementStatements, body);
+  																		$$ = asStatementList(_for);
+																	}
+
+	| FOR '(' for_parenthesis_body ')' ':' statement					{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+																		ForParenthesisBody forParenthesisBody = (ForParenthesisBody) $3;
+																		List<Statement> body = new LinkedList<Statement>(); body.addAll((List<Statement>) $6);
+
+																		For _for = new For(forParenthesisBody.condition.getLine(), forParenthesisBody.condition.getColumn(), 
+																								forParenthesisBody.initializationStatements, forParenthesisBody.condition, 
+																								forParenthesisBody.incrementStatements, body);
+  																		$$ = asStatementList(_for);
+																	}
+	;
+	
+for_parenthesis_body: statement expression ';' statement				{	$$ = new ForParenthesisBody((List<Statement>) $1, (Expression) $2, (List<Statement>) $4); }
+					;
 	
 if: IF expression ':' '{' statements '}' 	%prec MENOR_QUE_ELSE		{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
 																		List<Statement> ifBody = new LinkedList<Statement>(); ifBody.addAll((List<Statement>) $5);
@@ -569,4 +595,19 @@ private List<Statement> asStatementList(Statement statement){
 int funDefTempLine;
 int writeTempLine;
 int returnTempLine;
+
+// * Para devolver los 3 elementos del cuerpo entre paréntesis de un for
+private class ForParenthesisBody{
+	public List<Statement> initializationStatements;
+	public Expression condition;
+	public List<Statement> incrementStatements;
+	
+	public ForParenthesisBody(List<Statement> initializationStatements, Expression condition,
+			List<Statement> incrementStatements) {
+		this.initializationStatements = initializationStatements;
+		this.condition = condition;
+		this.incrementStatements = incrementStatements;
+	}
+	
+}
 

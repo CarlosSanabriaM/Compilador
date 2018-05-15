@@ -1,0 +1,32 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+# Main program
+def main():void {
+	
+	c = 'a';
+	
+	for(a=1 ; 1 ; c++;) :
+		println c++;
+	
+	
+	"""
+	for(a=1 ; b<10 ; c++) :
+		println c++;
+		
+	for(a=1 ; b<10 ; c++) : {
+		println ++c;
+		println c++;		
+	}
+	"""
+	
+"""
+	# Errors
+	do :
+		println c++;
+	while 1.0;
+"""
+
+}
