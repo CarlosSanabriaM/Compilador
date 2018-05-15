@@ -16,6 +16,9 @@ def main():void {
 	a, b, c : int;
 	a = b = c = 0;
 	
+	for(b=2, input a ; a < 5 ; a++, b+=2) :
+		println a, ' ' ,b;
+	
 	for(a=1, b=2 ; a < 5 ; a++, b+=2) :
 		println a, ' ' ,b;
 

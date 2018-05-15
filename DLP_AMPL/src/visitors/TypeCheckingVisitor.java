@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ast.definitions.FunDefinition;
+import ast.definitions.VarDefinition;
 import ast.expressions.Arithmetic;
 import ast.expressions.Cast;
 import ast.expressions.CharLiteral;
@@ -42,14 +43,37 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 	// Definitions
 	@Override
 	public Object visit(FunDefinition funDefinition, Object param) {
+		boolean hasReturn = false;
+		
 		funDefinition.getType().accept(this, param);
 
 		// A las sentencias de la función, le pasamos como parámetro el tipo de retorno de la funcion.
 		FunctionType functionType = (FunctionType) funDefinition.getType();
 		Type returnType = functionType.returnType;
-		funDefinition.statements.forEach( (stm) -> stm.accept(this, returnType) );
+		
+		for (Statement stm : funDefinition.statements) {
+			if((boolean) stm.accept(this, returnType))
+				hasReturn = true;
+		}
 
+		// Si la función NO es void y no retorna un valor, mostramos un error
+		if( !(functionType.returnType instanceof VoidType) && !hasReturn)
+			new ErrorType(funDefinition, 
+					"Flow control error: The function '" + funDefinition.getName() + "' isn't "
+							+ "void and doens't have a return statement.");
+		
 		return null;
+	}
+
+	// Definitions y statements
+	@Override
+	public Object visit(VarDefinition varDefinition, Object param) {
+		varDefinition.setAssignsValue(false);
+		
+		varDefinition.getType().accept(this, param);
+
+		// No tiene return
+		return false;
 	}
 
 	// Statements
@@ -72,11 +96,14 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 					"' because their types are not compatible "
 					+ "(the right type doesn't promote to the left type).") );
 		
-		return null;
+		// No tiene return
+		return false;
 	}
 
 	@Override
 	public Object visit(IfStatement ifStatement, Object param) {
+		boolean ifBodyHasReturn = false, elseBodyHasReturn = false; 
+		
 		ifStatement.setAssignsValue(false);
 		
 		ifStatement.condition.accept(this, param);
@@ -87,10 +114,18 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 					new ErrorType(ifStatement.condition, 
 							"Semantical error: The if condition '"+ ifStatement.condition +"' is not logical."));
 		
-		ifStatement.ifBody.forEach( (stm) -> stm.accept(this, param));
-		ifStatement.elseBody.forEach( (stm) -> stm.accept(this, param));
+		for (Statement stm : ifStatement.ifBody) {
+			if((boolean) stm.accept(this, param))
+				ifBodyHasReturn = true;
+		}
+
+		for (Statement stm : ifStatement.elseBody) {
+			if((boolean) stm.accept(this, param))
+				elseBodyHasReturn = true;
+		}
 				
-		return null;
+		// Si en el ifBody hay return y en el elseBody hay return, el ifStatement tiene return
+		return ifBodyHasReturn && elseBodyHasReturn;
 	}
 	
 	@Override
@@ -102,7 +137,8 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		predicate(read.expression.getLValue(), read, 
 				"Semantical error: Read statements must receive an lValue expression.");
 		
-		return null;
+		// No tiene return
+		return false;
 	}
 	
 	@Override
@@ -129,7 +165,8 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 										+ "declared in the function definition: '" + functionReturnType +"'.") );
 		}
 		
-		return null;
+		// Es un return, así que tiene return
+		return true;
 	}
 
 	@Override
@@ -145,7 +182,8 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		
 		_while.body.forEach( (stm) -> stm.accept(this, param) );
 		
-		return null;
+		// No tiene return
+		return false;
 	}
 	
 	@Override
@@ -161,7 +199,8 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 		
 		doWhile.body.forEach( (stm) -> stm.accept(this, param) );
 		
-		return null;
+		// No tiene return
+		return false;
 	}
 	
 	@Override
@@ -191,7 +230,8 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 				
 		_for.body.forEach( (stm) -> stm.accept(this, param) );
 		
-		return null;
+		// No tiene return
+		return false;
 	}
 
 	@Override
@@ -204,7 +244,8 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 					"Semantical error: The write expression '"+ write.expression +"' is not valid. "
 						+ "Its type must be a simple type (char, int or real).") );	
 		
-		return null;
+		// No tiene return
+		return false;
 	}
 	
 	// Expressions
@@ -416,7 +457,8 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 					"Semantical error: The invocation of the function '" + invocation.function + "' "
 							+ "is not valid. The number of arguments or the type of those arguments isn't right.") );
 		
-		return null;
+		// No tiene return
+		return false;
 	}
 
 	@Override
@@ -438,7 +480,8 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 					"Semantical error: The type of this expression '" + preArithmetic.expression + "' "
 							+ "can't be used in a Pre Arithmetic element.") );
 		
-		return null;
+		// No tiene return
+		return false;
 	}
 
 	@Override
@@ -460,7 +503,8 @@ public class TypeCheckingVisitor extends AbstractVisitor {
 					"Semantical error: The type of this expression '" + postArithmetic.expression + "' "
 							+ "can't be used in a Post Arithmetic element.") );
 		
-		return null;
+		// No tiene return
+		return false;
 	}
 
 }

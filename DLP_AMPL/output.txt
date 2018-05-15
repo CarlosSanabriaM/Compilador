@@ -1,5 +1,5 @@
 
-#source	"test_files/ampliaciones/for/input.for.test.txt"
+#source	"test_files/ampliaciones/controlFlujo/input.controlFlujo.txt"
 
 	' * CharType c (offset 0)
 	#global	c:char
@@ -7,240 +7,93 @@
 	#global	i:int
 	' * RealType r (offset 3)
 	#global	r:real
-	' * RecordType[fields: [Field{name:charField, type:CharType, offset:0}, Field{name:intField, type:IntType, offset:1}, Field{name:realField, type:RealType, offset:3}]] s (offset 7)
-	#global	s:{
-		charField:char
-		intField:int
-		realField:real
-	}
 
 ' Invocation to the main function
 call main
 halt
 
 
-#line 14
+#line 6
 
- main:
-	#func	main
+ g:
+	#func	g
 	' * --- Parameters ---
 
 	#ret	void
 
 	' * --- Local variables ---
+
+	enter 0
+	ret	0, 0, 0
+
+#line 8
+
+ f:
+	#func	f
+	' * --- Parameters ---
+
+	#ret	int
+
+	' * --- Local variables ---
 	' * IntType a (offset -2)
 	#local	a:int
-	' * IntType b (offset -4)
-	#local	b:int
-	' * IntType c (offset -6)
-	#local	c:int
 
-	enter 6
+	enter 2
+
+#line 11
+	' * Invocation of function: g
+	call g
+
+#line 15
+	' * Do While
+
+ do_while1:
+
+#line 14
+	' * Return
+	pushi 1
+	ret	2, 2, 0
+	pushi 1
+	jnz do_while1
 
 #line 17
-	' * Assignment
-	push bp
-	pushi -2
-	addi
-	push bp
-	pushi -4
-	addi
-	push bp
-	pushi -6
-	addi
-	pushi 0
-	storei
-	push bp
-	pushi -6
-	addi
-	loadi
-	storei
-	push bp
-	pushi -4
-	addi
-	loadi
-	storei
+	' * While
 
-#line 19
+ while2:
+	pushi 1
+	jz end_while2
+	' * While body
+
+#line 18
+	' * Return
+	pushi 1
+	ret	2, 2, 0
+	jmp while2
+
+ end_while2:
+
+#line 21
 	' * For
 
-#line 19
+#line 21
 	' * Assignment
 	push bp
 	pushi -2
 	addi
 	pushi 1
-	storei
-
-#line 19
-	' * Assignment
-	push bp
-	pushi -4
-	addi
-	pushi 2
-	storei
-
- for1:
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 5
-	lti
-	jz end_for1
-	' * For body
-
-#line 20
-	' * Write
-	push bp
-	pushi -2
-	addi
-	loadi
-	outi
-
-#line 20
-	' * Write
-	pushb 32
-	outb
-
-#line 20
-	' * Write
-	push bp
-	pushi -4
-	addi
-	loadi
-	outi
-
-#line 20
-	' * Write
-	pushb 10
-	outb
-
-#line 19
-	' * Post Arithmetic
-	push bp
-	pushi -2
-	addi
-	loadi
-	push bp
-	pushi -2
-	addi
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 1
-	addi
-	storei
-	popi
-
-#line 19
-	' * Assignment
-	push bp
-	pushi -4
-	addi
-	push bp
-	pushi -4
-	addi
-	loadi
-	pushi 2
-	addi
-	storei
-	jmp for1
-
- end_for1:
-
-#line 22
-	' * For
-
-#line 22
-	' * Read
-	push bp
-	pushi -2
-	addi
-	ini
-	storei
-
-#line 22
-	' * Read
-	push bp
-	pushi -4
-	addi
-	ini
-	storei
-
- for2:
-	push bp
-	pushi -2
-	addi
-	loadi
-	push bp
-	pushi -4
-	addi
-	loadi
-	lti
-	jz end_for2
-	' * For body
-
-#line 23
-	' * Write
-	push bp
-	pushi -2
-	addi
-	loadi
-	outi
-
-#line 23
-	' * Write
-	pushb 10
-	outb
-
-#line 22
-	' * Read
-	push bp
-	pushi -2
-	addi
-	ini
-	storei
-	jmp for2
-
- end_for2:
-
-#line 25
-	' * For
-
-#line 25
-	' * Assignment
-	push bp
-	pushi -2
-	addi
-	pushi 0
 	storei
 
  for3:
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 2
-	lti
+	pushi 1
 	jz end_for3
 	' * For body
 
-#line 26
-	' * Write
-	push bp
-	pushi -2
-	addi
-	loadi
-	outi
+#line 22
+	' * Return
+	pushi 1
+	ret	2, 2, 0
 
-#line 26
-	' * Write
-	pushb 10
-	outb
-
-#line 25
+#line 21
 	' * Post Arithmetic
 	push bp
 	pushi -2
@@ -261,28 +114,33 @@ halt
 
  end_for3:
 
-#line 28
-	' * For
+#line 24
+	' * Return
+	pushi 1
+	ret	2, 2, 0
+
+#line 25
+	' * If
+	pushi 1
+	jz end_if4
+	' * If body
+
+#line 26
+	' * Return
+	pushi 1
+	ret	2, 2, 0
+
+ end_if4:
 
 #line 28
-	' * Assignment
+	' * Read
 	push bp
 	pushi -2
 	addi
-	pushi 0
+	ini
 	storei
 
- for4:
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 5
-	lti
-	jz end_for4
-	' * For body
-
-#line 29
+#line 30
 	' * Write
 	push bp
 	pushi -2
@@ -290,81 +148,69 @@ halt
 	loadi
 	outi
 
-#line 29
+#line 30
 	' * Write
 	pushb 10
 	outb
 
-#line 28
+#line 32
 	' * Assignment
 	push bp
 	pushi -2
 	addi
-	push bp
-	pushi -2
-	addi
-	loadi
 	pushi 2
-	addi
-	storei
-	jmp for4
-
- end_for4:
-
-#line 31
-	' * For
-
-#line 31
-	' * Assignment
-	push bp
-	pushi -2
-	addi
-	push bp
-	pushi -4
-	addi
-	loadi
 	storei
 
- for5:
+#line 34
+	' * Post Arithmetic
 	push bp
 	pushi -2
 	addi
 	loadi
-	pushi 2
-	modi
-	pushi 0
-	nei
-	jz end_for5
-	' * For body
-
-#line 32
-	' * Write
-	pushb 80
-	outb
-
-#line 32
-	' * Write
-	pushb 10
-	outb
-
-#line 33
-	' * Write
-	pushb 65
-	outb
-
-#line 33
-	' * Write
-	pushb 10
-	outb
-
-#line 31
-	' * Read
 	push bp
 	pushi -2
 	addi
-	ini
+	push bp
+	pushi -2
+	addi
+	loadi
+	pushi 1
+	addi
 	storei
-	jmp for5
+	popi
 
- end_for5:
-	ret	0, 6, 0
+#line 36
+	' * Pre Arithmetic
+	push bp
+	pushi -2
+	addi
+	push bp
+	pushi -2
+	addi
+	loadi
+	pushi 1
+	addi
+	storei
+	push bp
+	pushi -2
+	addi
+	loadi
+	popi
+
+#line 42
+
+ main:
+	#func	main
+	' * --- Parameters ---
+
+	#ret	void
+
+	' * --- Local variables ---
+
+	enter 0
+
+#line 44
+	' * Invocation of function: f
+	call f
+	popi
+	ret	0, 0, 0

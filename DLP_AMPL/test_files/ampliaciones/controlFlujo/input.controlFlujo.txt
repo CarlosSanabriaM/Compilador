@@ -1,0 +1,94 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+
+def l(): int{
+	return 1;
+	return 'a';
+}
+
+def m(): int{
+	return l();
+}
+
+def k(): int{
+	a: int;
+	if(a):{
+		if(a):{
+			return 1;
+		}else{
+			print a;
+			return 0;
+		}
+	}else{
+		print a;
+		return 0;
+	}
+}
+
+def j(): int{	# Doesn't have return
+	a: int;
+	if(a):{
+		if(a):{
+			return 1;
+		}
+	}else{
+		print a;
+		return 0;
+	}
+}
+
+def h(): int{
+	a: int;
+	if(a):{
+		return 1;
+	}else{
+		print a;
+		return 0;
+	}
+}
+
+def g():void{}
+
+def f(): int{	# Doesn't have return
+	a:int;
+	
+	g();
+
+	do:{
+		return 1;
+	}while 1;
+
+	while 1:{
+		return 1;
+	}
+
+	for(a=1; 1; a++):{
+		return 1;
+	}
+	
+	if(1):
+		return 1;
+	
+	input a;
+	
+	println a;
+	
+	a = 2;
+	
+	a++;
+	
+	++a;
+	
+	#return 1;
+}
+
+# Main function
+def main():void {
+  
+  f();
+  
+  #return 1;
+}

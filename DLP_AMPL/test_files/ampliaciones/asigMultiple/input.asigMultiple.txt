@@ -43,5 +43,5 @@ def checkAsigMultiple(): void{
 
 # Main function
 def main():void {
-  checkPromotesTo();
+  checkAsigMultiple();
 }

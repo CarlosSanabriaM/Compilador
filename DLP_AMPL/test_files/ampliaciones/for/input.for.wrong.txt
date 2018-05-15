@@ -16,7 +16,7 @@ def main():void {
 	a, b, c : int;
 	a = b = c = 0;
 
-	for(print 'a' ; 1.2 ; print 'b') :
+	for(a=2, print 'a',b ; 1.2 ; print 'b') :
 		println c++;
 
 }

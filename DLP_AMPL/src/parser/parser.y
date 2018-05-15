@@ -171,7 +171,6 @@ statements: statement												{List<Statement> statements = new LinkedList<St
 // ~~~~~~~~~~~ Tipos de sentencias ~~~~~~~~~~~
 statement: statement_without_semicolon ';'							{$$ = (List<Statement>) $1;}
 		| while														{$$ = asStatementList((Statement) $1);}
-		| do_while													{$$ = asStatementList((Statement) $1);}
 		| for														{$$ = asStatementList((Statement) $1);}
 		| if															{$$ = asStatementList((Statement) $1);}
 		;
@@ -190,7 +189,8 @@ statement_without_semicolon: assignment_as_expression					{$$ = asStatementList(
 							| pre_plus_plus_as_expression			{$$ = asStatementList((Statement) $1);}
 					        	| pre_minus_minus_as_expression			{$$ = asStatementList((Statement) $1);}
 					       	| post_plus_plus_as_expression			{$$ = asStatementList((Statement) $1);}
-					        	| post_minus_minus_as_expression			{$$ = asStatementList((Statement) $1);}				
+					        	| post_minus_minus_as_expression			{$$ = asStatementList((Statement) $1);}
+					        	| do_while								{$$ = asStatementList((Statement) $1);}				
 							;
 
 
@@ -302,14 +302,14 @@ while: WHILE expression ':' '{' statements '}'						{
 																	}
 	;
 	
-do_while: DO ':' '{' statements '}' WHILE expression ';'				{
+do_while: DO ':' '{' statements '}' WHILE expression					{
 																		List<Statement> body = new LinkedList<Statement>(); body.addAll((List<Statement>) $4);
 																		Expression expression = (Expression) $7;
 
 																		$$ = new DoWhile(expression.getLine(), expression.getColumn(), expression, body);
 																	}
 
-	| DO ':' statement WHILE expression ';'							{																		
+	| DO ':' statement WHILE expression								{																		
 																		List<Statement> body = new LinkedList<Statement>(); body.addAll((List<Statement>) $3);
 																		Expression expression = (Expression) $5;
 
@@ -336,7 +336,7 @@ for: FOR '(' for_parenthesis_body ')' ':' '{' statements '}'			{
 																	}
 	;
 	
-// Al usar statement_without_semicolon ya nos quitamos de en medio if, while, ...
+// Al usar statement_without_semicolon ya nos quitamos las sentencias que no terminan en ;
 for_parenthesis_body: statement_without_semicolon_1mcs ';' expression ';' statement_without_semicolon_1mcs
 																	{	
 																		$$ = new ForParenthesisBody((List<Statement>) $1, (Expression) $3, (List<Statement>) $5); 
@@ -403,13 +403,6 @@ return: RETURN {returnTempLine = scanner.getLine();} expression		{
 																		$$ = new Return(returnTempLine, scanner.getColumn(), (Expression) $3);
 																	}
 	;
-	
-
-// Auxiliar.  Entre los () va una secuencia de expresiones separadas por comas (QUE PUEDE SER VACIA). 
-// Necesitamos 0+cs. Hacemos que expressions sea opcional.
-parameters_in_function_call: 											{$$ = new LinkedList<Expression>();}
-							| expressions								{$$ = (List<Expression>) $1;}
-							;
 				
 // * +=, -=, *=, /= y %=				
 plus_equal: expression PLUS_EQUAL expression							{																		
@@ -483,6 +476,12 @@ function_call_as_expression: ID '(' parameters_in_function_call ')'  	{
 																		$$ = new Invocation(scanner.getLine(), scanner.getColumn(), function, (List<Expression>) $3);
 																	}
 						;
+						
+// Auxiliar.  Entre los () va una secuencia de expresiones separadas por comas (QUE PUEDE SER VACIA). 
+// Necesitamos 0+cs. Hacemos que expressions sea opcional.
+parameters_in_function_call: 											{$$ = new LinkedList<Expression>();}
+							| expressions								{$$ = (List<Expression>) $1;}
+							;
 						
 pre_plus_plus_as_expression: 	PLUS_PLUS expression		%prec PRE_ARITHMETIC		{$$ = new PreArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $2, "++");}
 pre_minus_minus_as_expression:	MINUS_MINUS expression	%prec PRE_ARITHMETIC		{$$ = new PreArithmetic(scanner.getLine(), scanner.getColumn(), (Expression) $2, "--");}
