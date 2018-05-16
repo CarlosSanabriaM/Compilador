@@ -1,0 +1,61 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+# Arrays
+v_c: [10]char;
+v_i: [10]int;
+v_r: [10]double;
+
+# Structs
+s: struct{
+	charField: char;
+	intField:  int;
+  	realField: double;
+};
+
+def f(r: double): void{}
+
+# Main program
+def main():void {
+	
+	# Errors
+	f(1.0 ? 7 : 6.0); 			# Condition isnt logical
+	f(s ? 7 : 6.0); 				# Condition isnt logical
+	f(v_c ? 7 : 6.0); 			# Condition isnt logical
+	f(v_i ? 7 : 6.0); 			# Condition isnt logical
+	f(v_r ? 7 : 6.0); 			# Condition isnt logical
+	
+	f(1 ? 'a' : s); 				# One of the types is wrong
+	f(1 ? 'a' : v_c); 			# One of the types is wrong
+	f(1 ? 'a' : v_i); 			# One of the types is wrong
+	f(1 ? 'a' : v_r); 			# One of the types is wrong
+	
+	f(1 ? 7 : s); 				# One of the types is wrong
+	f(1 ? 7 : v_c); 				# One of the types is wrong
+	f(1 ? 7 : v_i); 				# One of the types is wrong
+	f(1 ? 7 : v_r); 				# One of the types is wrong
+	
+	f(1 ? 7.0 : s); 				# One of the types is wrong
+	f(1 ? 7.0 : v_c); 			# One of the types is wrong
+	f(1 ? 7.0 : v_i); 			# One of the types is wrong
+	f(1 ? 7.0 : v_r); 			# One of the types is wrong
+	
+	f(1 ? s : s); 				# One of the types is wrong
+	f(1 ? s : v_c); 				# One of the types is wrong
+	f(1 ? s : v_i); 				# One of the types is wrong
+	f(1 ? s : v_r); 				# One of the types is wrong
+	
+	f(1 ? v_i : s); 				# One of the types is wrong
+	f(1 ? v_i : v_c); 			# One of the types is wrong
+	f(1 ? v_i : v_i); 			# One of the types is wrong
+	f(1 ? v_i : v_r); 			# One of the types is wrong
+	
+	i = 1 ? 7 : 1.0;				# Wrong assignment types
+	c = 1 ? 'a' : 1;				# Wrong assignment types
+	c = 1 ? 'a' : 1.0;			# Wrong assignment types
+	
+	
+	
+}

@@ -1,0 +1,81 @@
+package visitors;
+
+import java.util.ListIterator;
+
+import ast.definitions.FunDefinition;
+import ast.definitions.Scope;
+import ast.definitions.VarDefinition;
+import ast.types.FunctionType;
+import ast.types.RecordField;
+import ast.types.RecordType;
+
+public class OffsetVisitor extends AbstractVisitor {
+
+	private int numTotalBytesGlobalVars = 0;
+	private int numTotalBytesLocalVars = 0;
+
+	@Override
+	public Object visit(FunctionType functionType, Object param) {
+		// En lugar de visitar los parámetros, iteramos por ellos en orden inverso y les añadimos el offset
+		int numTotalBytesParamsAtItsRight = 0;
+		ListIterator<VarDefinition> iterator = functionType.param.listIterator(functionType.param.size());// iterador empieza al final de la lista
+		
+		while(iterator.hasPrevious()) {
+			VarDefinition actualParam = iterator.previous();
+			actualParam.offset = + 4 + numTotalBytesParamsAtItsRight; // BP + 4 + Σ(tam. param declarados a la dcha)
+			numTotalBytesParamsAtItsRight += actualParam.getType().numBytes();
+		}
+		
+		functionType.returnType.accept(this, param);
+		
+		// Guardamos el numero de bytes de los parametros en el tipo de la función, para usarlo en ExecuteCGVisitor
+		functionType.bytesParameters = numTotalBytesParamsAtItsRight;
+		
+		return null;
+	}
+	
+	@Override
+	public Object visit(FunDefinition funDefinition, Object param) {
+		numTotalBytesLocalVars = 0; // Se resetea a 0 al entrar en una función.
+		
+		funDefinition.getType().accept(this, param);
+		funDefinition.statements.forEach( (stm) -> stm.accept(this, param) );
+		
+		// Guardamos el numero de bytes de las vars. locales en la definición de la función, para usarlo en ExecuteCGVisitor
+		funDefinition.bytesLocalVariables = numTotalBytesLocalVars;
+
+		return null;
+	}
+
+	@Override
+	public Object visit(VarDefinition varDefinition, Object param) {
+		// Si es global
+		if(varDefinition.scope == Scope.GLOBAL) {
+			varDefinition.offset = numTotalBytesGlobalVars; // Σ(tam. vars. globales anteriores)			
+			numTotalBytesGlobalVars += varDefinition.getType().numBytes();			
+		}
+		// Si es local (los parámetros también tienen scope=1, pero no visitamos los parámetros, así que el scope es LOCAL)
+		else { // varDefinition.scope == Scope.LOCAL_OR_PARAM
+			numTotalBytesLocalVars += varDefinition.getType().numBytes();
+			varDefinition.offset = -numTotalBytesLocalVars; // BP + - Σ(tam. vars. locales anteriores, incluida la actual)
+		}
+		
+		varDefinition.getType().accept(this, param);
+		
+		return null;
+	}
+	
+	@Override
+	public Object visit(RecordType recordType, Object param) {
+		// En lugar de visitar los campos, iteramos por ellos
+		int numTotalBytesFields = 0;
+		
+		for (RecordField field : recordType.fields) {
+			field.offset = numTotalBytesFields;
+			numTotalBytesFields += field.getType().numBytes();
+		}
+			
+		return null;
+	}
+	
+}

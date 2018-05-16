@@ -1,0 +1,27 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+# Main program
+def main():void {
+	
+	c = 'a';
+	
+	do :
+		println c++;
+	while c < 100;
+		
+	do : {
+		println ++c;
+		println c++;		
+	} while  c < 110;
+	
+"""
+	# Errors
+	do :
+		println c++;
+	while 1.0;
+"""
+
+}

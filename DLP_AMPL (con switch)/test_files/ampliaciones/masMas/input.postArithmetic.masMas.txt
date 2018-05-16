@@ -1,0 +1,94 @@
+# Main program
+def main():void {
+	# Variables
+	c: char;
+	i: int;
+	d: double;
+	v_i: [10]int;
+	s: struct{
+		charField: char;
+		intField:  int;
+	  	realField: double;
+	};
+	
+	# ---- Char ----
+	c = 'a';
+	print c, '\n'; 		# a
+	
+	c++;					# c = b
+	print c, '\n';		# b
+	
+	print c++, '\n';		# b y c = c
+	print c, '\n';		# c
+	
+	c++;					# c = d
+	print -c++, '\n';	# -100 y c = e
+	print c, '\n';		# e
+	
+	
+	# ---- Int ----
+	print '\n', '\n';
+	
+	i = 1;
+	print i, '\n'; 		# 1
+	
+	i++;					# i = 2
+	print i, '\n';		# 2
+	
+	print i++, '\n';		# 2 y i = 3
+	print i, '\n';		# 3
+	
+	i++;					# i = 4
+	print -i++, '\n';	# -4 y i = 5
+	print i, '\n';		# 5
+	
+	
+	# ---- Real ----
+	print '\n', '\n';
+	
+	d = 1.5;
+	print d, '\n'; 		# 1.5
+	
+	d++;					# d = 2.5
+	print d, '\n';		# 2.5
+	
+	print d++, '\n';		# 2.5 y d = 3.5
+	print d, '\n';		# 3.5
+	
+	d++;					# d = 4.5
+	print -d++, '\n';	# -4.5 y d = 5.5
+	print d, '\n';		# 5.5
+	
+	# ---- Int Array ----
+	print '\n', '\n';
+	
+	v_i[0] = 1;
+	print v_i[0], '\n'; 		# 1
+	
+	v_i[0]++;				# v_i[0] = 2
+	print v_i[0], '\n';		# 2
+	
+	print v_i[0]++, '\n';	# 2 y v_i[0] = 3
+	print v_i[0], '\n';		# 3
+	
+	v_i[0]++;				# v_i[0] = 4
+	print -v_i[0]++, '\n';	# -4 y v_i[0] = 5
+	print v_i[0], '\n';		# 5
+	
+	# ---- Int Struct ----
+	print '\n', '\n';
+	
+	s.intField = 1;
+	print s.intField, '\n'; 		# 1
+	
+	s.intField++;				# s.intField = 2
+	print s.intField, '\n';		# 2
+	
+	print s.intField++, '\n';	# 2 y s.intField = 3
+	print s.intField, '\n';		# 3
+	
+	s.intField++;				# s.intField = 4
+	print -s.intField++, '\n';	# -4 y s.intField = 5
+	print s.intField, '\n';		# 5
+	
+}

@@ -1,0 +1,55 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+# Arrays
+v_c: [10]char;
+v_i: [10]int;
+v_r: [10]double;
+
+# Structs
+s: struct{
+	charField: char;
+	intField:  int;
+  	realField: double;
+};
+
+def checkPromotesTo(): void{
+	r = 'c';	
+	r = 	1;	
+	r = 1.5;
+	
+	i = 'c';	
+	i = 	1;	
+#	i = 1.5;		# Error
+	
+	c = 'c';			
+#	c = 	1;		# Error
+#	c = 1.5;		# Error
+
+"""	
+	r = v_c;		# Error
+	r = v_i;		# Error
+	r = v_r;		# Error
+	r = s;		# Error
+
+	s = 'a';		# Error
+	s = 1;		# Error
+	s = 1.5;		# Error
+
+	v_i = 'a';	# Error
+	v_i = 1;		# Error
+	v_i = 1.5;	# Error
+	
+	s = s;		# Error
+	v_c = v_c;	# Error
+	v_i = v_i;	# Error
+	v_r = v_r;	# Error
+"""	
+}	
+
+# Main function
+def main():void {
+  checkPromotesTo();
+}

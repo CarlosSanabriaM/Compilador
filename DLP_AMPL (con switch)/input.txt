@@ -1,0 +1,35 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+def f(): int{
+	a:int;
+	a = 0;
+
+	do:{
+		println 'a';		# Imprime 'a' una vez
+	}while 1;
+
+	while 1:{
+		println ++i;		# Imprime '1' una vez
+	}
+
+	for(a=1; 1; a++):{
+		a += 2;
+		println a;		# Imprime '3' una vez
+	}
+	
+	while 1:{
+		while 1:{
+			println ++i;		# Imprime '1' una vez 
+		}
+	}
+	
+	return 0;
+}
+
+# Main function
+def main():void {
+  f();
+}

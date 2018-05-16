@@ -1,0 +1,1 @@
+mono --arch=32 ./mapl/GVM.exe output.txt

@@ -1,9 +1,0 @@
-# Main program
-def main():void {
-	i:int;
-
-	i = -5;
-	print i;
-	i = -i;
-	print i;
-}

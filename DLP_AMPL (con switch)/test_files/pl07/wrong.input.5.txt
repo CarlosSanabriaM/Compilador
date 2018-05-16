@@ -1,0 +1,26 @@
+integer:int;
+character:char;
+
+h:char;
+
+def f():void{}
+def f():void{}
+def h():void{}
+
+def k():void{}
+k:char;
+
+def j(h: double):void{
+	h: char;
+}
+
+def main():void {
+  character:double;
+  h: char;
+  f: char;
+   
+  input integer;   # Error   
+  f();                # Error 
+  g();                # Error 
+  a = b + 1 - funcion_2() + k() - j() * j(12,212);
+}

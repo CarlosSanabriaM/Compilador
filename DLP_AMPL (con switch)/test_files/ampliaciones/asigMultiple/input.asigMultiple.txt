@@ -1,0 +1,47 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+# Arrays
+v_c: [10]char;
+v_i: [10]int;
+v_r: [10]double;
+
+# Structs
+s: struct{
+	charField: char;
+	intField:  int;
+  	realField: double;
+};
+
+def f(i: int): void{}
+
+def checkAsigMultiple(): void{
+	
+	a, b: int;
+	
+	i = 1;	
+	a = b = i;
+	a = b = i = 100;
+	r = i = c = 'a';
+	i = c = 'a';
+	c = 'a';
+	
+	i = a = 10 - 6;
+	i = (a = 10) - 6;
+	i = (a = b) - 6;
+	i = (a = b = c) - 6;
+	
+	f(i = 100);
+	f(i = b);
+	f(i = b = c);
+	
+	i = i = c = c;
+
+}	
+
+# Main function
+def main():void {
+  checkAsigMultiple();
+}

@@ -1,0 +1,42 @@
+# Lvalue required
+
+def main():void {
+	i:int;	
+	
+	""" Read statement """
+	
+	input i; 		# Correct
+	input v[i]; 		# Correct
+	input v.campo; 	# Correct
+	
+
+	input !i; 		# Error
+	input -i; 		# Error
+	input .25; 		# Error
+	input 100; 		# Error
+	input 'a'; 		# Error
+	input i && i; 	# Error
+	input i + 2;		# Error
+	input i > 2; 	# Error
+	input (int) i; 	# Error
+	input f(1,3); 	# Error
+	
+	
+	""" Assignment statement """
+	i = right; 			# Correct
+	v[i] = right; 		# Correct
+	v.campo = right;		# Correct
+	
+	
+	!i = right; 			# Error
+	-i = right; 			# Error
+	.25 = right; 		# Error
+	100 = right; 		# Error
+	'a' = right; 		# Error
+	i && i = right; 		# Error
+	i + 2 = right;		# Error
+	i > 2 = right; 		# Error
+	(int) i = right;		# Error
+	f(1,3) = right; 		# Error
+	
+}

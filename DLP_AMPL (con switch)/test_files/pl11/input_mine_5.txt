@@ -1,0 +1,19 @@
+s: struct{
+	charField: char;
+	intField:  int;
+  	realField: double;
+};
+
+# Main program
+def main():void {
+	
+	s.charField = 'a';	
+	s.intField = 100;	
+	s.realField = 9.9;	
+	
+	print s.charField, '\n';	
+	print s.intField, '\n';
+	print s.realField, '\n';
+	
+}
+	

@@ -1,0 +1,43 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+# Main program
+def main():void {
+	
+	println 1 ^^ 1;			# 0
+	println 1 ^^ 0;			# 1
+	println 0 ^^ 1;			# 1
+	println 0 ^^ 0; 			# 0
+	
+	println ' ';
+	
+	println (1 || 1) ^^ 1;	# 0
+	println (1 || 0) ^^ 1;	# 0
+	println (0 || 1) ^^ 1;	# 0
+	println (0 || 0) ^^ 1;	# 1
+	
+	println ' ';
+	
+	println (1 && 1) ^^ 1;	# 0
+	println (1 && 0) ^^ 1;	# 1
+	println (0 && 1) ^^ 1;	# 1
+	println (0 && 0) ^^ 1;	# 1
+	
+	println ' ';
+	
+	println 1 ^^ (1 || 1);	# 0
+	println 1 ^^ (1 || 0);	# 0
+	println 1 ^^ (0 || 1);	# 0
+	println 1 ^^ (0 || 0);	# 1
+	
+	println ' ';
+	
+	println 1 ^^ (1 && 1);	# 0
+	println 1 ^^ (1 && 0);	# 1
+	println 1 ^^ (0 && 1);	# 1
+	println 1 ^^ (0 && 0);	# 1
+	
+	
+}

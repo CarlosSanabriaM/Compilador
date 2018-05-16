@@ -1,0 +1,52 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+# Arrays
+v_c: [10]char;
+v_i: [10]int;
+v_r: [10]double;
+
+# Structs
+s: struct{
+	charField: char;
+	intField:  int;
+  	realField: double;
+};
+
+# Not Errors
+def f_void(): void{}
+
+def f_char_return_char(): char{ return c; }
+
+def f_int_return_char():  int{ return c; }
+def f_int_return_int():  int{ return i; }
+
+def f_real_return_char(): double{ return c; }
+def f_real_return_int(): double{ return i; }
+def f_real_return_real(): double{ return r; }
+
+# Errors
+def f_void_return_array(): void{ return v_c; }
+def f_void_return_struct(): void{ return s; }
+def f_char_return_array(): char{ return v_c; }
+def f_char_return_struct(): char{ return s; }
+def f_int_return_array(): int{ return v_c; }
+def f_int_return_struct(): int{ return s; }
+def f_real_return_array(): double{ return v_c; }
+def f_real_return_struct(): double{ return s; }
+
+def f_void_return_char(): void{ return c; }
+def f_void_return_int(): void{ return i; }
+def f_void_return_real(): void{ return r; }
+
+def f_char_return_int(): char{ return i; }
+def f_char_return_real(): char{ return r; }
+
+def f_int_return_real():  int{ return r; }
+
+# Main function
+def main():void {
+  
+}

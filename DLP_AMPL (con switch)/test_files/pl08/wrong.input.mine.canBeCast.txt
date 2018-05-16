@@ -1,0 +1,71 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+# Arrays
+v_c: [10]char;
+v_i: [10]int;
+v_r: [10]double;
+
+# Structs
+s: struct{
+	charField: char;
+	intField:  int;
+  	realField: double;
+};
+
+# Functions
+def f_void(): void{}
+def f_char(): char{ return 'c';}
+def f_int():  int{ return 1;}
+def f_real(): double{ return 1.0; }
+
+def checkCanBeCast(): void{
+	r = (double) 'c';	
+	r = (double) 1;	
+	r = (double) 1.5;
+	
+	i = (int) 'c';	
+	i = (int) 1;	
+	i = (int) 1.5;
+	
+	c = (char) 'c';			
+	c = (char) 1;
+	c = (char) 1.5;
+	
+	r = (double) f_real();
+	r = (double) f_int();
+	r = (double) f_char();
+	
+	# Casts implicitos
+	i = '1';
+	r = '1';
+	r = 1;
+
+"""
+	# Errors
+	r = (char) s;	# Error
+	r = (double) s;	# Error
+	r = (int) s;		# Error
+
+	r = (char) v_i;		# Error
+	r = (double) v_i;	# Error
+	r = (int) v_i;		# Error
+	
+#	r = (v_i) v_i;		# Error sintactico
+#	r = (v_r) v_i;		# Error sintactico
+#	r = (v_c) v_i;		# Error	sintactico
+
+	r = (double) f_void(); # Error
+
+	c = (double) f_char(); # Error de asignacion
+"""
+
+	f_void();
+}	
+
+# Main function
+def main():void {
+  checkCanBeCast();
+}

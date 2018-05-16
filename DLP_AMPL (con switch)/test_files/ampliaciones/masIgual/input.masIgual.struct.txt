@@ -1,0 +1,42 @@
+# Main program
+def main():void {
+
+	i:struct { 
+	  integer:int;
+	  character:char;
+	};
+	
+	i.integer = 1;
+	print i.integer, '\n';
+	
+	i.integer += 4;
+	print i.integer, '\n';
+	
+	i.integer -= 3;
+	print i.integer, '\n';
+	
+	i.integer *= 5;
+	print i.integer, '\n';
+	
+	i.integer /= 5;
+	print i.integer, '\n';
+	
+	i.integer *= 6;
+	print i.integer, '\n';
+	
+	i.integer /= 4;
+	print i.integer, '\n';
+	
+	i.integer %= 2;
+	print i.integer, '\n';
+	
+	i.integer *= 6;
+	print i.integer, '\n';
+	
+	i.integer /= 4;
+	print i.integer, '\n';
+}
+
+"""
+	1	5	2	10	2	12	3	1	6	1
+"""

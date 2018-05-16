@@ -1,0 +1,55 @@
+# Main program
+def main():void {
+	c: char;
+	i: int;
+	d: double;
+	
+	# ---- Char ----
+	c = 'a';
+	print c, '\n'; 		# a
+	
+	++c;					# c = b
+	print c, '\n';		# b
+	
+	print ++c, '\n';		# c y c = c
+	print c, '\n';		# c
+	
+	++c;					# c = d
+	print ++c, '\n';		# e y c = e
+	print c, '\n';		# e
+	
+	
+	# ---- Int ----
+	print '\n', '\n';
+	
+	i = 1;
+	print i, '\n'; 		# 1
+	
+	++i;					# i = 2
+	print i, '\n';		# 2
+	
+	print ++i, '\n';		# 3 y i = 3
+	print i, '\n';		# 3
+	
+	++i;					# i = 4
+	print ++i, '\n';		# 5 y i = 5
+	print i, '\n';		# 5
+	
+	
+	# ---- Real ----
+	print '\n', '\n';
+	
+	d = 1.5;
+	print d, '\n'; 		# 1.5
+	
+	++d;					# d = 2.5
+	print d, '\n';		# 2.5
+	
+	print ++d, '\n';		# 3.5 y d = 3.5
+	print d, '\n';		# 3.5
+	
+	++d;					# d = 4.5
+	print ++d, '\n';		# 5.5 y d = 5.5
+	print d, '\n';		# 5.5
+	
+}

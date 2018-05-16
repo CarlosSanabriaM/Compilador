@@ -1,0 +1,20 @@
+v:[10]double;
+
+# Main program
+def main():void {
+	
+	a: int;
+	a = 1;
+	
+	if a % 2 == 0:
+		print 'p','a', 'r', '\n';
+	else
+		print 'i','m','p','a', 'r', '\n';
+	
+	while a <= 5: {
+		print a , '\n';
+		a = a + 1;
+	}	
+	
+}
+	

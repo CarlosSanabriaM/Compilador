@@ -1,0 +1,42 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+# Arrays
+v_c: [10]char;
+v_i: [10]int;
+v_r: [10]double;
+
+# Structs
+s: struct{
+	charField: char;
+	intField:  int;
+  	realField: double;
+};
+
+def checkDot(): void{
+	input s.charField;
+	input s.intField;	
+	input s.realField;
+
+"""
+	# Errors	
+#	input 'a'.charField;	# Error
+#	input 1.charField;	# Error
+#	input 1.5.charField;	# Error
+
+	input c.charField;	# Error
+	input i.charField;	# Error	
+	input r.charField;	# Error
+	
+	input s.notExistsField;	#Error
+	
+	input v_i.charField; 	#Error
+"""
+}	
+
+# Main function
+def main():void {
+  checkDot();
+}

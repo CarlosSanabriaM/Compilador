@@ -1,0 +1,23 @@
+# Main program
+def main():void {
+
+	# Sin println
+	print 'h', 'o', 'l', 'a';
+
+	print 'h', 'o', 'l', 'a', '\n';
+	
+	print 'h', 'o', 'l', 'a';
+	
+	# Con println
+	println 'h', 'o', 'l', 'a';
+
+	println 'h', 'o', 'l', 'a';
+	
+	println '1';
+	println '2';
+	println '3';
+	println '4';
+	
+	println ' ';
+	println '5';
+}

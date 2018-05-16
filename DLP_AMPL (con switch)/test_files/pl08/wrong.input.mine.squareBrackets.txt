@@ -1,0 +1,45 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+# Arrays
+v_c: [21]char;
+v_i: [21]int;
+v_r: [21]double;
+
+# Structs
+s: struct{
+	charField: char;
+	intField:  int;
+  	realField: double;
+};
+
+def checkSquareBrackets(): void{
+	v_c[20] = 'a';
+	v_i[20] = 1;
+	v_r[20] = .4;
+	
+	r = v_c[20];
+	r = v_i[20];
+	r = v_r[20];
+
+	r = v_r['a' - 77];
+	
+"""
+	r = v_c[f_void()];	# Error (bad index)
+	r = v_i[4.5];		# Error (bad index)
+	r = v_r[f_real()];	# Error (bad index)
+	
+	r = c[20];			# Error (not array)
+	r = i[20];			# Error (not array)
+	r = r[20];			# Error (not array)
+	
+	r = notArray[20];	# Error (not defined)
+"""
+}
+
+# Main function
+def main():void {
+	checkSquareBrackets();
+}

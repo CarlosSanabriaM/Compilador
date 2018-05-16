@@ -1,0 +1,48 @@
+# Simple Types
+c: char;
+i, j: int;
+r: double;
+
+def f(): int{
+
+	a:int;
+	a = i = 0;
+
+	do:{
+		println 'a';		# Imprime 'a' una vez
+		if 1: break;
+		println 'M', 'A', 'L';
+	}while 1;
+
+
+	while 1:{
+		println ++i;		# Imprime '1' una vez
+		if 1: break;
+		println 'M', 'A', 'L'; 
+	}
+
+	for(a=1; 1; a++):{
+		a += 2;
+		println a;		# Imprime '3' una vez
+		if 1: break;
+		println 'M', 'A', 'L';
+	}
+	
+	while 1:{
+		while 1:{
+			println ++i;		# Imprime '2' una vez
+			if 1: break;
+			println 'M', 'A', 'L';
+		}
+		if 1: break;
+		println 'M', 'A', 'L';
+	}
+
+	return 0;
+		
+}
+
+# Main function
+def main():void {
+  f();
+}
