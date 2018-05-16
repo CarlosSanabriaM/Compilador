@@ -39,6 +39,8 @@ import ast.types.*;
 %nonassoc MENOR_QUE_ELSE
 %nonassoc ELSE
 
+%nonassoc MENOR_QUE_PARENTESIS
+
 // Igual es siempre el que menos prioridad tiene
 %right '='
 
@@ -53,7 +55,7 @@ import ast.types.*;
 %nonassoc '[' ']'
 
 // Parentesis es siempre el que mas prioridad tiene
-%nonassoc PARENTESIS
+%nonassoc '(' ')'
 
 %%
 // * Gramática y acciones Yacc
@@ -156,17 +158,21 @@ statements: statement												{List<Statement> statements = new LinkedList<St
 		| statements statement										{List<Statement> statements = (List<Statement>) $1; statements.addAll((List<Statement>) $2); $$ = statements;}
 		;
 
-// Tipos de sentencias		
-statement: assignment												{$$ = (List<Statement>) $1;}
-		| function_call_as_statement									{$$ = (List<Statement>) $1;}
-		| return														{$$ = (List<Statement>) $1;}
-		| while														{$$ = (List<Statement>) $1;}
-		| if															{$$ = (List<Statement>) $1;}
-		| read														{$$ = (List<Statement>) $1;}
-		| write														{$$ = (List<Statement>) $1;}
+// ~~~~~~~~~~~ Tipos de sentencias ~~~~~~~~~~~	
+statement: statement_without_semicolon ';'							{$$ = (List<Statement>) $1;} 
+		| while														{$$ = asStatementList((Statement) $1);}
+		| if															{$$ = asStatementList((Statement) $1);}
 		;
 
-// Tipos		
+// ~~~~~ Sentencias que llevan ';', pero aún no lo tienen ~~~~~
+statement_without_semicolon: function_call_as_expression				{$$ = asStatementList((Statement) $1);}
+							| return									{$$ = asStatementList((Statement) $1);}
+							| assignment								{$$ = asStatementList((Statement) $1);}
+							| read									{$$ = (List<Statement>) $1;} 			// Read  ya devuelve una lista
+							| write									{$$ = (List<Statement>) $1;} 			// Write ya devuelve una lista
+							;
+
+// ~~~~~~~~~~~ Tipos ~~~~~~~~~~~		
 type: simple_type													{$$ = (Type) $1;}
 	| array															{$$ = (Type) $1;}
 	| struct															{$$ = (Type) $1;}			
@@ -214,13 +220,12 @@ struct_body: variable_definition 									{
 		;
 
 // ########### Sentencias (Statements)  ########### 
-assignment: expression '=' expression ';'							{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
-																		Assignment assignment = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, (Expression) $3);
-  																		$$ = asStatementList(assignment);
+assignment: expression '=' expression								{																		
+																		$$ = new Assignment(scanner.getLine(), scanner.getColumn(), (Expression) $1, (Expression) $3);
 																	}
 		;
 		
-read: INPUT expressions ';'											{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
+read: INPUT expressions												{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
 																		List<Statement> statements = new LinkedList<Statement>();
 																		
 																		List<Expression> expressions = (List<Expression>) $2;
@@ -231,7 +236,7 @@ read: INPUT expressions ';'											{	// statement se espera una lista (hay qu
 																	}
 	;
 	
-write: PRINT {writeTempLine = scanner.getLine();} expressions ';'		{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
+write: PRINT {writeTempLine = scanner.getLine();} expressions			{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
 																		List<Statement> statements = new LinkedList<Statement>();
 																		
 																		List<Expression> expressions = (List<Expression>) $3;
@@ -248,107 +253,79 @@ expressions: expression												{List<Expression> expressions = new LinkedLis
 		;
 
 
-while: WHILE expression ':' '{' statements '}'						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
+while: WHILE expression ':' '{' statements '}'						{
 																		List<Statement> body = new LinkedList<Statement>(); body.addAll((List<Statement>) $5);
 																		Expression expression = (Expression) $2;
 
-																		While _while = new While(expression.getLine(), expression.getColumn(), expression, body);
-  																		$$ = asStatementList(_while);
+																		$$ = new While(expression.getLine(), expression.getColumn(), expression, body);
 																	}
 
-	| WHILE expression ':' statement									{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+	| WHILE expression ':' statement									{																			
 																		List<Statement> body = new LinkedList<Statement>(); body.addAll((List<Statement>) $4);
 																		Expression expression = (Expression) $2;
 
-																		While _while = new While(expression.getLine(), expression.getColumn(), expression, body);
-  																		$$ = asStatementList(_while);
+																		$$ = new While(expression.getLine(), expression.getColumn(), expression, body);
 																	}
 	;
 
 	
-if: IF expression ':' '{' statements '}' 	%prec MENOR_QUE_ELSE		{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+if: IF expression ':' '{' statements '}' 	%prec MENOR_QUE_ELSE		{																			
 																		List<Statement> ifBody = new LinkedList<Statement>(); ifBody.addAll((List<Statement>) $5);
   																		List<Statement> elseBody = new LinkedList<Statement>();
   																		Expression expression = (Expression) $2;
 
-																		IfStatement ifStatement = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody);
-  																		$$ = asStatementList(ifStatement);
+																		$$ = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody);
   																	}
 
-  | IF expression ':' '{' statements '}' ELSE '{' statements '}'		{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
+  | IF expression ':' '{' statements '}' ELSE '{' statements '}'		{	
 																		List<Statement> ifBody = new LinkedList<Statement>(); ifBody.addAll((List<Statement>) $5);
   																		List<Statement> elseBody = new LinkedList<Statement>(); elseBody.addAll((List<Statement>) $9);
   																		Expression expression = (Expression) $2;
 																		
-																		IfStatement ifStatement = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody);
-  																		$$ = asStatementList(ifStatement);
+																		$$ = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody);
   																	}
   
-  | IF expression ':' '{' statements '}' ELSE statement				{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+  | IF expression ':' '{' statements '}' ELSE statement				{																			
 																		List<Statement> ifBody = new LinkedList<Statement>(); ifBody.addAll((List<Statement>) $5);
   																		List<Statement> elseBody = new LinkedList<Statement>(); elseBody.addAll((List<Statement>) $8);
   																		Expression expression = (Expression) $2;
 
-																		IfStatement ifStatement = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody);
-  																		$$ = asStatementList(ifStatement);
+																		$$ = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody);
   																	}
   
-  | IF expression ':' statement				%prec MENOR_QUE_ELSE		{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)
+  | IF expression ':' statement				%prec MENOR_QUE_ELSE		{	
 																		List<Statement> ifBody = new LinkedList<Statement>(); ifBody.addAll((List<Statement>) $4);
   																		List<Statement> elseBody = new LinkedList<Statement>();
   																		Expression expression = (Expression) $2;
 																		
-																		IfStatement ifStatement = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody);
-  																		$$ = asStatementList(ifStatement);
+																		$$ = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody);
   																	}
   																		
-  | IF expression ':' statement ELSE '{' statements '}'				{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+  | IF expression ':' statement ELSE '{' statements '}'				{																			
   																		List<Statement> ifBody = new LinkedList<Statement>(); ifBody.addAll((List<Statement>) $4);
   																		List<Statement> elseBody = new LinkedList<Statement>(); elseBody.addAll((List<Statement>) $7);
   																		Expression expression = (Expression) $2;
 																		
-																		IfStatement ifStatement = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody); 
-  																		$$ = asStatementList(ifStatement);
+																		$$ = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody);
   																	}
   																		
-  | IF expression ':' statement ELSE statement						{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
+  | IF expression ':' statement ELSE statement						{																			
   																		List<Statement> ifBody = new LinkedList<Statement>(); ifBody.addAll((List<Statement>) $4);
   																		List<Statement> elseBody = new LinkedList<Statement>(); elseBody.addAll((List<Statement>) $6);
   																		Expression expression = (Expression) $2;
 																		
-																		IfStatement ifStatement = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody);
-																		$$ = asStatementList(ifStatement);
+																		$$ = new IfStatement(expression.getLine(), expression.getColumn(), expression, ifBody, elseBody);
 																	}
   ;
 
 
-return: RETURN {returnTempLine = scanner.getLine();} expression ';'	{	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
-																		Return _return = new Return(returnTempLine, scanner.getColumn(), (Expression) $3);
-																		$$ = asStatementList(_return);
+return: RETURN {returnTempLine = scanner.getLine();} expression		{																		
+																		$$ = new Return(returnTempLine, scanner.getColumn(), (Expression) $3);
 																	}
 	;
-	
-
-// Auxiliar.  Entre los () va una secuencia de expresiones separadas por comas (QUE PUEDE SER VACIA). 
-// Necesitamos 0+cs. Hacemos que expressions sea opcional.
-parameters_in_function_call: 											{$$ = new LinkedList<Expression>();}
-						| expressions								{$$ = (List<Expression>) $1;}
-						;
-		
-function_call_as_statement: ID '(' parameters_in_function_call ')' ';' {	// statement se espera una lista (hay que meterlo en una lista aunque sea un solo elemento)																		
-																		Variable function = new Variable(scanner.getLine(), scanner.getColumn(), (String) $1);
-																		Invocation invocation = new Invocation(scanner.getLine(), scanner.getColumn(), function, (List<Expression>) $3); 
-																		$$ = asStatementList(invocation);	 
-																	}
-						; 
+							
 
 // ########### Expresiones (Expressions)  ###########
-
-function_call_as_expression: ID '(' parameters_in_function_call ')'  	{	
-																		Variable function = new Variable(scanner.getLine(), scanner.getColumn(), (String) $1);
-																		$$ = new Invocation(scanner.getLine(), scanner.getColumn(), function, (List<Expression>) $3);
-																	}
-						;
  
 expression: expression AND expression								{$$ = new Logical(scanner.getLine(), scanner.getColumn(), (Expression) $1, (String) $2, (Expression) $3);}
 		 | expression OR expression									{$$ = new Logical(scanner.getLine(), scanner.getColumn(), (Expression) $1, (String) $2, (Expression) $3);}
@@ -368,15 +345,27 @@ expression: expression AND expression								{$$ = new Logical(scanner.getLine()
          | '(' simple_type ')' expression 	%prec CAST				{$$ = new Cast(scanner.getLine(), scanner.getColumn(), (Type) $2, (Expression) $4);}
          | expression '.' ID											{$$ = new FieldAccess(scanner.getLine(), scanner.getColumn(), (Expression) $1, (String) $3);}
          | expression '[' expression ']'								{$$ = new Indexing(scanner.getLine(), scanner.getColumn(), (Expression) $1, (Expression) $3);}
-         | '(' expression ')' 				%prec PARENTESIS       	{$$ = (Expression) $2;}
+         | '(' expression ')' 								       	{$$ = (Expression) $2;}
          | function_call_as_expression								{$$ = (Invocation) $1;}
          | INT_CONSTANT												{$$ = new IntLiteral(scanner.getLine(), scanner.getColumn(), (int) $1);}
          | REAL_CONSTANT												{$$ = new RealLiteral(scanner.getLine(), scanner.getColumn(), (double) $1);}
          | CHAR_CONSTANT												{$$ = new CharLiteral(scanner.getLine(), scanner.getColumn(), (char) $1);}
-         | ID														{$$ = new Variable(scanner.getLine(), scanner.getColumn(), (String) $1);}
+         | ID					%prec MENOR_QUE_PARENTESIS			{$$ = new Variable(scanner.getLine(), scanner.getColumn(), (String) $1);}
          ;
           
-         
+function_call_as_expression: ID '(' parameters_in_function_call ')'  	{	
+																		Variable function = new Variable(scanner.getLine(), scanner.getColumn(), (String) $1);
+																		$$ = new Invocation(scanner.getLine(), scanner.getColumn(), function, (List<Expression>) $3);
+																	}
+						;
+						
+// Auxiliar.  Entre los () va una secuencia de expresiones separadas por comas (QUE PUEDE SER VACIA). 
+// Necesitamos 0+cs. Hacemos que expressions sea opcional.
+parameters_in_function_call: 										{$$ = new LinkedList<Expression>();}
+							| expressions							{$$ = (List<Expression>) $1;}
+							;
+          
+          
 %%
 
 // * Código Java

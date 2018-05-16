@@ -1,0 +1,62 @@
+# Simple Types
+c: char;
+i: int;
+r: double;
+
+# Arrays
+v_c: [10]char;
+v_i: [10]int;
+v_r: [10]double;
+
+# Structs
+s: struct{
+	charField: char;
+	intField:  int;
+  	realField: double;
+};
+
+# Functions
+def f_void(): void{}
+def f_char(): char{ return 'c';}
+def f_int():  int{ return 1;}
+def f_real(): double{return 1.0;}
+
+def checkUnaryMinus(): void{
+	v_i[0] = 100;
+	v_c[0] = 'b';
+	v_r[0] = .99;
+	
+	s.charField = 'l';
+	s.intField = 3;
+	s.realField = .68;
+	
+	print -'a', '\n';
+	print -4, '\n';
+	print -4.5, '\n';
+	
+	print -f_char(), '\n';
+	print -f_int(), '\n';
+	print -f_real(), '\n';	
+
+	print -v_c[0], '\n';
+	print -v_i[0], '\n';		
+	print -v_r[0], '\n';
+		
+	print -s.charField, '\n';	
+	print -s.intField, '\n';	
+	print -s.realField, '\n';
+		
+"""	
+	# Errors
+	i = -v_c;		# Error (double cant be used in logical)
+	i = -s;	# Error (double cant be used in logical)
+"""
+
+	f_void();
+	f_real();
+}
+
+# Main function
+def main():void {
+	checkUnaryMinus();
+}

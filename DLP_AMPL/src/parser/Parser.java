@@ -1133,7 +1133,7 @@ private List<Statement> asStatementList(Statement statement){
 	return list;
 }
 
-// Variables temporales para detectar bien los numeros de linea
+// * Variables temporales para detectar bien los numeros de linea
 int funDefTempLine;
 int writeTempLine;
 int returnTempLine;

@@ -1,203 +1,13 @@
 
-#source	"test_files/ampliaciones/controlFlujo/input.controlFlujo.txt"
+#source	"input2.txt"
 
-	' * CharType c (offset 0)
-	#global	c:char
-	' * IntType i (offset 1)
-	#global	i:int
-	' * RealType r (offset 3)
-	#global	r:real
 
 ' Invocation to the main function
 call main
 halt
 
 
-#line 6
-
- g:
-	#func	g
-	' * --- Parameters ---
-
-	#ret	void
-
-	' * --- Local variables ---
-
-	enter 0
-	ret	0, 0, 0
-
-#line 8
-
- f:
-	#func	f
-	' * --- Parameters ---
-
-	#ret	int
-
-	' * --- Local variables ---
-	' * IntType a (offset -2)
-	#local	a:int
-
-	enter 2
-
-#line 11
-	' * Invocation of function: g
-	call g
-
-#line 15
-	' * Do While
-
- do_while1:
-
-#line 14
-	' * Return
-	pushi 1
-	ret	2, 2, 0
-	pushi 1
-	jnz do_while1
-
-#line 17
-	' * While
-
- while2:
-	pushi 1
-	jz end_while2
-	' * While body
-
-#line 18
-	' * Return
-	pushi 1
-	ret	2, 2, 0
-	jmp while2
-
- end_while2:
-
-#line 21
-	' * For
-
-#line 21
-	' * Assignment
-	push bp
-	pushi -2
-	addi
-	pushi 1
-	storei
-
- for3:
-	pushi 1
-	jz end_for3
-	' * For body
-
-#line 22
-	' * Return
-	pushi 1
-	ret	2, 2, 0
-
-#line 21
-	' * Post Arithmetic
-	push bp
-	pushi -2
-	addi
-	loadi
-	push bp
-	pushi -2
-	addi
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 1
-	addi
-	storei
-	popi
-	jmp for3
-
- end_for3:
-
-#line 24
-	' * Return
-	pushi 1
-	ret	2, 2, 0
-
-#line 25
-	' * If
-	pushi 1
-	jz end_if4
-	' * If body
-
-#line 26
-	' * Return
-	pushi 1
-	ret	2, 2, 0
-
- end_if4:
-
-#line 28
-	' * Read
-	push bp
-	pushi -2
-	addi
-	ini
-	storei
-
-#line 30
-	' * Write
-	push bp
-	pushi -2
-	addi
-	loadi
-	outi
-
-#line 30
-	' * Write
-	pushb 10
-	outb
-
-#line 32
-	' * Assignment
-	push bp
-	pushi -2
-	addi
-	pushi 2
-	storei
-
-#line 34
-	' * Post Arithmetic
-	push bp
-	pushi -2
-	addi
-	loadi
-	push bp
-	pushi -2
-	addi
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 1
-	addi
-	storei
-	popi
-
-#line 36
-	' * Pre Arithmetic
-	push bp
-	pushi -2
-	addi
-	push bp
-	pushi -2
-	addi
-	loadi
-	pushi 1
-	addi
-	storei
-	push bp
-	pushi -2
-	addi
-	loadi
-	popi
-
-#line 42
+#line 2
 
  main:
 	#func	main
@@ -206,11 +16,47 @@ halt
 	#ret	void
 
 	' * --- Local variables ---
+	' * IntType i (offset -2)
+	#local	i:int
 
-	enter 0
+	enter 2
 
-#line 44
-	' * Invocation of function: f
-	call f
-	popi
-	ret	0, 0, 0
+#line 5
+	' * Assignment
+	push bp
+	pushi -2
+	addi
+	pushi 5
+	pushi -1
+	muli
+	storei
+
+#line 6
+	' * Write
+	push bp
+	pushi -2
+	addi
+	loadi
+	outi
+
+#line 7
+	' * Assignment
+	push bp
+	pushi -2
+	addi
+	push bp
+	pushi -2
+	addi
+	loadi
+	pushi -1
+	muli
+	storei
+
+#line 8
+	' * Write
+	push bp
+	pushi -2
+	addi
+	loadi
+	outi
+	ret	0, 2, 0
